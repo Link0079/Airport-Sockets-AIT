@@ -8,7 +8,21 @@ namespace Ait.Pe04.Octopus.Client.Core
 {
     public class Config
     {
-        
+        public static void GetConfig(out string clientIP, out string serverIP, out int port, out string planeName)
+        {
+            string xmlFile = Directory.GetCurrentDirectory() + "/config.xml";
+            if (!File.Exists(xmlFile))
+            {
+                MakeConfigFile();
+            }
+            DataSet ds = new DataSet();
+            ds.ReadXml(xmlFile, XmlReadMode.ReadSchema);
+            clientIP = ds.Tables[0].Rows[0][0].ToString();
+            serverIP = ds.Tables[0].Rows[0][1].ToString();
+            port = int.Parse(ds.Tables[0].Rows[0][2].ToString());
+            planeName = ds.Tables[0].Rows[0][3].ToString();
+        }
+
         private static void MakeConfigFile()
         {
             DataSet ds = new DataSet();
