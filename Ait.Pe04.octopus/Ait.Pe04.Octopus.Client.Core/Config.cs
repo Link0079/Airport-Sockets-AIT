@@ -53,5 +53,20 @@ namespace Ait.Pe04.Octopus.Client.Core
             string xmlBestand = Directory.GetCurrentDirectory() + "/config.xml";
             ds.WriteXml(xmlBestand, XmlWriteMode.WriteSchema);
         }
+        public static void WriteConfig(string clientIP, string serverIP, int port, string planeName)
+        {
+            string xmlBestand = Directory.GetCurrentDirectory() + "/config.xml";
+            if (!File.Exists(xmlBestand))
+            {
+                MakeConfigFile();
+            }
+            DataSet ds = new DataSet();
+            ds.ReadXml(xmlBestand, XmlReadMode.ReadSchema);
+            ds.Tables[0].Rows[0][0] = clientIP;
+            ds.Tables[0].Rows[0][1] = serverIP;
+            ds.Tables[0].Rows[0][2] = port;
+            ds.Tables[0].Rows[0][3] = planeName;
+            ds.WriteXml(xmlBestand, XmlWriteMode.WriteSchema);
+        }
     }
 }
