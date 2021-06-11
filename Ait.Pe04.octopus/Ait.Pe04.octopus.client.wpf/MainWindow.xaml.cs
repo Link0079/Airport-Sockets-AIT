@@ -77,7 +77,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             _serverEndPoint = new IPEndPoint(serverIP, serverPort);
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            string message = "IDENTIFICATION=" + activePlane + "##EOM";
+            string message = "IDENTIFICATION=" + activePlane + "##OVER";
             lblMyID.Content = SendMessageToServerWaitOnResponse(message);
         }
 
@@ -98,7 +98,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
         private void btnDisconnectFromServer_Click(object sender, RoutedEventArgs e)
         {
-            string message = "ID=" + lblMyID.Content + "|BYEBYE##EOM";
+            string message = "ID=" + lblMyID.Content + "|BYEBYE##OVER";
             SendMessageToServerDontWaitOnResponse(message);
 
             btnConnectToServer.Visibility = Visibility.Visible;
@@ -149,7 +149,7 @@ namespace Ait.Pe04.octopus.client.wpf
             catch
             {
                 btnDisconnectFromServer_Click(null, null);
-                return "ERROR";
+                return "ERROR ENCOUNTERED! STANDBY##OVER";
             }
             finally
             {
