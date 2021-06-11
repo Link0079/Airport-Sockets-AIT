@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ait.Pe04.octopus.client.wpf"
         mc:Ignorable="d"
-        Title="Socket Airplane Cockpit" Height="450" Width="800" ResizeMode="NoResize" >
+        Title="Socket Airplane Cockpit" Height="450" Width="800" ResizeMode="NoResize" Loaded="Window_Loaded" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="22*"/>
@@ -28,8 +28,8 @@
                 <TextBox x:Name="txtActivePlane" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Height="28" Margin="84,7,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
                 <Label Content="My ID : " FontSize="14" FontWeight="Bold" HorizontalAlignment="Right" Height="28" Margin="0,40,185,0" VerticalAlignment="Top" Width="65" Grid.Column="2"/>
                 <Label x:Name="lblMyID" Content="" Background="OldLace" HorizontalAlignment="Right" Margin="0,40,5,0" VerticalAlignment="Top" Width="190" Grid.Column="2"/>
-                <Button x:Name="btnConnectToServer" Content="Connect" Background="ForestGreen" Foreground="White" FontSize="14" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,6,150,0" VerticalAlignment="Top" Height="28" Width="100" Grid.Column="2" />
-                <Button x:Name="btnDisconnectFromServer" Content="Disconnect" Background="Tomato" Foreground="White" FontSize="14" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,6,5,0" VerticalAlignment="Top" Height="28" Width="100" Grid.Column="2" />
+                <Button x:Name="btnConnectToServer" Content="Connect" Background="ForestGreen" Foreground="White" FontSize="14" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,6,150,0" VerticalAlignment="Top" Height="28" Width="100" Grid.Column="2" Click="btnConnectToServer_Click" />
+                <Button x:Name="btnDisconnectFromServer" Content="Disconnect" Background="Tomato" Foreground="White" FontSize="14" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,6,5,0" VerticalAlignment="Top" Height="28" Width="100" Grid.Column="2" Click="btnDisconnectFromServer_Click" />
 
             </Grid>
         </GroupBox>
