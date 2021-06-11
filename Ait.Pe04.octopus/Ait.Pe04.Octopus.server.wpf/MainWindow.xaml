@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ait.Pe04.Octopus.server.wpf"
         mc:Ignorable="d"
-        Title="Socket Airline Control Room" Height="650" Width="800">
+        Title="Socket Airline Control Room" Height="650" Width="800" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30*"/>
