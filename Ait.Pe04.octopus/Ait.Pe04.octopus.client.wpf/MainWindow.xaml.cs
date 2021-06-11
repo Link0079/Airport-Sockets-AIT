@@ -1,4 +1,4 @@
-﻿using Ait.Pe04.Octopus.Client.Core.Helpers;
+﻿using Ait.Pe04.Octopus.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +43,7 @@ namespace Ait.Pe04.octopus.client.wpf
             {
                 cmbPorts.Items.Add(port);
             }
-            Config.GetConfig(out string planeIP, out string serverIP, out int savedPort, out string planeName);
+            ClientConfig.GetConfig(out string planeIP, out string serverIP, out int savedPort, out string planeName);
 
             try
             {
@@ -83,7 +83,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
         private void btnConnectToServer_Click(object sender, RoutedEventArgs e)
         {
-            Config.WriteConfig(cmbIPs.SelectedItem.ToString(), txtServerIP.Text, int.Parse(cmbPorts.SelectedItem.ToString()), txtActivePlane.Text);
+            ClientConfig.WriteConfig(cmbIPs.SelectedItem.ToString(), txtServerIP.Text, int.Parse(cmbPorts.SelectedItem.ToString()), txtActivePlane.Text);
             btnConnectToServer.Visibility = Visibility.Hidden;
             btnDisconnectFromServer.Visibility = Visibility.Visible;
             grpActivePlane.Visibility = Visibility.Visible;
