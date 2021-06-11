@@ -4,7 +4,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 
-namespace Ait.Pe04.Octopus.Client.Core
+namespace Ait.Pe04.Octopus.Client.Core.Helpers
 {
     public class Config
     {
