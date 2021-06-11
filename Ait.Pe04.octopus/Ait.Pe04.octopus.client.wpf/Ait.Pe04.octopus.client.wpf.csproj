@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ait.Pe04.Octopus.Client.Core\Ait.Pe04.Octopus.Client.Core.csproj" />
+    <ProjectReference Include="..\Ait.Pe04.Octopus.Server.Core\Ait.Pe04.Octopus.Core.csproj" />
   </ItemGroup>
 
 </Project>
