@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Ait.Pe04.Octopus.Server.Core.Helpers
+namespace Ait.Pe04.Octopus.Core.Helpers
 {
     public class IP
     {
