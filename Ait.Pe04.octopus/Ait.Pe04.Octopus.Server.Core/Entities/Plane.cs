@@ -13,7 +13,8 @@ namespace Ait.Pe04.Octopus.Core.Entities
         public bool IsEngineActive { get; private set; }
         public bool InFlight { get; private set; }
         public bool IsOnLane { get; private set; }
-        public Lane Lane { get; private set; }
+        //public bool InEmergency { get; private set; }
+        //public Lane Lane { get; private set; }
         public Plane(string name)
         {
             Name = name;
@@ -23,7 +24,8 @@ namespace Ait.Pe04.Octopus.Core.Entities
             InFlight = false;
             IsEngineActive = false;
             IsOnLane = false;
-            Lane = null;                  // Not sure of the Lane part
+            //InEmergency = false;
+            //Lane = null;                  // Not sure of the Lane part
         }
         public void AddPassenger()
         {
@@ -59,11 +61,19 @@ namespace Ait.Pe04.Octopus.Core.Entities
         //    lane.OccupyLane();
         //    Lane = lane;
         //}
-        public void LeaveLane(Lane lane)
-        {
-            IsOnLane = false;
-            lane.LeaveLane();
-            Lane = null;
-        }
+        //public void LeaveLane(Lane lane)
+        //{
+        //    IsOnLane = false;
+        //    lane.LeaveLane();
+        //    Lane = null;
+        //}
+        //public void CallSOS()
+        //{
+        //    InEmergency = true;
+        //}
+        //public void CallOfSOS()
+        //{
+        //    InEmergency = false;
+        //}
     }
 }
