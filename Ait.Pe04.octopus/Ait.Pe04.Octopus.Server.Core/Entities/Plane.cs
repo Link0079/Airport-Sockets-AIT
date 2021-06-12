@@ -14,5 +14,54 @@ namespace Ait.Pe04.Octopus.Core.Entities
         public bool InFlight { get; private set; }
         public bool IsOnLane { get; private set; }
         //public Lane lane { get; private set; }
+        public Plane(string name)
+        {
+            Name = name;
+            MaxPassengers = 10;             // Consider setting through parameters..
+            TotalPassengers = 0;
+            Destination = "";
+            InFlight = false;
+            IsEngineActive = false;
+            IsOnLane = false;
+            //Lane = null;                  // Not sure of the Lane part
+        }
+        public void AddPassenger()
+        {
+            TotalPassengers++;
+            if (TotalPassengers >= MaxPassengers)
+                TotalPassengers = MaxPassengers;
+        }
+        public void SubtractPassenger()
+        {
+            TotalPassengers--;
+            if (TotalPassengers <= 0)
+                TotalPassengers = 0;
+        }
+        public void LiftOffPlane()
+        {
+            InFlight = true;
+        }
+        public void LandingPlane()
+        {
+            InFlight = false;
+        }
+        public void SetDestination(string destination)
+        {
+            Destination = destination;
+        }
+        public void StartEngine(bool isActive)
+        {
+            IsEngineActive = isActive;
+        }
+        //public void GoToLane(Lane lane)           // Methode for the Lane part
+        //{
+        //    IsOnLane = true;
+        //    Lane = lane;
+        //}
+        //public void LeaveLane(Lane lane)
+        //{
+        //    IsOnLane = false;
+        //    Lane = null;
+        //}
     }
 }
