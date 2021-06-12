@@ -12,5 +12,21 @@ namespace Ait.Pe04.Octopus.Core.Services
         {
             Planes = new List<Plane>();
         }
+        public void AddPlane(Plane plane)
+        {
+            Planes.Add(plane);
+        }
+        public void RemovePlane(Plane plane)
+        {
+            Planes.Remove(plane);
+        }
+        public Plane FindPlane(string name)
+        {
+            foreach (Plane plane in Planes)
+                if (plane.Name.ToUpper() == name.ToUpper())
+                    return plane;
+            return null;
+        }
+
     }
 }
