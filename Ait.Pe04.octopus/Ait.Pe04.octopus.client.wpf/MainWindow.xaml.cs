@@ -108,6 +108,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnStartEngine.IsEnabled = true;
             btnStopEngine.IsEnabled = false; // will be enabled when btnStartEngine is clicked; then btnStartEngine.IsEnabled = false
             btnSOS.IsEnabled = false; // will be enabled when enabled when plane is in flight ?
+
             ContactServer();
         }
 
@@ -181,11 +182,18 @@ namespace Ait.Pe04.octopus.client.wpf
         private void cmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //method when IP select is changed
+
+            // in btnConnectToServer_Click we have this line
+            //ClientConfig.WriteConfig(cmbIPs.SelectedItem.ToString(), txtServerIP.Text, int.Parse(cmbPorts.SelectedItem.ToString()), txtActivePlane.Text);
+            // it send whatever values we have there to the server
+            // this cmb does not need a method
         }
 
         private void cmbPorts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //method when Port select is changed
+
+            // idem cmbIPs_SelectionChanged
         }
 
         private void btnAddPassengers_Click(object sender, RoutedEventArgs e)
