@@ -151,24 +151,24 @@ namespace Ait.Pe04.Octopus.server.wpf
             return string.Empty;
         }
 
-        private void cmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SaveConfig();
         }
 
-        private void cmbPorts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CmbPorts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SaveConfig();
         }
 
-        private void btnStartServer_Click(object sender, RoutedEventArgs e)
+        private void BtnStartServer_Click(object sender, RoutedEventArgs e)
         {
             grpAirfield.Visibility = Visibility.Visible;
             btnStartServer.Visibility = Visibility.Hidden;
             btnStopServer.Visibility = Visibility.Visible;
         }
 
-        private void btnStopServer_Click(object sender, RoutedEventArgs e)
+        private void BtnStopServer_Click(object sender, RoutedEventArgs e)
         {
 
             lstInRequest.Items.Insert(0, "\n=============\nAirspace closing \nGoodnight\n=============");
