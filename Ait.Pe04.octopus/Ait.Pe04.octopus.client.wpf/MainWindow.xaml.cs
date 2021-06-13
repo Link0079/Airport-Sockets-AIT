@@ -28,6 +28,7 @@ namespace Ait.Pe04.octopus.client.wpf
             InitializeComponent();
         }
 
+        ActualPlane Plane;
         int passengers;
         Socket _socket;
         IPEndPoint _serverEndPoint;
@@ -236,7 +237,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 txtBlockFeedback.Text = " The plane has enough passengers for lift of.";
             }
 
-            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content +"| + PASSENGERS##OVER";
+            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|AddPassengers##OVER";
             SendMessageToServerDontWaitOnResponse(message);
         }
 
@@ -262,7 +263,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 txtBlockFeedback.Text = " 10 passengers have been kicked out of the plane ";
             }
 
-            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "| - PASSENGERS##OVER";
+            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|SubstractPassengers##OVER";
             SendMessageToServerDontWaitOnResponse(message);
         }
 
@@ -284,7 +285,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 // to be continued
             }
 
-            string message = "ID=" + lblMyID.Content + "|REQUEST LANE##OVER";
+            string message = "ID=" + lblMyID.Content + "|RequestLane##OVER";
             SendMessageToServerDontWaitOnResponse(message);
 
         }

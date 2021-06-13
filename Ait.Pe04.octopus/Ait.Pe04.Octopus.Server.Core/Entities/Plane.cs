@@ -18,7 +18,7 @@ namespace Ait.Pe04.Octopus.Core.Entities
         public Plane(string name)
         {
             Name = name;
-            MaxPassengers = 10;             // Consider setting through parameters..
+            MaxPassengers = 150;             // Consider setting through parameters..
             TotalPassengers = 0;
             Destination = "";
             InFlight = false;
