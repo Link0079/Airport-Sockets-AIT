@@ -92,7 +92,7 @@ namespace Ait.Pe04.Octopus.server.wpf
             catch
             { }
             _socket = null;
-            InsertMessage(0, $"Airspace closed at {DateTime.Now:G}");
+            InsertMessage(lstInRequest, $"Airspace closed at {DateTime.Now:G}");
         }
 
         public static void DoEvents()
@@ -110,8 +110,8 @@ namespace Ait.Pe04.Octopus.server.wpf
             {
                 _socket.Bind(endPoint);
                 _socket.Listen(_maxConnections);
-                InsertMessage(0, $"Airspace opened at {DateTime.Now:g} \nHave a good day!");
-                InsertMessage(0, $"Maximum airplanes allowed : {_maxConnections}");
+                InsertMessage(lstInRequest, $"Airspace opened at {DateTime.Now:g} \nHave a good day!");
+                InsertMessage(lstInRequest, $"Maximum airplanes allowed : {_maxConnections}");
 
                 while (_serverOnline) // While _serverOnline is true
                 {
@@ -145,17 +145,17 @@ namespace Ait.Pe04.Octopus.server.wpf
                     break;
             }
 
-            string serverResponseInText = HandleInstruction(instruction);
+            List<string> serverResponseInText = HandleInstruction(instruction);
 
             string result;
 
-            if (serverResponseInText.Length < 1)
+            if (serverResponseInText.Count < 1)
             {
                 result = $"{serverResponseInText} is unkown";
             }
             else
             {
-                result = $"{serverResponseInText}";
+                result = $"{ExecuteCommand(serverResponseInText)}";
             }
 
             byte[] clientResponse = Encoding.ASCII.GetBytes(result);
@@ -164,10 +164,22 @@ namespace Ait.Pe04.Octopus.server.wpf
             clientCall.Shutdown(SocketShutdown.Both);
             clientCall.Close();
         }
-        private string HandleInstruction(string instruction)
+        private List<string> HandleInstruction(string instruction)
         {
-            InsertMessage(0, $"Request =\n{instruction}");
-            return instruction.ToUpper().Replace("##OVER", "").Trim();
+            InsertMessage(lstInRequest,$"Request =\n{instruction}");
+            string trimmedInstruction = instruction.ToUpper().Replace("##OVER", "").Trim();
+            List<string> data = new List<string>();
+            if (trimmedInstruction.Contains("="))
+            {
+                data.Insert(0, trimmedInstruction.Split("=")[0]);
+                data.Insert(1, trimmedInstruction.Split("=")[1]);
+            }
+            else
+            {
+                data.Insert(0, trimmedInstruction);
+            }
+            
+            return data;
         }
 
         private void CmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -192,15 +204,29 @@ namespace Ait.Pe04.Octopus.server.wpf
         private void BtnStopServer_Click(object sender, RoutedEventArgs e)
         {
 
-            InsertMessage(0, "Airspace closing");
+            InsertMessage( lstInRequest,"Airspace closing");
             btnStopServer.Visibility = Visibility.Hidden;
             btnStartServer.Visibility = Visibility.Visible;
             CloseServer();
         }
 
-        private void InsertMessage(int index, string message)
+        private void InsertMessage(ListBox source, string message)
         {
-            lstInRequest.Items.Insert(index, $"<=============>\n{message}\n<=============>");
+            source.Items.Insert(0, $"<=============>\n{message}\n<=============>");
+        }
+
+        private string ExecuteCommand(List<string> command)
+        {
+            if (command[0] == "IDENTIFICATION")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "test";
+            } 
+            else
+            {
+                InsertMessage(lstOutResponse, "UNKNOWN INSTRUCTION");
+                return "UNKNOWN INSTRUCTION";
+            }
         }
     }
 }
