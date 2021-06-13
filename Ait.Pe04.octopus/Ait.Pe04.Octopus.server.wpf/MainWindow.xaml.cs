@@ -113,14 +113,16 @@ namespace Ait.Pe04.Octopus.server.wpf
                 InsertMessage(0, $"Airspace opened at {DateTime.Now:g} \nHave a good day!");
                 InsertMessage(0, $"Maximum airplanes allowed : {_maxConnections}");
 
-                StartServer(); // Starting server and setting _serverOnline to true
                 while (_serverOnline) // While _serverOnline is true
                 {
                     DoEvents();
-                    if (_socket.Poll(100000, SelectMode.SelectRead))
+                    if (_socket != null)
                     {
-                        Socket clientSocket = _socket.Accept();
-                        HandleClientCall(clientSocket);
+                        if (_socket.Poll(100000, SelectMode.SelectRead))
+                        {
+                            Socket clientSocket = _socket.Accept();
+                            HandleClientCall(clientSocket);
+                        }
                     }
                 }
             }
@@ -159,12 +161,6 @@ namespace Ait.Pe04.Octopus.server.wpf
             byte[] clientResponse = Encoding.ASCII.GetBytes(result);
             clientCall.Send(clientResponse);
 
-            //if (serverResponseInText != "")
-            //{
-            //    byte[] serverResponse = Encoding.ASCII.GetBytes(serverResponseInText);
-            //    clientCall.Send(serverResponse);
-            //}
-
             clientCall.Shutdown(SocketShutdown.Both);
             clientCall.Close();
         }
@@ -189,6 +185,7 @@ namespace Ait.Pe04.Octopus.server.wpf
             grpAirfield.Visibility = Visibility.Visible;
             btnStartServer.Visibility = Visibility.Hidden;
             btnStopServer.Visibility = Visibility.Visible;
+            StartServer(); // Starting server and setting _serverOnline to true
             StartListening();
         }
 
@@ -203,7 +200,7 @@ namespace Ait.Pe04.Octopus.server.wpf
 
         private void InsertMessage(int index, string message)
         {
-            lstInRequest.Items.Insert(0, $"<=============>\n{message}\n<=============>");
+            lstInRequest.Items.Insert(index, $"<=============>\n{message}\n<=============>");
         }
     }
 }
