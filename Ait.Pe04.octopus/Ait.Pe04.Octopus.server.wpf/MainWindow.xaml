@@ -16,7 +16,7 @@
             <RowDefinition Height="55*"/>
             <RowDefinition Height="45*"/>
         </Grid.RowDefinitions>
-        <Canvas x:Name="cnvRadioTowerImage" Margin="10,10,12,89" Grid.ColumnSpan="3">
+        <Canvas x:Name="cnvRadioTowerImage" Margin="10,10,12,118" Grid.ColumnSpan="3">
             <Canvas.Background>
                 <ImageBrush ImageSource="/AirplaneControleRoom.jpg" TileMode="None" Stretch="Fill"/>
             </Canvas.Background>
