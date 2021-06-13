@@ -28,6 +28,7 @@ namespace Ait.Pe04.octopus.client.wpf
             InitializeComponent();
         }
 
+        int actualPassengers;
         int passengers;
         Socket _socket;
         IPEndPoint _serverEndPoint;
@@ -219,8 +220,16 @@ namespace Ait.Pe04.octopus.client.wpf
 
         private void btnAddPassengers_Click(object sender, RoutedEventArgs e)
         {
-            var actualPassangers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
-            passengers = actualPassangers;
+            try
+            {
+                actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
+                passengers = actualPassengers;
+
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             // Checking if lblPassengerCount.Content can be parsed, normally we do not need this because we add passangers with the buttons
             //if(!int.TryParse((string)lblPassengerCount.Content, out actualPassangers)) 
@@ -243,7 +252,7 @@ namespace Ait.Pe04.octopus.client.wpf
             }
             else 
             {
-                passengers = actualPassangers + 1;
+                passengers = actualPassengers + 1;
                 lblPassengerCount.Content = passengers.ToString(); // update lblPassengerCount with the new number of passengers
                 tbkFeedback.Background = Brushes.Green;
                 tbkFeedback.Text = " One passenger have boarded the plane. ";
@@ -264,19 +273,28 @@ namespace Ait.Pe04.octopus.client.wpf
         {
             //method to substract passenger from active plane
 
-            var actualPassangers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
-            passengers = actualPassangers;
 
-            if(passengers < 0 || passengers < 4) 
+            try
+            {
+                actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
+                passengers = actualPassengers;
+
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            if (passengers < 0 || passengers < 4) 
             {
                 tbkFeedback.Background = Brushes.Red;
                 tbkFeedback.Text = " The plane can not have less than 0 passengers.\n " +
                                         " The plane needs at least 4 passengers to for lift off.";
-                passengers = actualPassangers - 1;
+                passengers = actualPassengers - 1;
             }
             else 
             {
-                passengers = actualPassangers - 1;
+                passengers = actualPassengers - 1;
                 lblPassengerCount.Content = passengers.ToString();
                 tbkFeedback.Background = Brushes.Green;
                 tbkFeedback.Text = " One passenger has been kicked out of the plane ";
@@ -290,8 +308,16 @@ namespace Ait.Pe04.octopus.client.wpf
         private void btnRequestLane_Click(object sender, RoutedEventArgs e)
         {
             //method to request lane for the plane
-            var actualPassangers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
-            passengers = actualPassangers;
+            try
+            {
+                actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
+                passengers = actualPassengers;
+
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             if(passengers < 4) 
             {
