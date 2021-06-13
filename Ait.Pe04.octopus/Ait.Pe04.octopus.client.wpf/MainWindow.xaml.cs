@@ -188,6 +188,18 @@ namespace Ait.Pe04.octopus.client.wpf
             return message;
         }
 
+        private static string GetLaneString(string stringSource, string stringStart, string StringEnd) 
+        {
+            if(stringSource.Contains(stringStart) && stringSource.Contains(StringEnd))
+            {
+                int Start, End;
+                Start = stringSource.IndexOf(stringStart, 0) + stringStart.Length;
+                End = StringEnd.IndexOf(StringEnd, Start);
+                return stringSource.Substring(Start, End - Start);
+            }
+            return"";
+        }
+
         private void cmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //method when IP select is changed
@@ -299,6 +311,10 @@ namespace Ait.Pe04.octopus.client.wpf
                 string message = "ID=" + lblMyID.Content + "|RequestLane##OVER";
                 SendMessageToServerDontWaitOnResponse(message);
                 TrimMessageAndSendToList(message);
+                string source = lstInResponse.SelectedItem.ToString();
+                // empty strings have to be replaced with the response strings
+                string lane = GetLaneString(source, "", "");
+                lblOnLane.Content = lane;
             }
 
 
