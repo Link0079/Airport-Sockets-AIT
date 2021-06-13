@@ -341,6 +341,10 @@ namespace Ait.Pe04.octopus.client.wpf
         private void btnStopEngine_Click(object sender, RoutedEventArgs e)
         {
             //method for plane to stop the engine after landing
+
+            btnStopEngine.IsEnabled = false;
+            string message = "ID=" + lblMyID.Content + "|StopEngine##OVER";
+            SendMessageToServerDontWaitOnResponse(message);
         }
 
         private void btnSOS_Click(object sender, RoutedEventArgs e)
