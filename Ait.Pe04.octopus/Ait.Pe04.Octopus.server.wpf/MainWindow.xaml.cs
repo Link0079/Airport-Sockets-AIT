@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Ait.Pe04.Octopus.server.wpf
 {
@@ -35,6 +36,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             StartUpConfig();
+            grpAirfield.Visibility = Visibility.Hidden;
         }
 
         private void StartUpConfig()
@@ -83,36 +85,43 @@ namespace Ait.Pe04.Octopus.server.wpf
         private void CloseServer()
         {
             _serverOnline = false;
-
             try
             {
-                if (_socket != null) _socket.Close();
+                _socket.Close();
             }
             catch
-            { 
-                
-            }
+            { }
             _socket = null;
+            InsertMessage(lstInRequest, $"Airspace closed at {DateTime.Now:G}");
         }
 
+        public static void DoEvents()
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
+        }
         private void StartListening()
         {
-            IPAddress ip = IPAddress.Parse(cmbIPs.SelectedItem.ToString());
-            int port = int.Parse(cmbPorts.SelectedItem.ToString());
-            IPEndPoint endPoint = new IPEndPoint(ip, port);
+            IPAddress ip = IPAddress.Parse(cmbIPs.SelectedItem.ToString()); // Get ip in combobox
+            int port = int.Parse(cmbPorts.SelectedItem.ToString()); // Get port in combobox
+            IPEndPoint endPoint = new IPEndPoint(ip, port); // Create new IpEndpoint from ip and port
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             try
             {
                 _socket.Bind(endPoint);
                 _socket.Listen(_maxConnections);
-                while (_serverOnline)
+                InsertMessage(lstInRequest, $"Airspace opened at {DateTime.Now:g} \nHave a good day!");
+                InsertMessage(lstInRequest, $"Maximum airplanes allowed : {_maxConnections}");
+
+                while (_serverOnline) // While _serverOnline is true
                 {
-                    if(_socket != null)
+                    DoEvents();
+                    if (_socket != null)
                     {
                         if (_socket.Poll(100000, SelectMode.SelectRead))
                         {
-                            HandleClientCall(_socket.Accept());
+                            Socket clientSocket = _socket.Accept();
+                            HandleClientCall(clientSocket);
                         }
                     }
                 }
@@ -130,44 +139,94 @@ namespace Ait.Pe04.Octopus.server.wpf
 
             while (true)
             {
-
                 int numByte = clientCall.Receive(clientRequest);
                 instruction += Encoding.ASCII.GetString(clientRequest, 0, numByte);
                 if (instruction.IndexOf("##OVER") > -1)
                     break;
             }
-            string serverResponseInText = HandleInstruction(instruction);
-            if (serverResponseInText != "")
+
+            List<string> serverResponseInText = HandleInstruction(instruction);
+
+            string result;
+
+            if (serverResponseInText.Count < 1)
             {
-                byte[] serverResponse = Encoding.ASCII.GetBytes(serverResponseInText);
-                clientCall.Send(serverResponse);
+                result = $"{serverResponseInText} is unkown";
             }
+            else
+            {
+                result = $"{ExecuteCommand(serverResponseInText)}";
+            }
+
+            byte[] clientResponse = Encoding.ASCII.GetBytes(result);
+            clientCall.Send(clientResponse);
+
             clientCall.Shutdown(SocketShutdown.Both);
             clientCall.Close();
         }
-        private string HandleInstruction(string instruction)
+        private List<string> HandleInstruction(string instruction)
         {
-            return string.Empty;
+            InsertMessage(lstInRequest,$"Request =\n{instruction}");
+            string trimmedInstruction = instruction.ToUpper().Replace("##OVER", "").Trim();
+            List<string> data = new List<string>();
+            if (trimmedInstruction.Contains("="))
+            {
+                data.Insert(0, trimmedInstruction.Split("=")[0]);
+                data.Insert(1, trimmedInstruction.Split("=")[1]);
+            }
+            else
+            {
+                data.Insert(0, trimmedInstruction);
+            }
+            
+            return data;
         }
 
-        private void cmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SaveConfig();
         }
 
-        private void cmbPorts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CmbPorts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SaveConfig();
         }
 
-        private void btnStartServer_Click(object sender, RoutedEventArgs e)
+        private void BtnStartServer_Click(object sender, RoutedEventArgs e)
         {
-
+            grpAirfield.Visibility = Visibility.Visible;
+            btnStartServer.Visibility = Visibility.Hidden;
+            btnStopServer.Visibility = Visibility.Visible;
+            StartServer(); // Starting server and setting _serverOnline to true
+            StartListening();
         }
 
-        private void btnStopServer_Click(object sender, RoutedEventArgs e)
+        private void BtnStopServer_Click(object sender, RoutedEventArgs e)
         {
 
+            InsertMessage( lstInRequest,"Airspace closing");
+            btnStopServer.Visibility = Visibility.Hidden;
+            btnStartServer.Visibility = Visibility.Visible;
+            CloseServer();
+        }
+
+        private void InsertMessage(ListBox source, string message)
+        {
+            source.Items.Insert(0, $"<=============>\n{message}\n<=============>");
+        }
+
+        private string ExecuteCommand(List<string> command)
+        {
+            if (command[0] == "IDENTIFICATION")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "test";
+            } 
+            else
+            {
+                InsertMessage(lstOutResponse, "UNKNOWN INSTRUCTION");
+                return "UNKNOWN INSTRUCTION";
+            }
         }
     }
 }
