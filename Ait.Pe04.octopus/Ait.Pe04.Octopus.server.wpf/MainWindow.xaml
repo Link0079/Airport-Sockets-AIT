@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ait.Pe04.Octopus.server.wpf"
         mc:Ignorable="d"
-        Title="Socket Airline Control Room" Height="650" Width="800" Loaded="Window_Loaded">
+        Title="Socket Airline Control Room" Height="712" Width="925" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30*"/>
@@ -16,7 +16,7 @@
             <RowDefinition Height="55*"/>
             <RowDefinition Height="45*"/>
         </Grid.RowDefinitions>
-        <Canvas x:Name="cnvRadioTowerImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="12,10,12,10" Grid.ColumnSpan="3">
+        <Canvas x:Name="cnvRadioTowerImage" Margin="10,10,12,89" Grid.ColumnSpan="3">
             <Canvas.Background>
                 <ImageBrush ImageSource="/AirplaneControleRoom.jpg" TileMode="None" Stretch="Fill"/>
             </Canvas.Background>
@@ -32,7 +32,7 @@
 
             </Grid>
         </GroupBox>
-        <GroupBox x:Name="grpAirfield" Header="Airfield" Margin="10,0,10,10" VerticalAlignment="Stretch" Grid.ColumnSpan="3" Background="White" Grid.Row="1">
+        <GroupBox x:Name="grpAirfield" Header="Airfield" Margin="10,265,10,10" Grid.ColumnSpan="3" Background="White" Grid.RowSpan="2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="15*"/>
