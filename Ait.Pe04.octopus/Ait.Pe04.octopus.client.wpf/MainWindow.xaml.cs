@@ -236,7 +236,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 txtBlockFeedback.Text = " The plane has enough passengers for lift of.";
             }
 
-            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content +"|+PASSENGERS##OVER";
+            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content +"| + PASSENGERS##OVER";
             SendMessageToServerDontWaitOnResponse(message);
         }
 
@@ -262,13 +262,31 @@ namespace Ait.Pe04.octopus.client.wpf
                 txtBlockFeedback.Text = " 10 passengers have been kicked out of the plane ";
             }
 
-            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|-PASSENGERS##OVER";
+            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "| - PASSENGERS##OVER";
             SendMessageToServerDontWaitOnResponse(message);
         }
 
         private void btnRequestLane_Click(object sender, RoutedEventArgs e)
         {
             //method to request lane for the plane
+            var actualPassangers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
+            passengers = actualPassangers;
+
+            if(passengers < 40) 
+            {
+                txtBlockFeedback.Background = Brushes.Red;
+                txtBlockFeedback.Text = " The plane does not have enough passengers for lift off.\n " +
+                                        " At least 40 passengers are required to request a lane .";
+            }
+            else 
+            {
+                // Getting an available Lane
+                // to be continued
+            }
+
+            string message = "ID=" + lblMyID.Content + "|REQUEST LANE##OVER";
+            SendMessageToServerDontWaitOnResponse(message);
+
         }
 
         private void btnGoToLane_Click(object sender, RoutedEventArgs e)
