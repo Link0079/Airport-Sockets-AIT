@@ -181,6 +181,13 @@ namespace Ait.Pe04.octopus.client.wpf
 
         }
 
+        private string TrimMessageAndSendToList(string message) 
+        {
+            lstOutRequest.Items.Insert(0, message);
+            message = message.Replace("##OVER", "").Trim();
+            return message;
+        }
+
         private void cmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //method when IP select is changed
@@ -238,6 +245,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|AddPassenger##OVER";
             SendMessageToServerDontWaitOnResponse(message);
+            TrimMessageAndSendToList(message);
         }
 
         private void btnSubtractPassengers_Click(object sender, RoutedEventArgs e)
@@ -264,6 +272,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|SubstractPassenger##OVER";
             SendMessageToServerDontWaitOnResponse(message);
+            TrimMessageAndSendToList(message);
         }
 
         private void btnRequestLane_Click(object sender, RoutedEventArgs e)
@@ -289,6 +298,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 btnGoToLane.IsEnabled = true;
                 string message = "ID=" + lblMyID.Content + "|RequestLane##OVER";
                 SendMessageToServerDontWaitOnResponse(message);
+                TrimMessageAndSendToList(message);
             }
 
 
@@ -306,6 +316,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnStartEngine.IsEnabled = true;
             string message = "ID=" + lblMyID.Content + "|MoveToLane##OVER";
             SendMessageToServerDontWaitOnResponse(message);
+            TrimMessageAndSendToList(message);
 
         }
 
@@ -317,6 +328,7 @@ namespace Ait.Pe04.octopus.client.wpf
             
             string message = "ID=" + lblMyID.Content + "|RequestLiftOff##OVER";
             SendMessageToServerDontWaitOnResponse(message);
+            TrimMessageAndSendToList(message);
 
         }
 
@@ -328,6 +340,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnStopEngine.IsEnabled = true;
             string message = "ID=" + lblMyID.Content + "|RequestLanding##OVER";
             SendMessageToServerDontWaitOnResponse(message);
+            TrimMessageAndSendToList(message);
         }
 
         private void btnStartEngine_Click(object sender, RoutedEventArgs e)
@@ -338,6 +351,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             string message = "ID=" + lblMyID.Content + "|StartEngine##OVER";
             SendMessageToServerDontWaitOnResponse(message);
+            TrimMessageAndSendToList(message);
         }
 
         private void btnStopEngine_Click(object sender, RoutedEventArgs e)
@@ -349,6 +363,7 @@ namespace Ait.Pe04.octopus.client.wpf
    
             string message = "ID=" + lblMyID.Content + "|StopEngine##OVER";
             SendMessageToServerDontWaitOnResponse(message);
+            TrimMessageAndSendToList(message);
         }
 
         private void btnSOS_Click(object sender, RoutedEventArgs e)
@@ -360,6 +375,7 @@ namespace Ait.Pe04.octopus.client.wpf
                                 "Awaiting response";
             string message = "ID=" + lblMyID.Content + "|SOS##OVER";
             SendMessageToServerDontWaitOnResponse(message);
+            TrimMessageAndSendToList(message);
         }
     }
 }
