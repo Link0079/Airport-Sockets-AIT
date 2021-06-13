@@ -371,8 +371,7 @@ namespace Ait.Pe04.octopus.client.wpf
             //method for plane to request help in case of emergency
 
             tbkFeedback.Background = Brushes.DarkRed;
-            tbkFeedback.Text = "S.O.S. signal has been sent \n +" +
-                                "Awaiting response";
+            tbkFeedback.Text = " Plane entered the Bermuda Triangle"; 
             string message = "ID=" + lblMyID.Content + "|SOS##OVER";
             SendMessageToServerDontWaitOnResponse(message);
             TrimMessageAndSendToList(message);
