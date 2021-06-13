@@ -28,6 +28,7 @@ namespace Ait.Pe04.octopus.client.wpf
             InitializeComponent();
         }
 
+        int passengers;
         Socket _socket;
         IPEndPoint _serverEndPoint;
 
@@ -108,6 +109,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnStartEngine.IsEnabled = true;
             btnStopEngine.IsEnabled = false; // will be enabled when btnStartEngine is clicked; then btnStartEngine.IsEnabled = false
             btnSOS.IsEnabled = false; // will be enabled when enabled when plane is in flight ?
+            txtBlockFeedback.IsEnabled = false; // Only to show feedback
 
             ContactServer();
         }
@@ -198,7 +200,38 @@ namespace Ait.Pe04.octopus.client.wpf
 
         private void btnAddPassengers_Click(object sender, RoutedEventArgs e)
         {
-            //method to add passenger to active plane
+            var actualPassangers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
+            passengers = actualPassangers;
+
+            // Checking if lblPassengerCount.Content can be parsed, normally we do not need this because we add passangers with the buttons
+            //if(!int.TryParse((string)lblPassengerCount.Content, out actualPassangers)) 
+            //{
+            //    txtBlockFeedback.Background = Brushes.Red;
+            //    txtBlockFeedback.Text = "You have to enter a number for the passengers.";
+            //}
+            //else 
+            //{
+            //    passengers = actualPassangers + 10;
+            //    lblPassengerCount.Content = passengers.ToString();
+            //    txtBlockFeedback.Background = Brushes.Green;
+            //    txtBlockFeedback.Text = " 10 passengers have boarded the planne ";
+            //}
+
+            if (passengers> 150)  // check to see if plane there is more place on the plane
+            {
+                txtBlockFeedback.Background = Brushes.Red;
+                txtBlockFeedback.Text = "The plane can only hold 150 passengers. We can not squeeze more in.";
+            }
+            else 
+            {
+                passengers = actualPassangers + 10;
+                lblPassengerCount.Content = passengers.ToString();
+                txtBlockFeedback.Background = Brushes.Green;
+                txtBlockFeedback.Text = " 10 passengers have boarded the plane ";
+            }
+
+            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content +"|+PASSENGERS##OVER";
+            SendMessageToServerDontWaitOnResponse(message);
         }
 
         private void btnSubtractPassengers_Click(object sender, RoutedEventArgs e)
