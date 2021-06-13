@@ -227,7 +227,13 @@ namespace Ait.Pe04.octopus.client.wpf
                 passengers = actualPassangers + 10;
                 lblPassengerCount.Content = passengers.ToString(); // update lblPassengerCount with the new number of passengers
                 txtBlockFeedback.Background = Brushes.Green;
-                txtBlockFeedback.Text = " 10 passengers have boarded the plane ";
+                txtBlockFeedback.Text = " 10 passengers have boarded the plane. ";
+            }
+
+            if(passengers > 40) 
+            {
+                txtBlockFeedback.Background = Brushes.Green;
+                txtBlockFeedback.Text = " The plane has enough passengers for lift of.";
             }
 
             string message = "ID=" + lblMyID.Content + lblPassengerCount.Content +"|+PASSENGERS##OVER";
