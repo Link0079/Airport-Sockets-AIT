@@ -281,28 +281,47 @@ namespace Ait.Pe04.octopus.client.wpf
             else 
             {
                 // Getting an available Lane
-                // to be continued
+                // awaiting response from server with an available lane ?
+                // the available lane would need to be put in lblOnLane.Content
+
+                btnGoToLane.IsEnabled = true;
+                string message = "ID=" + lblMyID.Content + "|RequestLane##OVER";
+                SendMessageToServerDontWaitOnResponse(message);
             }
 
-            btnGoToLane.IsEnabled = true;
-            string message = "ID=" + lblMyID.Content + "|RequestLane##OVER";
-            SendMessageToServerDontWaitOnResponse(message);
 
         }
 
         private void btnGoToLane_Click(object sender, RoutedEventArgs e)
         {
             //method for the plane to taxi to lane or land on the lane
+
+            //lblOnLane.Content ="";
+
+            btnRequestLane.IsEnabled = false;
+            btnRequestLiftOff.IsEnabled = true;
+            string message = "ID=" + lblMyID.Content + "|MoveToLane##OVER";
+            SendMessageToServerDontWaitOnResponse(message);
+
         }
 
         private void btnRequestLiftOff_Click(object sender, RoutedEventArgs e)
         {
             //method for plane to request permission for takeoff
+
+            btnGoToLane.IsEnabled = false;
+            string message = "ID=" + lblMyID.Content + "|RequestLiftOff##OVER";
+            SendMessageToServerDontWaitOnResponse(message);
+
         }
 
         private void btnRequestLanding_Click(object sender, RoutedEventArgs e)
         {
             //method for plane to put request for landing
+
+            btnRequestLiftOff.IsEnabled = false;
+            string message = "ID=" + lblMyID.Content + "|RequestLanding##OVER";
+            SendMessageToServerDontWaitOnResponse(message);
         }
 
         private void btnStartEngine_Click(object sender, RoutedEventArgs e)
