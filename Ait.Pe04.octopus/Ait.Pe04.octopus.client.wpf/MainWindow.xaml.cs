@@ -225,7 +225,7 @@ namespace Ait.Pe04.octopus.client.wpf
             else 
             {
                 passengers = actualPassangers + 10;
-                lblPassengerCount.Content = passengers.ToString();
+                lblPassengerCount.Content = passengers.ToString(); // update lblPassengerCount with the new number of passengers
                 txtBlockFeedback.Background = Brushes.Green;
                 txtBlockFeedback.Text = " 10 passengers have boarded the plane ";
             }
@@ -237,6 +237,27 @@ namespace Ait.Pe04.octopus.client.wpf
         private void btnSubtractPassengers_Click(object sender, RoutedEventArgs e)
         {
             //method to substract passenger from active plane
+
+            var actualPassangers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
+            passengers = actualPassangers;
+
+            if(passengers < 0 || passengers < 40) 
+            {
+                txtBlockFeedback.Background = Brushes.Red;
+                txtBlockFeedback.Text = " The plane can not have less than 0 passengers.\n " +
+                                        " The plane needs at least 40 passengers to for lift off.";
+                passengers = actualPassangers - 10;
+            }
+            else 
+            {
+                passengers = actualPassangers - 10;
+                lblPassengerCount.Content = passengers.ToString();
+                txtBlockFeedback.Background = Brushes.Green;
+                txtBlockFeedback.Text = " 10 passengers have been kicked out of the plane ";
+            }
+
+            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|-PASSENGERS##OVER";
+            SendMessageToServerDontWaitOnResponse(message);
         }
 
         private void btnRequestLane_Click(object sender, RoutedEventArgs e)
