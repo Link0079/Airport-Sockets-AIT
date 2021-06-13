@@ -284,6 +284,8 @@ namespace Ait.Pe04.octopus.client.wpf
                 // awaiting response from server with an available lane ?
                 // the available lane would need to be put in lblOnLane.Content
 
+                btnSubtractPassengers.IsEnabled = false;
+                btnAddPassengers.IsEnabled = false;
                 btnGoToLane.IsEnabled = true;
                 string message = "ID=" + lblMyID.Content + "|RequestLane##OVER";
                 SendMessageToServerDontWaitOnResponse(message);
@@ -300,6 +302,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             btnRequestLane.IsEnabled = false;
             btnRequestLiftOff.IsEnabled = true;
+            btnStartEngine.IsEnabled = true;
             string message = "ID=" + lblMyID.Content + "|MoveToLane##OVER";
             SendMessageToServerDontWaitOnResponse(message);
 
@@ -310,6 +313,7 @@ namespace Ait.Pe04.octopus.client.wpf
             //method for plane to request permission for takeoff
 
             btnGoToLane.IsEnabled = false;
+            
             string message = "ID=" + lblMyID.Content + "|RequestLiftOff##OVER";
             SendMessageToServerDontWaitOnResponse(message);
 
@@ -320,6 +324,7 @@ namespace Ait.Pe04.octopus.client.wpf
             //method for plane to put request for landing
 
             btnRequestLiftOff.IsEnabled = false;
+            btnStopEngine.IsEnabled = true;
             string message = "ID=" + lblMyID.Content + "|RequestLanding##OVER";
             SendMessageToServerDontWaitOnResponse(message);
         }
@@ -327,6 +332,10 @@ namespace Ait.Pe04.octopus.client.wpf
         private void btnStartEngine_Click(object sender, RoutedEventArgs e)
         {
             //method for plane to start the engine before takeoff
+
+            btnStartEngine.IsEnabled = false;
+            string message = "ID=" + lblMyID.Content + "|StartEngine##OVER";
+            SendMessageToServerDontWaitOnResponse(message);
         }
 
         private void btnStopEngine_Click(object sender, RoutedEventArgs e)
