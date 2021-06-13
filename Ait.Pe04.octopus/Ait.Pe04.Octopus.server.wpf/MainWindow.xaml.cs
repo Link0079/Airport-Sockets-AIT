@@ -35,6 +35,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             StartUpConfig();
+            grpAirfield.Visibility = Visibility.Hidden;
         }
 
         private void StartUpConfig()
@@ -162,12 +163,17 @@ namespace Ait.Pe04.Octopus.server.wpf
 
         private void btnStartServer_Click(object sender, RoutedEventArgs e)
         {
-
+            grpAirfield.Visibility = Visibility.Visible;
+            btnStartServer.Visibility = Visibility.Hidden;
+            btnStopServer.Visibility = Visibility.Visible;
         }
 
         private void btnStopServer_Click(object sender, RoutedEventArgs e)
         {
 
+            lstInRequest.Items.Insert(0, "\n=============\nAirspace closing \nGoodnight\n=============");
+            btnStopServer.Visibility = Visibility.Hidden;
+            btnStartServer.Visibility = Visibility.Visible;
         }
     }
 }
