@@ -217,26 +217,26 @@ namespace Ait.Pe04.octopus.client.wpf
             //    txtBlockFeedback.Text = " 10 passengers have boarded the planne ";
             //}
 
-            if (passengers> 150)  // check to see if plane there is more place on the plane
+            if (passengers> 10)  // check to see if plane there is more place on the plane
             {
                 txtBlockFeedback.Background = Brushes.Red;
-                txtBlockFeedback.Text = "The plane can only hold 150 passengers. We can not squeeze more in.";
+                txtBlockFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
             }
             else 
             {
-                passengers = actualPassangers + 10;
+                passengers = actualPassangers + 1;
                 lblPassengerCount.Content = passengers.ToString(); // update lblPassengerCount with the new number of passengers
                 txtBlockFeedback.Background = Brushes.Green;
-                txtBlockFeedback.Text = " 10 passengers have boarded the plane. ";
+                txtBlockFeedback.Text = " One passenger have boarded the plane. ";
             }
 
-            if(passengers > 40) 
+            if(passengers > 4) 
             {
                 txtBlockFeedback.Background = Brushes.Green;
                 txtBlockFeedback.Text = " The plane has enough passengers for lift of.";
             }
 
-            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content +"| + PASSENGERS##OVER";
+            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|AddPassenger##OVER";
             SendMessageToServerDontWaitOnResponse(message);
         }
 
@@ -247,22 +247,22 @@ namespace Ait.Pe04.octopus.client.wpf
             var actualPassangers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
             passengers = actualPassangers;
 
-            if(passengers < 0 || passengers < 40) 
+            if(passengers < 0 || passengers < 4) 
             {
                 txtBlockFeedback.Background = Brushes.Red;
                 txtBlockFeedback.Text = " The plane can not have less than 0 passengers.\n " +
-                                        " The plane needs at least 40 passengers to for lift off.";
-                passengers = actualPassangers - 10;
+                                        " The plane needs at least 4 passengers to for lift off.";
+                passengers = actualPassangers - 1;
             }
             else 
             {
-                passengers = actualPassangers - 10;
+                passengers = actualPassangers - 1;
                 lblPassengerCount.Content = passengers.ToString();
                 txtBlockFeedback.Background = Brushes.Green;
-                txtBlockFeedback.Text = " 10 passengers have been kicked out of the plane ";
+                txtBlockFeedback.Text = " One passenger has been kicked out of the plane ";
             }
 
-            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "| - PASSENGERS##OVER";
+            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|SubstractPassenger##OVER";
             SendMessageToServerDontWaitOnResponse(message);
         }
 
@@ -272,11 +272,11 @@ namespace Ait.Pe04.octopus.client.wpf
             var actualPassangers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
             passengers = actualPassangers;
 
-            if(passengers < 40) 
+            if(passengers < 4) 
             {
                 txtBlockFeedback.Background = Brushes.Red;
                 txtBlockFeedback.Text = " The plane does not have enough passengers for lift off.\n " +
-                                        " At least 40 passengers are required to request a lane .";
+                                        " At least 4 passengers are required to request a lane .";
             }
             else 
             {
@@ -284,7 +284,8 @@ namespace Ait.Pe04.octopus.client.wpf
                 // to be continued
             }
 
-            string message = "ID=" + lblMyID.Content + "|REQUEST LANE##OVER";
+            btnGoToLane.IsEnabled = true;
+            string message = "ID=" + lblMyID.Content + "|RequestLane##OVER";
             SendMessageToServerDontWaitOnResponse(message);
 
         }
