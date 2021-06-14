@@ -18,7 +18,7 @@ namespace Ait.Pe04.octopus.client.wpf
         {
             InitializeComponent();
         }
-
+        //string destination;
         int actualPassengers;
         int passengers;
         Socket _socket;
@@ -86,9 +86,11 @@ namespace Ait.Pe04.octopus.client.wpf
             txtActivePlane.IsEnabled = false;
             txtServerIP.IsEnabled = false;
 
+            //destination = txtDestination.Text;
             lblOnLane.Content = "0"; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
             lblPassengerCount.Content = "0"; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
             txtDestination.Text = ""; // adding .IsEnabled = false; to this TextBox when RequestLane is pressed ?
+            //destination = txtDestination.Text;
 
             // .IsEnabled is used in place of .Visibility because I think that seeing the buttons will look better than seeing a white empty space
             // can't decide until the connection between client and server can be established though
@@ -312,39 +314,48 @@ namespace Ait.Pe04.octopus.client.wpf
         private void btnRequestLane_Click(object sender, RoutedEventArgs e)
         {
             //method to request lane for the plane
-            try
-            {
-                actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
-                passengers = actualPassengers;
 
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+           var destination = Convert.ToString(txtDestination.Text);
 
-            if(passengers < 1) 
+            if (destination.Length <= 0)
             {
                 tbkFeedback.Background = Brushes.Red;
-                tbkFeedback.Text = " The plane does not have enough passengers for lift off.\n " +
-                                   " At least one passenger has to be boarded in order to request a lane .";
+                tbkFeedback.Text = "Please enter a destination.";
             }
             else 
             {
-                // Getting an available Lane
-                // awaiting response from server with an available lane ?
-                // the available lane would need to be put in lblOnLane.Content
+                try
+                {
+                    actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
+                    passengers = actualPassengers;
 
-                btnSubtractPassengers.IsEnabled = false;
-                btnAddPassengers.IsEnabled = false;
-                btnGoToLane.IsEnabled = true;
+                }
+                catch (Exception error)
+                {
+                    MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
 
-                string message = CreateMessage("|REQLANE##OVER");
-                SendMessageToServerDontWaitOnResponse(message);
+                if(passengers < 1) 
+                {
+                    tbkFeedback.Background = Brushes.Red;
+                    tbkFeedback.Text = " The plane does not have enough passengers for lift off.\n " +
+                                       " At least one passenger has to be boarded in order to request a lane .";
+                }
+                else 
+                {
+                    // Getting an available Lane
+                    // awaiting response from server with an available lane ?
+                    // the available lane would need to be put in lblOnLane.Content
+
+                    btnSubtractPassengers.IsEnabled = false;
+                    btnAddPassengers.IsEnabled = false;
+                    btnGoToLane.IsEnabled = true;
+
+                    string message = CreateMessage("|REQLANE##OVER");
+                    SendMessageToServerDontWaitOnResponse(message);
                 
+                }
             }
-
-
         }
 
         private void btnGoToLane_Click(object sender, RoutedEventArgs e)
