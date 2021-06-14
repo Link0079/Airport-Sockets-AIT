@@ -348,7 +348,8 @@ namespace Ait.Pe04.octopus.client.wpf
             btnRequestLane.IsEnabled = false;
             btnRequestLiftOff.IsEnabled = true;
             btnStartEngine.IsEnabled = true;
-            string message = "ID=" + lblMyID.Content + "|MoveToLane##OVER";
+
+            string message = $"ID = {lblMyID} |GOTOLANE##OVER";
             SendMessageToServerDontWaitOnResponse(message);
             
 
