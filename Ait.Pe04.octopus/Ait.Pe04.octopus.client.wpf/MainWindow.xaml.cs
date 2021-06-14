@@ -253,7 +253,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 tbkFeedback.Text = " A passenger has boarded the plane. ";
             }
 
-            if(passengers > 1) 
+            if(passengers >= 1) 
             {
                 tbkFeedback.Background = Brushes.Green;
                 tbkFeedback.Text = tbkFeedback.Text + 
@@ -287,6 +287,13 @@ namespace Ait.Pe04.octopus.client.wpf
                 tbkFeedback.Background = Brushes.Red;
                 tbkFeedback.Text = " The plane can not have less than 0 passengers.\n " +
                                         " The plane needs at least 1 passenger to for lift off.";
+                passengers = actualPassengers - 1;
+            }
+
+            if (passengers <= 1)
+            {
+                tbkFeedback.Background = Brushes.Red;
+                tbkFeedback.Text = " The plane needs at least 1 passenger to for lift off."; 
                 passengers = actualPassengers - 1;
             }
             else 
@@ -345,7 +352,7 @@ namespace Ait.Pe04.octopus.client.wpf
             //method for the plane to taxi to lane or land on the lane
 
             //lblOnLane.Content ="";
-            string source = lstInResponse.SelectedItem.ToString();
+            string source = lstInResponse.SelectedIndex.ToString();
             // empty strings have to be replaced with the response strings
             string lane = GetLaneString(source, "", "");
             lblOnLane.Content = lane;
@@ -365,7 +372,9 @@ namespace Ait.Pe04.octopus.client.wpf
         {
             //method for plane to request permission for takeoff
 
-
+            btnRequestLiftOff.IsEnabled = false;
+            btnRequestLanding.IsEnabled = true;
+            btnSOS.IsEnabled = true;
             string message = CreateMessage("|REQLIFT##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
@@ -376,7 +385,7 @@ namespace Ait.Pe04.octopus.client.wpf
         {
             //method for plane to put request for landing
 
-            btnRequestLiftOff.IsEnabled = false;
+            btnRequestLanding.IsEnabled = false;
             btnStopEngine.IsEnabled = true;
 
             string message = CreateMessage("|REQLAND##OVER");
@@ -400,7 +409,7 @@ namespace Ait.Pe04.octopus.client.wpf
             //method for plane to stop the engine after landing
 
             btnStopEngine.IsEnabled = false;
-            btnStartEngine.IsEnabled = true;
+            //btnStartEngine.IsEnabled = true;
 
             string message = CreateMessage("|STOPENG##OVER");
             SendMessageToServerDontWaitOnResponse(message);
@@ -413,6 +422,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             tbkFeedback.Background = Brushes.DarkRed;
             tbkFeedback.Text = " Plane entered the Bermuda Triangle";
+            btnSOS.IsEnabled = false;
             string message = CreateMessage("|SOS##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
