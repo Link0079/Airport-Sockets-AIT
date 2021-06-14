@@ -235,7 +235,7 @@ namespace Ait.Pe04.octopus.client.wpf
             //    txtBlockFeedback.Text = " 10 passengers have boarded the planne ";
             //}
 
-            if (passengers> 10)  // check to see if plane there is more place on the plane
+            if (passengers> 9)  // check to see if plane there is more place on the plane
             {
                 tbkFeedback.Background = Brushes.Red;
                 tbkFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
@@ -245,10 +245,10 @@ namespace Ait.Pe04.octopus.client.wpf
                 passengers = actualPassengers + 1;
                 lblPassengerCount.Content = passengers.ToString(); // update lblPassengerCount with the new number of passengers
                 tbkFeedback.Background = Brushes.Green;
-                tbkFeedback.Text = " One passenger have boarded the plane. ";
+                tbkFeedback.Text = " A passenger has boarded the plane. ";
             }
 
-            if(passengers > 4) 
+            if(passengers > 1) 
             {
                 tbkFeedback.Background = Brushes.Green;
                 tbkFeedback.Text = " The plane has enough passengers for lift of.";
@@ -275,11 +275,11 @@ namespace Ait.Pe04.octopus.client.wpf
                 MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            if (passengers < 0 || passengers < 4) 
+            if (passengers < 0 || passengers < 1) 
             {
                 tbkFeedback.Background = Brushes.Red;
                 tbkFeedback.Text = " The plane can not have less than 0 passengers.\n " +
-                                        " The plane needs at least 4 passengers to for lift off.";
+                                        " The plane needs at least 1 passenger to for lift off.";
                 passengers = actualPassengers - 1;
             }
             else 
