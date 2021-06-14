@@ -260,7 +260,7 @@ namespace Ait.Pe04.octopus.client.wpf
             }
 
             //string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|ADDPASS##OVER";
-            string message = $"ID = {lblMyID.Content} |ADDPASS##OVER";
+            string message = CreateMessage("|ADDPASS##OVER");          
             SendMessageToServerDontWaitOnResponse(message);
             
         }
@@ -296,7 +296,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 tbkFeedback.Text = " One passenger has been kicked out of the plane ";
             }
 
-            string message = $"ID = {lblMyID.Content} |SUBSPASS##OVER";
+            string message = CreateMessage("|SUBSPASS##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
         }
@@ -331,7 +331,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 btnAddPassengers.IsEnabled = false;
                 btnGoToLane.IsEnabled = true;
 
-                string message = $"ID = {lblMyID.Content} |REQLANE##OVER";
+                string message = CreateMessage("|REQLANE##OVER");
                 SendMessageToServerDontWaitOnResponse(message);
                 
             }
@@ -354,7 +354,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnRequestLiftOff.IsEnabled = true;
             btnStartEngine.IsEnabled = true;
 
-            string message = $"ID = {lblMyID.Content} |GOTOLANE##OVER";
+            string message = CreateMessage("|GOTOLANE##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
 
@@ -365,7 +365,7 @@ namespace Ait.Pe04.octopus.client.wpf
             //method for plane to request permission for takeoff
 
 
-            string message = $"ID = {lblMyID.Content} |REQLIFT##OVER";
+            string message = CreateMessage("|REQLIFT##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
 
@@ -377,7 +377,8 @@ namespace Ait.Pe04.octopus.client.wpf
 
             btnRequestLiftOff.IsEnabled = false;
             btnStopEngine.IsEnabled = true;
-            string message = $"ID = {lblMyID.Content} |REQLAND##OVER";
+
+            string message = CreateMessage("|REQLAND##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
         }
@@ -388,7 +389,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             btnStartEngine.IsEnabled = false;
 
-            string message = $"ID = {lblMyID.Content} |STARTENG##OVER";
+            string message = CreateMessage("|STARTENG##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
         }
@@ -400,7 +401,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnStopEngine.IsEnabled = false;
             btnStartEngine.IsEnabled = true;
 
-            string message = $"ID = {lblMyID.Content} |STOPENG##OVER";
+            string message = CreateMessage("|STOPENG##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
         }
@@ -411,7 +412,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             tbkFeedback.Background = Brushes.DarkRed;
             tbkFeedback.Text = " Plane entered the Bermuda Triangle";
-            string message = $"ID = {lblMyID.Content} |SOS##OVER";
+            string message = CreateMessage("|SOS##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
         }
