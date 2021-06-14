@@ -86,8 +86,8 @@ namespace Ait.Pe04.octopus.client.wpf
             txtActivePlane.IsEnabled = false;
             txtServerIP.IsEnabled = false;
 
-            lblOnLane.Content = ""; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
-            lblPassengerCount.Content = ""; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
+            lblOnLane.Content = "0"; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
+            lblPassengerCount.Content = "0"; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
             txtDestination.Text = ""; // adding .IsEnabled = false; to this TextBox when RequestLane is pressed ?
 
             // .IsEnabled is used in place of .Visibility because I think that seeing the buttons will look better than seeing a white empty space
@@ -98,7 +98,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnGoToLane.IsEnabled = false; //will be enabled after RequestLane button is pressed; then RequestLane becomes disabled
             btnRequestLiftOff.IsEnabled = false; // will be enabled after the plane goes on a lane (using btnGoToLane)
             btnRequestLanding.IsEnabled = false; // will be enabled when the plane is in flight ?
-            btnStartEngine.IsEnabled = true;
+            btnStartEngine.IsEnabled = false;
             btnStopEngine.IsEnabled = false; // will be enabled when btnStartEngine is clicked; then btnStartEngine.IsEnabled = false
             btnSOS.IsEnabled = false; // will be enabled when enabled when plane is in flight ?
             tbkFeedback.IsEnabled = false; // Only to show feedback
@@ -169,7 +169,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     _socket.Close();
                     _socket = null;
                 }
-            }
+            } 
 
         }
 
@@ -256,7 +256,8 @@ namespace Ait.Pe04.octopus.client.wpf
             if(passengers > 1) 
             {
                 tbkFeedback.Background = Brushes.Green;
-                tbkFeedback.Text = " The plane has enough passengers for lift of.";
+                tbkFeedback.Text = tbkFeedback.Text + 
+                    " The plane has enough passengers for lift of.";
             }
 
             //string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|ADDPASS##OVER";
