@@ -254,7 +254,8 @@ namespace Ait.Pe04.octopus.client.wpf
                 tbkFeedback.Text = " The plane has enough passengers for lift of.";
             }
 
-            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|AddPassenger##OVER";
+            //string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|ADDPASS##OVER";
+            string message = $"ID= {lblMyID} |ADDPASS##OVER";
             SendMessageToServerDontWaitOnResponse(message);
             
         }
