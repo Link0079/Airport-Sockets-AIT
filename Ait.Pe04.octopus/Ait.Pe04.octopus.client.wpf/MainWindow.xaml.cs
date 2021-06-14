@@ -375,7 +375,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnStartEngine.IsEnabled = true;
 
             tbkFeedback.Background = Brushes.Yellow;
-            tbkFeedback.Text = " Moving to the lane. \n"+
+            tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} is moving to lane {lblOnLane.Content}. \n"+
                                "Preparing for take off.";
 
             string message = CreateMessage("|GOTOLANE##OVER");
