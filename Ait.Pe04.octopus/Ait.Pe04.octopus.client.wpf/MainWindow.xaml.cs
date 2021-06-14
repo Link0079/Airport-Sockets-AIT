@@ -319,7 +319,7 @@ namespace Ait.Pe04.octopus.client.wpf
             {
                 tbkFeedback.Background = Brushes.Red;
                 tbkFeedback.Text = " The plane does not have enough passengers for lift off.\n " +
-                                   " At least one passenger is has to be boarded in order to request a lane .";
+                                   " At least one passenger has to be boarded in order to request a lane .";
             }
             else 
             {
