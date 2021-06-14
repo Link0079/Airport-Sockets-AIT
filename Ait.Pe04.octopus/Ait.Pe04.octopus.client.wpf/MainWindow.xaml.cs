@@ -310,11 +310,11 @@ namespace Ait.Pe04.octopus.client.wpf
                 MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            if(passengers < 4) 
+            if(passengers < 1) 
             {
                 tbkFeedback.Background = Brushes.Red;
                 tbkFeedback.Text = " The plane does not have enough passengers for lift off.\n " +
-                                        " At least 4 passengers are required to request a lane .";
+                                   " At least one passenger is has to be boarded in order to request a lane .";
             }
             else 
             {
@@ -325,7 +325,8 @@ namespace Ait.Pe04.octopus.client.wpf
                 btnSubtractPassengers.IsEnabled = false;
                 btnAddPassengers.IsEnabled = false;
                 btnGoToLane.IsEnabled = true;
-                string message = "ID=" + lblMyID.Content + "|RequestLane##OVER";
+
+                string message = $"ID = {lblMyID} |REQLANE##OVER";
                 SendMessageToServerDontWaitOnResponse(message);
                 
             }
