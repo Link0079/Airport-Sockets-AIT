@@ -394,8 +394,8 @@ namespace Ait.Pe04.octopus.client.wpf
 
             btnStopEngine.IsEnabled = false;
             btnStartEngine.IsEnabled = true;
-   
-            string message = "ID=" + lblMyID.Content + "|StopEngine##OVER";
+
+            string message = $"ID = {lblMyID} |STOPENG##OVER";
             SendMessageToServerDontWaitOnResponse(message);
             
         }
