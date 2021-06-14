@@ -244,11 +244,14 @@ namespace Ait.Pe04.octopus.client.wpf
 
             if (passengers> 9)  // check to see if plane there is more place on the plane
             {
+                btnSubtractPassengers.IsEnabled = true;
+                btnAddPassengers.IsEnabled = false;
                 tbkFeedback.Background = Brushes.Red;
                 tbkFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
             }
             else 
             {
+                btnSubtractPassengers.IsEnabled = true;
                 passengers = actualPassengers + 1;
                 lblPassengerCount.Content = passengers.ToString(); // update lblPassengerCount with the new number of passengers
                 tbkFeedback.Background = Brushes.Green;
@@ -284,26 +287,21 @@ namespace Ait.Pe04.octopus.client.wpf
                 MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            if (passengers < 0 || passengers < 1) 
+            if (passengers <= 0)
             {
-                tbkFeedback.Background = Brushes.Red;
-                tbkFeedback.Text = " The plane can not have less than 0 passengers.\n " +
-                                        " The plane needs at least 1 passenger to for lift off.";
-                passengers = actualPassengers - 1;
-            }
-
-            if (passengers <= 1)
-            {
+                btnSubtractPassengers.IsEnabled = false;
+                btnAddPassengers.IsEnabled = true;
                 tbkFeedback.Background = Brushes.Red;
                 tbkFeedback.Text = " The plane needs at least 1 passenger to for lift off."; 
                 passengers = actualPassengers - 1;
             }
             else 
             {
+                btnAddPassengers.IsEnabled = true;
                 passengers = actualPassengers - 1;
                 lblPassengerCount.Content = passengers.ToString();
                 tbkFeedback.Background = Brushes.Green;
-                tbkFeedback.Text = " One passenger has been kicked out of the plane ";
+                tbkFeedback.Text = " One passenger has been kicked out of the plane. ";
             }
 
             string message = CreateMessage("|SUBSPASS##OVER");
@@ -351,7 +349,8 @@ namespace Ait.Pe04.octopus.client.wpf
                     btnAddPassengers.IsEnabled = false;
                     btnGoToLane.IsEnabled = true;
                     tbkFeedback.Background = Brushes.Yellow;
-                    tbkFeedback.Text = " Lane has been requested ";
+                    tbkFeedback.Text = 
+                        $" A lane for plane {txtActivePlane.Text} with {actualPassengers} passenger(s) and destination {destination} has been requested.";
 
                     string message = CreateMessage("|REQLANE##OVER");
                     SendMessageToServerDontWaitOnResponse(message);
