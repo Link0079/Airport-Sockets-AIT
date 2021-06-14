@@ -383,7 +383,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             btnStartEngine.IsEnabled = false;
 
-            string message = "ID=" + lblMyID.Content + "|StartEngine##OVER";
+            string message = $"ID = {lblMyID} |STARTENG##OVER";
             SendMessageToServerDontWaitOnResponse(message);
             
         }
