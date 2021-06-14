@@ -438,6 +438,10 @@ namespace Ait.Pe04.octopus.client.wpf
             btnStopEngine.IsEnabled = false;
             //btnStartEngine.IsEnabled = true;
 
+            tbkFeedback.Background = Brushes.Green;
+            tbkFeedback.Text = $" Plane {txtActivePlane.Text} with {lblPassengerCount.Content} passengers \n" +
+                               " stopped its engine. \n" +
+                               $" Welcome to {txtDestination.Text} ! ";
             string message = CreateMessage("|STOPENG##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
@@ -448,7 +452,7 @@ namespace Ait.Pe04.octopus.client.wpf
             //method for plane to request help in case of emergency
 
             tbkFeedback.Background = Brushes.DarkRed;
-            tbkFeedback.Text = " Plane entered the Bermuda Triangle";
+            tbkFeedback.Text = " Plane entered the Bermuda Triangle.";
             btnSOS.IsEnabled = false;
             string message = CreateMessage("|SOS##OVER");
             SendMessageToServerDontWaitOnResponse(message);
