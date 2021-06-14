@@ -179,6 +179,11 @@ namespace Ait.Pe04.octopus.client.wpf
         //    message.Replace("##OVER", "").Trim();
         //}
 
+        private string CreateMessage(string overMessage) 
+        {
+            return$"ID = {lblMyID.Content} {overMessage}";
+        }
+
         private static string GetLaneString(string stringSource, string stringStart, string StringEnd) 
         {
             if(stringSource.Contains(stringStart) && stringSource.Contains(StringEnd))
