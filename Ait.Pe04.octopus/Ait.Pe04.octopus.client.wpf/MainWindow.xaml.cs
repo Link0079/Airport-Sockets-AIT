@@ -372,7 +372,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             btnRequestLiftOff.IsEnabled = false;
             btnStopEngine.IsEnabled = true;
-            string message = "ID=" + lblMyID.Content + "|RequestLanding##OVER";
+            string message = $"ID = {lblMyID} |REQLAND##OVER";
             SendMessageToServerDontWaitOnResponse(message);
             
         }
