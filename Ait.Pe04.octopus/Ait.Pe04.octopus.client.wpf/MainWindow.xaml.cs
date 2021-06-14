@@ -255,7 +255,7 @@ namespace Ait.Pe04.octopus.client.wpf
             }
 
             //string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|ADDPASS##OVER";
-            string message = $"ID= {lblMyID} |ADDPASS##OVER";
+            string message = $"ID = {lblMyID} |ADDPASS##OVER";
             SendMessageToServerDontWaitOnResponse(message);
             
         }
@@ -291,7 +291,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 tbkFeedback.Text = " One passenger has been kicked out of the plane ";
             }
 
-            string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|SubstractPassenger##OVER";
+            string message = $"ID = {lblMyID} |SUBSPASS##OVER";
             SendMessageToServerDontWaitOnResponse(message);
             
         }
