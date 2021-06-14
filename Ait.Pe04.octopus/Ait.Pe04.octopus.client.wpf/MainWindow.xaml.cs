@@ -421,6 +421,11 @@ namespace Ait.Pe04.octopus.client.wpf
 
             btnStartEngine.IsEnabled = false;
 
+            tbkFeedback.Background = Brushes.Green ;
+            tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} \n" +
+                                $" on lane {lblOnLane.Content} started its engine. \n" +
+                               "Ready for lift off.";
+
             string message = CreateMessage("|STARTENG##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
