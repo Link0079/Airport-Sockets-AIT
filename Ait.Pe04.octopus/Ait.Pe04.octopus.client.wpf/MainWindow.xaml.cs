@@ -350,7 +350,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     btnSubtractPassengers.IsEnabled = false;
                     btnAddPassengers.IsEnabled = false;
                     btnGoToLane.IsEnabled = true;
-                    tbkFeedback.Background = Brushes.Red;
+                    tbkFeedback.Background = Brushes.Yellow;
                     tbkFeedback.Text = " Lane has been requested ";
 
                     string message = CreateMessage("|REQLANE##OVER");
@@ -374,6 +374,10 @@ namespace Ait.Pe04.octopus.client.wpf
             btnRequestLane.IsEnabled = false;
             btnRequestLiftOff.IsEnabled = true;
             btnStartEngine.IsEnabled = true;
+
+            tbkFeedback.Background = Brushes.Yellow;
+            tbkFeedback.Text = " Moving to the lane. \n"+
+                               "Preparing for take off.";
 
             string message = CreateMessage("|GOTOLANE##OVER");
             SendMessageToServerDontWaitOnResponse(message);
