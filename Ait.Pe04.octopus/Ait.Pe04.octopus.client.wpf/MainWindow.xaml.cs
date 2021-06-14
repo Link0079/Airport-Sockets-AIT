@@ -1,20 +1,11 @@
 ﻿using Ait.Pe04.Octopus.Core.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Ait.Pe04.octopus.client.wpf
 {
@@ -336,10 +327,6 @@ namespace Ait.Pe04.octopus.client.wpf
                 string message = "ID=" + lblMyID.Content + "|RequestLane##OVER";
                 SendMessageToServerDontWaitOnResponse(message);
                 
-                string source = lstInResponse.SelectedItem.ToString();
-                // empty strings have to be replaced with the response strings
-                string lane = GetLaneString(source, "", "");
-                lblOnLane.Content = lane;
             }
 
 
@@ -350,6 +337,10 @@ namespace Ait.Pe04.octopus.client.wpf
             //method for the plane to taxi to lane or land on the lane
 
             //lblOnLane.Content ="";
+            string source = lstInResponse.SelectedItem.ToString();
+            // empty strings have to be replaced with the response strings
+            string lane = GetLaneString(source, "", "");
+            lblOnLane.Content = lane;
 
             btnGoToLane.IsEnabled = false;
             btnRequestLane.IsEnabled = false;
