@@ -182,12 +182,11 @@ namespace Ait.Pe04.octopus.client.wpf
 
         }
 
-        private string TrimMessageAndSendToList(string message) 
-        {
-            lstOutRequest.Items.Insert(0, message);
-            message = message.Replace("##OVER", "").Trim();
-            return message;
-        }
+        //private void TrimMessageAndSendToList(string message) 
+        //{
+        //    lstOutRequest.Items.Insert(0, message);
+        //    message.Replace("##OVER", "").Trim();
+        //}
 
         private static string GetLaneString(string stringSource, string stringStart, string StringEnd) 
         {
@@ -266,7 +265,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|AddPassenger##OVER";
             SendMessageToServerDontWaitOnResponse(message);
-            TrimMessageAndSendToList(message);
+            
         }
 
         private void btnSubtractPassengers_Click(object sender, RoutedEventArgs e)
@@ -302,7 +301,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|SubstractPassenger##OVER";
             SendMessageToServerDontWaitOnResponse(message);
-            TrimMessageAndSendToList(message);
+            
         }
 
         private void btnRequestLane_Click(object sender, RoutedEventArgs e)
@@ -336,7 +335,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 btnGoToLane.IsEnabled = true;
                 string message = "ID=" + lblMyID.Content + "|RequestLane##OVER";
                 SendMessageToServerDontWaitOnResponse(message);
-                TrimMessageAndSendToList(message);
+                
                 string source = lstInResponse.SelectedItem.ToString();
                 // empty strings have to be replaced with the response strings
                 string lane = GetLaneString(source, "", "");
@@ -358,7 +357,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnStartEngine.IsEnabled = true;
             string message = "ID=" + lblMyID.Content + "|MoveToLane##OVER";
             SendMessageToServerDontWaitOnResponse(message);
-            TrimMessageAndSendToList(message);
+            
 
         }
 
@@ -370,7 +369,7 @@ namespace Ait.Pe04.octopus.client.wpf
             
             string message = "ID=" + lblMyID.Content + "|RequestLiftOff##OVER";
             SendMessageToServerDontWaitOnResponse(message);
-            TrimMessageAndSendToList(message);
+            
 
         }
 
@@ -382,7 +381,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnStopEngine.IsEnabled = true;
             string message = "ID=" + lblMyID.Content + "|RequestLanding##OVER";
             SendMessageToServerDontWaitOnResponse(message);
-            TrimMessageAndSendToList(message);
+            
         }
 
         private void btnStartEngine_Click(object sender, RoutedEventArgs e)
@@ -393,7 +392,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             string message = "ID=" + lblMyID.Content + "|StartEngine##OVER";
             SendMessageToServerDontWaitOnResponse(message);
-            TrimMessageAndSendToList(message);
+            
         }
 
         private void btnStopEngine_Click(object sender, RoutedEventArgs e)
@@ -405,7 +404,7 @@ namespace Ait.Pe04.octopus.client.wpf
    
             string message = "ID=" + lblMyID.Content + "|StopEngine##OVER";
             SendMessageToServerDontWaitOnResponse(message);
-            TrimMessageAndSendToList(message);
+            
         }
 
         private void btnSOS_Click(object sender, RoutedEventArgs e)
@@ -416,7 +415,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Text = " Plane entered the Bermuda Triangle"; 
             string message = "ID=" + lblMyID.Content + "|SOS##OVER";
             SendMessageToServerDontWaitOnResponse(message);
-            TrimMessageAndSendToList(message);
+            
         }
     }
 }
