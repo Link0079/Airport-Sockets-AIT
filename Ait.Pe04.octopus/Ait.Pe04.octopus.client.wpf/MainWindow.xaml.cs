@@ -358,10 +358,9 @@ namespace Ait.Pe04.octopus.client.wpf
         private void btnRequestLiftOff_Click(object sender, RoutedEventArgs e)
         {
             //method for plane to request permission for takeoff
-            
-            
-            
-            string message = "ID=" + lblMyID.Content + "|RequestLiftOff##OVER";
+
+
+            string message = $"ID = {lblMyID} |REQLIFT##OVER";
             SendMessageToServerDontWaitOnResponse(message);
             
 
