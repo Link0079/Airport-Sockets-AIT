@@ -350,6 +350,8 @@ namespace Ait.Pe04.octopus.client.wpf
                     btnSubtractPassengers.IsEnabled = false;
                     btnAddPassengers.IsEnabled = false;
                     btnGoToLane.IsEnabled = true;
+                    tbkFeedback.Background = Brushes.Red;
+                    tbkFeedback.Text = " Lane has been requested ";
 
                     string message = CreateMessage("|REQLANE##OVER");
                     SendMessageToServerDontWaitOnResponse(message);
