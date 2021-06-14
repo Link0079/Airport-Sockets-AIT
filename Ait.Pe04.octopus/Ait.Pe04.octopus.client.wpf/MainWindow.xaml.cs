@@ -391,9 +391,9 @@ namespace Ait.Pe04.octopus.client.wpf
             btnRequestLiftOff.IsEnabled = false;
             btnRequestLanding.IsEnabled = true;
             btnSOS.IsEnabled = true;
-            tbkFeedback.Background = Brushes.AliceBlue;
+            tbkFeedback.Background = Brushes.LightBlue;
             tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} requested lift of. \n" +
-                               "Awaiting confirmation.";
+                               "Clear skies ahead.";
             string message = CreateMessage("|REQLIFT##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
@@ -406,6 +406,9 @@ namespace Ait.Pe04.octopus.client.wpf
 
             btnRequestLanding.IsEnabled = false;
             btnStopEngine.IsEnabled = true;
+            tbkFeedback.Background = Brushes.LightBlue;
+            tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} requested landing. \n" +
+                               "Preparing for descent.";
 
             string message = CreateMessage("|REQLAND##OVER");
             SendMessageToServerDontWaitOnResponse(message);
