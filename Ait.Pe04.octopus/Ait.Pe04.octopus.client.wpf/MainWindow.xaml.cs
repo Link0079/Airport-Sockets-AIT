@@ -391,6 +391,9 @@ namespace Ait.Pe04.octopus.client.wpf
             btnRequestLiftOff.IsEnabled = false;
             btnRequestLanding.IsEnabled = true;
             btnSOS.IsEnabled = true;
+            tbkFeedback.Background = Brushes.AliceBlue;
+            tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} requested lift of. \n" +
+                               "Awaiting confirmation.";
             string message = CreateMessage("|REQLIFT##OVER");
             SendMessageToServerDontWaitOnResponse(message);
             
