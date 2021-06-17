@@ -295,7 +295,7 @@ namespace Ait.Pe04.Octopus.server.wpf
             else if (command[2] == "ID" && command[1] == "SOS")
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
-                return "test SOS";
+                return "testSOS";
             }
             else 
             {

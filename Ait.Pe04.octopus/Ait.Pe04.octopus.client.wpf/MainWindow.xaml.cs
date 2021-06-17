@@ -455,7 +455,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Text = " Plane entered the Bermuda Triangle.";
             btnSOS.IsEnabled = false;
             string message = CreateMessage("|SOS##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
         }
     }
