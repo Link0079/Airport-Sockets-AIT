@@ -13,19 +13,16 @@ namespace Ait.Pe04.Octopus.Core.Entities
         public bool IsEngineActive { get; private set; }
         public bool InFlight { get; private set; }
         public bool IsOnLane { get; private set; }
-        //public bool InEmergency { get; private set; }
-        //public Lane Lane { get; private set; }
+        //I put a Plane property in Lane, so a Plane is assigned to the Lane
         public Plane(string name)
         {
             Name = name;
-            MaxPassengers = 10;             // Consider setting through parameters..
+            MaxPassengers = 10;             
             TotalPassengers = 0;
             Destination = "";
             InFlight = false;
             IsEngineActive = false;
             IsOnLane = false;
-            //InEmergency = false;
-            //Lane = null;                  // Not sure of the Lane part
         }
         public void AddPassenger()
         {
@@ -55,18 +52,7 @@ namespace Ait.Pe04.Octopus.Core.Entities
         {
             IsEngineActive = isActive;
         }
-        //public void GoToLane(Lane lane)           // Methode for the Lane part
-        //{
-        //    IsOnLane = true;
-        //    lane.OccupyLane();
-        //    Lane = lane;
-        //}
-        //public void LeaveLane(Lane lane)
-        //{
-        //    IsOnLane = false;
-        //    lane.LeaveLane();
-        //    Lane = null;
-        //}
+
         //public void CallSOS()
         //{
         //    InEmergency = true;
