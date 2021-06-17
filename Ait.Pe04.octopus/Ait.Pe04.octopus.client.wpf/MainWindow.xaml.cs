@@ -61,6 +61,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnConnectToServer.Visibility = Visibility.Visible;
             btnDisconnectFromServer.Visibility = Visibility.Hidden;
             grpActivePlane.Visibility = Visibility.Hidden;
+            txtDestination.IsEnabled = false;
         }
 
         private void ContactServer()
@@ -72,7 +73,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             _serverEndPoint = new IPEndPoint(serverIP, serverPort);
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            string message = "IDENTIFICATION=" + activePlane + "##OVER";
+            string message = "IDENTIFICATION=" + activePlane + ";##OVER";
             SendMessageToServerWaitOnResponse(message);
         }
 
@@ -112,7 +113,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
         private void btnDisconnectFromServer_Click(object sender, RoutedEventArgs e)
         {
-            string message = "ID=" + lblMyID.Content + "|BYEBYE##OVER";
+            string message = "ID=" + lblMyID.Content + "BYEBYE##OVER";
             SendMessageToServerDontWaitOnResponse(message);
 
             btnConnectToServer.Visibility = Visibility.Visible;
@@ -186,7 +187,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
         private string CreateMessage(string overMessage) 
         {
-            return$"ID = {lblMyID.Content} {overMessage}";
+            return$"ID={lblMyID.Content};{overMessage}";
         }
 
         private static string GetLaneString(string stringSource, string stringStart, string StringEnd) 
@@ -269,7 +270,7 @@ namespace Ait.Pe04.octopus.client.wpf
             }
 
             //string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|ADDPASS##OVER";
-            string message = CreateMessage("|ADDPASS##OVER");
+            string message = CreateMessage("ADDPASS##OVER");
             SendMessageToServerWaitOnResponse(message);
             
         }
@@ -307,7 +308,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 tbkFeedback.Text = " One passenger has been kicked out of the plane. ";
             }
 
-            string message = CreateMessage("|SUBSPASS##OVER");
+            string message = CreateMessage("SUBSPASS##OVER");
             SendMessageToServerWaitOnResponse(message);
             
         }
@@ -355,7 +356,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     tbkFeedback.Text = 
                         $" A lane for plane {txtActivePlane.Text} with {actualPassengers} passenger(s) and destination {destination} has been requested.";
 
-                    string message = CreateMessage("|REQLANE##OVER");
+                    string message = CreateMessage("REQLANE##OVER");
                     SendMessageToServerWaitOnResponse(message);
                 
                 }
@@ -381,7 +382,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} is moving to lane {lblOnLane.Content}. \n"+
                                "Preparing for take off.";
 
-            string message = CreateMessage("|GOTOLANE##OVER");
+            string message = CreateMessage("GOTOLANE##OVER");
             SendMessageToServerWaitOnResponse(message);
             
 
@@ -397,7 +398,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Background = Brushes.LightBlue;
             tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} requested lift of. \n" +
                                "Clear skies ahead.";
-            string message = CreateMessage("|REQLIFT##OVER");
+            string message = CreateMessage("REQLIFT##OVER");
             SendMessageToServerWaitOnResponse(message);
             
 
@@ -413,7 +414,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} requested landing. \n" +
                                "Preparing for descent.";
 
-            string message = CreateMessage("|REQLAND##OVER");
+            string message = CreateMessage("REQLAND##OVER");
             SendMessageToServerWaitOnResponse(message);
             
         }
@@ -429,7 +430,7 @@ namespace Ait.Pe04.octopus.client.wpf
                                 $" on lane {lblOnLane.Content} started its engine. \n" +
                                "Ready for lift off.";
 
-            string message = CreateMessage("|STARTENG##OVER");
+            string message = CreateMessage("STARTENG##OVER");
             SendMessageToServerWaitOnResponse(message);
             
         }
@@ -445,7 +446,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Text = $" Plane {txtActivePlane.Text} with {lblPassengerCount.Content} passengers \n" +
                                " stopped its engine. \n" +
                                $" Welcome to {txtDestination.Text} ! ";
-            string message = CreateMessage("|STOPENG##OVER");
+            string message = CreateMessage("STOPENG##OVER");
             SendMessageToServerWaitOnResponse(message);
             
         }
@@ -460,7 +461,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnRequestLanding.IsEnabled = false;
             btnStartEngine.IsEnabled = false;
             btnStopEngine.IsEnabled = false;
-            string message = CreateMessage("|SOS##OVER");
+            string message = CreateMessage("SOS##OVER");
             SendMessageToServerWaitOnResponse(message);
             
         }
