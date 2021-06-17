@@ -281,6 +281,11 @@ namespace Ait.Pe04.Octopus.server.wpf
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "testREQLAND";
+            } // Start plane engine
+            else if (command[2] == "ID" && command[1] == "STARTENG")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testSTARTENG";
             }
             else 
             {

@@ -427,7 +427,7 @@ namespace Ait.Pe04.octopus.client.wpf
                                "Ready for lift off.";
 
             string message = CreateMessage("|STARTENG##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
         }
 
