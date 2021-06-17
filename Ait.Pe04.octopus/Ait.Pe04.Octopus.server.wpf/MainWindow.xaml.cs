@@ -1,4 +1,6 @@
-﻿using Ait.Pe04.Octopus.Core.Helpers;
+﻿using Ait.Pe04.Octopus.Core.Entities;
+using Ait.Pe04.Octopus.Core.Helpers;
+using Ait.Pe04.Octopus.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,21 @@ namespace Ait.Pe04.Octopus.server.wpf
         Socket _socket;
         bool _serverOnline;
         int _maxConnections = 10;
+        PlaneService _planeService = new PlaneService();
+
+        List<string> _destinations = new List<string>()
+        {
+            "LHR", //London Heathrow Airport
+            "AMS", //Amsterdam Airport
+            "MUC", //Munich International Airport 
+            "VIE", //Vienna Airport
+            "DUB", //Dublin Airport
+            "CDG", //Paris Charles de Gaulle Airport
+            "FCO", //Rome Fiumicino Airport
+            "BCN", //Barcelona Airport 
+            "BRU", //Brussels Airport
+            "GVA"  //Geneva Airport
+        };
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -176,7 +193,7 @@ namespace Ait.Pe04.Octopus.server.wpf
                 {
                     data.Insert(0, trimmedInstruction.Split("=")[0]);
                     data.Insert(1, trimmedInstruction.Split("=")[1]);
-                
+                    
                 
                 }
                 else
@@ -249,7 +266,11 @@ namespace Ait.Pe04.Octopus.server.wpf
             if (command[0] == "IDENTIFICATION")
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
-                return "test";
+                var destination = GetRandomDestination();
+                Plane plane = new Plane("test");
+                plane.SetDestination(destination);
+                _planeService.AddPlane(plane);
+                return destination;
             } //Add a passenger
             // Again, we end up with 4 objects in data/command; it looks messy but it works
             else if(command[2] == "ID" && command[1] == "ADDPASS") 
@@ -308,6 +329,13 @@ namespace Ait.Pe04.Octopus.server.wpf
             //    InsertMessage(lstOutResponse, "UNKNOWN INSTRUCTION");
             //    return "UNKNOWN INSTRUCTION";
             //}
+        }
+
+        private string GetRandomDestination()
+        {
+            Random rng = new Random();
+            var index = rng.Next(0, 10);
+            return _destinations[index];
         }
     }
 }
