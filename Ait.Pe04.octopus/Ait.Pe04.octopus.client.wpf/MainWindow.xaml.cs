@@ -245,28 +245,28 @@ namespace Ait.Pe04.octopus.client.wpf
             //    txtBlockFeedback.Text = " 10 passengers have boarded the planne ";
             //}
 
-            if (passengers> 9)  // check to see if plane there is more place on the plane
-            {
-                btnSubtractPassengers.IsEnabled = true;
-                btnAddPassengers.IsEnabled = false;
-                tbkFeedback.Background = Brushes.Red;
-                tbkFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
-            }
-            else 
-            {
-                btnSubtractPassengers.IsEnabled = true;
-                passengers = actualPassengers + 1;
-                lblPassengerCount.Content = passengers.ToString(); // update lblPassengerCount with the new number of passengers
-                tbkFeedback.Background = Brushes.Green;
-                tbkFeedback.Text = " A passenger has boarded the plane. ";
-            }
+            //if (passengers> 9)  // check to see if plane there is more place on the plane
+            //{
+            //    btnSubtractPassengers.IsEnabled = true;
+            //    btnAddPassengers.IsEnabled = false;
+            //    tbkFeedback.Background = Brushes.Red;
+            //    tbkFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
+            //}
+            //else 
+            //{
+            //    btnSubtractPassengers.IsEnabled = true;
+            //    passengers = actualPassengers + 1;
+            //    lblPassengerCount.Content = passengers.ToString(); // update lblPassengerCount with the new number of passengers
+            //    tbkFeedback.Background = Brushes.Green;
+            //    tbkFeedback.Text = " A passenger has boarded the plane. ";
+            //}
 
-            if(passengers >= 1) 
-            {
-                tbkFeedback.Background = Brushes.Green;
-                tbkFeedback.Text = tbkFeedback.Text + 
-                    " The plane has enough passengers for lift of.";
-            }
+            //if(passengers >= 1) 
+            //{
+            //    tbkFeedback.Background = Brushes.Green;
+            //    tbkFeedback.Text = tbkFeedback.Text + 
+            //        " The plane has enough passengers for lift of.";
+            //}
 
             //string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|ADDPASS##OVER";
             string message = CreateMessage("ADDPASS##OVER");
@@ -484,6 +484,31 @@ namespace Ait.Pe04.octopus.client.wpf
                 else if(command[0] == "IDNUMBER")
                 {
                     lblMyID.Content = command[1];
+                }
+
+                else if(command[1].Contains("ADDPASS"))
+                { 
+                    actualPassengers = Convert.ToInt32(lblPassengerCount.Content);
+                    actualPassengers++;
+
+                    lblPassengerCount.Content = actualPassengers.ToString(); // update lblPassengerCount with the new number of passengers
+                    tbkFeedback.Background = Brushes.Green;
+                    tbkFeedback.Text = " A passenger has boarded the plane. ";
+
+                    if (actualPassengers >= 1)
+                    {
+                        btnSubtractPassengers.IsEnabled = true;
+                        tbkFeedback.Background = Brushes.Green;
+                        tbkFeedback.Text = tbkFeedback.Text +
+                            " The plane has enough passengers for lift of.";
+                    }
+
+                    if(actualPassengers > 9)
+                    {
+                        btnAddPassengers.IsEnabled = false;
+                        tbkFeedback.Background = Brushes.Red;
+                        tbkFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
+                    }
                 }
             }
         }
