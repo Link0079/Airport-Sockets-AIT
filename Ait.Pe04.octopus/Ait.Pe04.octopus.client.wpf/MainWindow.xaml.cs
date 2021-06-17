@@ -353,7 +353,7 @@ namespace Ait.Pe04.octopus.client.wpf
                         $" A lane for plane {txtActivePlane.Text} with {actualPassengers} passenger(s) and destination {destination} has been requested.";
 
                     string message = CreateMessage("|REQLANE##OVER");
-                    SendMessageToServerDontWaitOnResponse(message);
+                    SendMessageToServerWaitOnResponse(message);
                 
                 }
             }

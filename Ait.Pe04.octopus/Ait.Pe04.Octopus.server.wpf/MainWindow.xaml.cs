@@ -169,7 +169,7 @@ namespace Ait.Pe04.Octopus.server.wpf
             InsertMessage(lstInRequest,$"Request =\n{instruction}");
             string removeEmptySpaces = instruction.ToUpper().Replace(" ", "").Trim();
             string trimmedInstruction = removeEmptySpaces.ToUpper().Replace("##OVER", "").Trim();
-            if (trimmedInstruction.Contains("IDENTIFICATION")) 
+            if (trimmedInstruction.Contains("IDENTIFICATION")) // for initatin the connection;
             {
                 List<string> data = new List<string>();
                 if (trimmedInstruction.Contains("="))
@@ -199,12 +199,13 @@ namespace Ait.Pe04.Octopus.server.wpf
                 }
                 if(trimmedInstruction.Contains("|"))
                 {
-                    data.Insert(0, trimmedInstruction.Split("|")[0]);
+                    data.Insert(0, trimmedInstruction.Split("|")[0]); // to remove the |, not clean at all but works
                     data.Insert(1, trimmedInstruction.Split("|")[1]);
                 }
                 else
                 {
-                    data.Insert(0, trimmedInstruction);
+                    data.Insert(0, trimmedInstruction); // in case of a command, it fills up with 4 objects, ends up beeing a small clusterfuck
+                                                        // but it works
                 }
                 return data;
             }
@@ -249,16 +250,21 @@ namespace Ait.Pe04.Octopus.server.wpf
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "test";
-            } 
+            } //Add a passenger
             else if(command[2] == "ID" && command[1] == "ADDPASS") 
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "testADDPASS";
-            }
+            } // Substract a passenger 
             else if (command[2] == "ID" && command[1] == "SUBSPASS")
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "testSUBSPASS";
+            } // Request a lane
+            else if (command[2] == "ID" && command[1] == "REQLANE")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testREQLANE";
             }
             else 
             {
