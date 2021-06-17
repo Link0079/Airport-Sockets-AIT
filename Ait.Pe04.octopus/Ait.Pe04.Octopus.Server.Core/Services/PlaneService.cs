@@ -27,6 +27,5 @@ namespace Ait.Pe04.Octopus.Core.Services
                     return plane;
             return null;
         }
-
     }
 }
