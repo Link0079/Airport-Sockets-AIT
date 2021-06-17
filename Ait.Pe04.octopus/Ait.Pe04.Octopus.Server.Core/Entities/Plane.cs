@@ -6,6 +6,7 @@ namespace Ait.Pe04.Octopus.Core.Entities
 {
     public class Plane
     {
+        public long Id { get; private set; }
         public string Name { get; private set; }
         public string Destination { get; private set; }
         public int TotalPassengers { get; private set; }
@@ -14,8 +15,9 @@ namespace Ait.Pe04.Octopus.Core.Entities
         public bool InFlight { get; private set; }
         public bool IsOnLane { get; private set; }
         //I put a Plane property in Lane, so a Plane is assigned to the Lane
-        public Plane(string name)
+        public Plane(long id, string name)
         {
+            Id = id;
             Name = name;
             MaxPassengers = 10;             
             TotalPassengers = 0;
