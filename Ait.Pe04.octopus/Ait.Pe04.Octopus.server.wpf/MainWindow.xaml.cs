@@ -255,6 +255,11 @@ namespace Ait.Pe04.Octopus.server.wpf
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "testADDPASS";
             }
+            else if (command[2] == "ID" && command[1] == "SUBSPASS")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testSUBSPASS";
+            }
             else 
             {
                 InsertMessage(lstOutResponse, "UNKNOWN INSTRUCTION");

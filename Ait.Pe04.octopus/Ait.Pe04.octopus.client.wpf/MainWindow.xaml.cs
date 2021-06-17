@@ -305,7 +305,7 @@ namespace Ait.Pe04.octopus.client.wpf
             }
 
             string message = CreateMessage("|SUBSPASS##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
         }
 
