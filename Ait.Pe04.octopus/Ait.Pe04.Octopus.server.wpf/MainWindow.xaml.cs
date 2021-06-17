@@ -167,7 +167,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         private List<string> HandleInstruction(string instruction)
         {
             InsertMessage(lstInRequest,$"Request =\n{instruction}");
-            string removeEmptySpaces = instruction.ToUpper().Replace(" ", "").Trim();
+            string removeEmptySpaces = instruction.ToUpper().Replace(" ", "").Trim(); // got an empty space by: "ID ", took to long to figure it out
             string trimmedInstruction = removeEmptySpaces.ToUpper().Replace("##OVER", "").Trim();
             if (trimmedInstruction.Contains("IDENTIFICATION")) // for initatin the connection;
             {
@@ -251,6 +251,7 @@ namespace Ait.Pe04.Octopus.server.wpf
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "test";
             } //Add a passenger
+            // Here begins the 
             else if(command[2] == "ID" && command[1] == "ADDPASS") 
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
@@ -265,6 +266,11 @@ namespace Ait.Pe04.Octopus.server.wpf
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "testREQLANE";
+            } // Move to a lane
+            else if (command[2] == "ID" && command[1] == "GOTOLANE")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testGOTOLANE";
             }
             else 
             {

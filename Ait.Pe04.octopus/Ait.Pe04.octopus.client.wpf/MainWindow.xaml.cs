@@ -379,7 +379,7 @@ namespace Ait.Pe04.octopus.client.wpf
                                "Preparing for take off.";
 
             string message = CreateMessage("|GOTOLANE##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
 
         }
