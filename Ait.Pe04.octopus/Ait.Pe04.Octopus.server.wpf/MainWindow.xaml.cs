@@ -35,20 +35,20 @@ namespace Ait.Pe04.Octopus.server.wpf
         bool _serverOnline;
         int _maxConnections = 10;
         PlaneService _planeService = new PlaneService();
-
-        List<string> _destinations = new List<string>()
-        {
-            "LHR", //London Heathrow Airport
-            "AMS", //Amsterdam Airport
-            "MUC", //Munich International Airport 
-            "VIE", //Vienna Airport
-            "DUB", //Dublin Airport
-            "CDG", //Paris Charles de Gaulle Airport
-            "FCO", //Rome Fiumicino Airport
-            "BCN", //Barcelona Airport 
-            "BRU", //Brussels Airport
-            "GVA"  //Geneva Airport
-        };
+        Destinations _destinations = new Destinations();
+        //List<string> _destinations = new List<string>()
+        //{
+        //    "LHR", //London Heathrow Airport
+        //    "AMS", //Amsterdam Airport
+        //    "MUC", //Munich International Airport 
+        //    "VIE", //Vienna Airport
+        //    "DUB", //Dublin Airport
+        //    "CDG", //Paris Charles de Gaulle Airport
+        //    "FCO", //Rome Fiumicino Airport
+        //    "BCN", //Barcelona Airport 
+        //    "BRU", //Brussels Airport
+        //    "GVA"  //Geneva Airport
+        //};
 
         long id = 1;
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -345,7 +345,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         {
             Random rng = new Random();
             var index = rng.Next(0, 10);
-            return _destinations[index];
+            return _destinations.Airports.ElementAt(index).Key;
         }
     }
 }
