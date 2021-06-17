@@ -167,19 +167,48 @@ namespace Ait.Pe04.Octopus.server.wpf
         private List<string> HandleInstruction(string instruction)
         {
             InsertMessage(lstInRequest,$"Request =\n{instruction}");
-            string trimmedInstruction = instruction.ToUpper().Replace("##OVER", "").Trim();
-            List<string> data = new List<string>();
-            if (trimmedInstruction.Contains("="))
+            string removeEmptySpaces = instruction.ToUpper().Replace(" ", "").Trim(); // got an empty space by: "ID ", took to long to figure it out
+            string trimmedInstruction = removeEmptySpaces.ToUpper().Replace("##OVER", "").Trim();
+            if (trimmedInstruction.Contains("IDENTIFICATION")) // for initatin the connection;
             {
-                data.Insert(0, trimmedInstruction.Split("=")[0]);
-                data.Insert(1, trimmedInstruction.Split("=")[1]);
-            }
-            else
-            {
-                data.Insert(0, trimmedInstruction);
-            }
+                List<string> data = new List<string>();
+                if (trimmedInstruction.Contains("="))
+                {
+                    data.Insert(0, trimmedInstruction.Split("=")[0]);
+                    data.Insert(1, trimmedInstruction.Split("=")[1]);
+                
+                
+                }
+                else
+                {
+                    data.Insert(0, trimmedInstruction);
+                }
             
-            return data;
+                return data;
+
+            }
+            else 
+            {
+                List<string> data = new List<string>();
+                if (trimmedInstruction.Contains("="))
+                {
+                    data.Insert(0, trimmedInstruction.Split("=")[0]);
+                    data.Insert(1, trimmedInstruction.Split("=")[1]);
+
+
+                }
+                if(trimmedInstruction.Contains("|"))
+                {
+                    data.Insert(0, trimmedInstruction.Split("|")[0]); // to remove the |, not clean at all but works
+                    data.Insert(1, trimmedInstruction.Split("|")[1]);
+                }
+                else
+                {
+                    data.Insert(0, trimmedInstruction); // in case of a command, it fills up with 4 objects, ends up beeing a small clusterfuck
+                                                        // but it works
+                }
+                return data;
+            }
         }
 
         private void CmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -221,12 +250,64 @@ namespace Ait.Pe04.Octopus.server.wpf
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "test";
-            } 
-            else
+            } //Add a passenger
+            // Again, we end up with 4 objects in data/command; it looks messy but it works
+            else if(command[2] == "ID" && command[1] == "ADDPASS") 
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testADDPASS";
+            } // Substract a passenger 
+            else if (command[2] == "ID" && command[1] == "SUBSPASS")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testSUBSPASS";
+            } // Request a lane
+            else if (command[2] == "ID" && command[1] == "REQLANE")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testREQLANE";
+            } // Move to a lane
+            else if (command[2] == "ID" && command[1] == "GOTOLANE")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testGOTOLANE";
+            } // Request liftoff
+            else if (command[2] == "ID" && command[1] == "REQLIFT")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testREQLIFT";
+            } // Request landing
+            else if (command[2] == "ID" && command[1] == "REQLAND")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testREQLAND";
+            } // Start plane engine
+            else if (command[2] == "ID" && command[1] == "STARTENG")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testSTARTENG";
+            } // Stop plane engine
+            else if (command[2] == "ID" && command[1] == "STOPENG")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testSTOPENG";
+            } // SOS button
+            else if (command[2] == "ID" && command[1] == "SOS")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testSOS";
+            }
+            else 
             {
                 InsertMessage(lstOutResponse, "UNKNOWN INSTRUCTION");
                 return "UNKNOWN INSTRUCTION";
             }
+            // To add as last command
+            //else if
+            //{
+            //    InsertMessage(lstOutResponse, "UNKNOWN INSTRUCTION");
+            //    return "UNKNOWN INSTRUCTION";
+            //}
         }
     }
 }

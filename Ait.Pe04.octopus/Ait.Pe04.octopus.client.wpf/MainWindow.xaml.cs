@@ -266,8 +266,8 @@ namespace Ait.Pe04.octopus.client.wpf
             }
 
             //string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|ADDPASS##OVER";
-            string message = CreateMessage("|ADDPASS##OVER");          
-            SendMessageToServerDontWaitOnResponse(message);
+            string message = CreateMessage("|ADDPASS##OVER");
+            SendMessageToServerWaitOnResponse(message);
             
         }
 
@@ -305,7 +305,7 @@ namespace Ait.Pe04.octopus.client.wpf
             }
 
             string message = CreateMessage("|SUBSPASS##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
         }
 
@@ -353,7 +353,7 @@ namespace Ait.Pe04.octopus.client.wpf
                         $" A lane for plane {txtActivePlane.Text} with {actualPassengers} passenger(s) and destination {destination} has been requested.";
 
                     string message = CreateMessage("|REQLANE##OVER");
-                    SendMessageToServerDontWaitOnResponse(message);
+                    SendMessageToServerWaitOnResponse(message);
                 
                 }
             }
@@ -379,7 +379,7 @@ namespace Ait.Pe04.octopus.client.wpf
                                "Preparing for take off.";
 
             string message = CreateMessage("|GOTOLANE##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
 
         }
@@ -395,7 +395,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} requested lift of. \n" +
                                "Clear skies ahead.";
             string message = CreateMessage("|REQLIFT##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
 
         }
@@ -411,7 +411,7 @@ namespace Ait.Pe04.octopus.client.wpf
                                "Preparing for descent.";
 
             string message = CreateMessage("|REQLAND##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
         }
 
@@ -427,7 +427,7 @@ namespace Ait.Pe04.octopus.client.wpf
                                "Ready for lift off.";
 
             string message = CreateMessage("|STARTENG##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
         }
 
@@ -443,7 +443,7 @@ namespace Ait.Pe04.octopus.client.wpf
                                " stopped its engine. \n" +
                                $" Welcome to {txtDestination.Text} ! ";
             string message = CreateMessage("|STOPENG##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
         }
 
@@ -455,7 +455,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Text = " Plane entered the Bermuda Triangle.";
             btnSOS.IsEnabled = false;
             string message = CreateMessage("|SOS##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
         }
     }
