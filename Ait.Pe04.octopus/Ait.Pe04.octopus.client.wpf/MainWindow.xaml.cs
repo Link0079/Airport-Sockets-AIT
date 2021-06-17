@@ -1,5 +1,6 @@
 ﻿using Ait.Pe04.Octopus.Core.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -23,6 +24,7 @@ namespace Ait.Pe04.octopus.client.wpf
         int passengers;
         Socket _socket;
         IPEndPoint _serverEndPoint;
+        Destinations _destinations = new Destinations(); //get dict of airports
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -71,7 +73,7 @@ namespace Ait.Pe04.octopus.client.wpf
             _serverEndPoint = new IPEndPoint(serverIP, serverPort);
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             string message = "IDENTIFICATION=" + activePlane + "##OVER";
-            lblMyID.Content = SendMessageToServerWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
         }
 
         private void btnConnectToServer_Click(object sender, RoutedEventArgs e)
@@ -141,7 +143,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 btnDisconnectFromServer_Click(null, null);
             }
         }
-        private string SendMessageToServerWaitOnResponse(string message)
+        private void SendMessageToServerWaitOnResponse(string message)
         {
             lstOutRequest.Items.Insert(0, message);
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -155,13 +157,14 @@ namespace Ait.Pe04.octopus.client.wpf
                 int responseLength = _socket.Receive(inMessage);
                 string response = Encoding.ASCII.GetString(inMessage, 0, responseLength).ToUpper().Trim();
                 lstInResponse.Items.Insert(0, response);
-                return response;
+
+                HandleServerResponse(response);
 
             }
             catch
             {
                 btnDisconnectFromServer_Click(null, null);
-                return "ERROR ENCOUNTERED! STANDBY##OVER";
+                //return "ERROR ENCOUNTERED! STANDBY##OVER";
             }
             finally
             {
@@ -460,6 +463,29 @@ namespace Ait.Pe04.octopus.client.wpf
             string message = CreateMessage("|SOS##OVER");
             SendMessageToServerWaitOnResponse(message);
             
+        }
+
+        private void HandleServerResponse(string response)
+        {
+
+            var commandFromServer = response.Trim().Split(";");
+
+            foreach(var commandArray in commandFromServer)
+            {
+                var command = commandArray.Trim().Split("=");
+
+                if (command[0] == "DESTINATIONSET")
+                {
+                    var destinationShort = command[1];
+                    var destination = _destinations.Airports.GetValueOrDefault(destinationShort);
+                    txtDestination.Text = destination;
+                }
+
+                else if(command[0] == "ID")
+                {
+                    lblMyID.Content = command[1];
+                }
+            }
         }
     }
 }
