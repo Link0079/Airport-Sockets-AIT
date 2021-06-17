@@ -20,6 +20,7 @@
             <Canvas.Background>
                 <ImageBrush ImageSource="/AirplaneControleRoom.jpg" TileMode="None" Stretch="Fill"/>
             </Canvas.Background>
+            <TextBlock x:Name="lblSos" Canvas.Left="38" Canvas.Top="113" Text="TextBlock" TextWrapping="Wrap" FontSize="60" Background="Red" Foreground="Yellow"/>
         </Canvas>
         <GroupBox Header="Control Room configuration" HorizontalAlignment="Stretch" Margin="10,0,10,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Background="White">
             <Grid>
