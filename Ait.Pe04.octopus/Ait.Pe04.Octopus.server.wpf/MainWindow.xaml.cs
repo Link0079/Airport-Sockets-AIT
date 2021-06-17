@@ -276,6 +276,11 @@ namespace Ait.Pe04.Octopus.server.wpf
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "testREQLIFT";
+            } // Request landing
+            else if (command[2] == "ID" && command[1] == "REQLAND")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testREQLAND";
             }
             else 
             {

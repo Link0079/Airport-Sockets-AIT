@@ -411,7 +411,7 @@ namespace Ait.Pe04.octopus.client.wpf
                                "Preparing for descent.";
 
             string message = CreateMessage("|REQLAND##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
         }
 
