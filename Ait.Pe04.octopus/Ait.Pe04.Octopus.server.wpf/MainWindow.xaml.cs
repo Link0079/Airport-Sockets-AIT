@@ -34,21 +34,8 @@ namespace Ait.Pe04.Octopus.server.wpf
         Socket _socket;
         bool _serverOnline;
         int _maxConnections = 10;
-        PlaneService _planeService = new PlaneService();
-        Destinations _destinations = new Destinations();
-        //List<string> _destinations = new List<string>()
-        //{
-        //    "LHR", //London Heathrow Airport
-        //    "AMS", //Amsterdam Airport
-        //    "MUC", //Munich International Airport 
-        //    "VIE", //Vienna Airport
-        //    "DUB", //Dublin Airport
-        //    "CDG", //Paris Charles de Gaulle Airport
-        //    "FCO", //Rome Fiumicino Airport
-        //    "BCN", //Barcelona Airport 
-        //    "BRU", //Brussels Airport
-        //    "GVA"  //Geneva Airport
-        //};
+        PlaneService _planeService;
+        Destinations _destinations;
 
         long id = 1;
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -99,11 +86,15 @@ namespace Ait.Pe04.Octopus.server.wpf
         private void StartServer()
         {
             _serverOnline = true;
+            _planeService = new PlaneService();
+            _destinations = new Destinations();
         }
 
         private void CloseServer()
         {
             _serverOnline = false;
+            _planeService = null;
+            _destinations = null;
             try
             {
                 _socket.Close();
@@ -164,11 +155,11 @@ namespace Ait.Pe04.Octopus.server.wpf
                     break;
             }
 
-            List<string> serverResponseInText = HandleInstruction(instruction);
+            string[] serverResponseInText = HandleInstruction(instruction);
 
             string result;
 
-            if (serverResponseInText.Count < 1)
+            if (serverResponseInText.Length < 1)
             {
                 result = $"{serverResponseInText} is unkown";
             }
@@ -183,45 +174,13 @@ namespace Ait.Pe04.Octopus.server.wpf
             clientCall.Shutdown(SocketShutdown.Both);
             clientCall.Close();
         }
-        private List<string> HandleInstruction(string instruction)
+        private string[] HandleInstruction(string instruction)
         {
             InsertMessage(lstInRequest,instruction);
             string removeEmptySpaces = instruction.ToUpper().Replace(" ", "").Trim(); // got an empty space by: "ID ", took to long to figure it out
             string trimmedInstruction = removeEmptySpaces.ToUpper().Replace("##OVER", "").Trim();
-            if (trimmedInstruction.Contains("IDENTIFICATION")) // for initatin the connection;
-            {
-                List<string> data = new List<string>();
-                if (trimmedInstruction.Contains("="))
-                {
-                    data.Insert(0, trimmedInstruction.Split("=")[0]);
-                    data.Insert(1, trimmedInstruction.Split("=")[1]);
-                }
-                else
-                {
-                    data.Insert(0, trimmedInstruction);
-                }
-                return data;
-            }
-            else 
-            {
-                List<string> data = new List<string>();
-                if (trimmedInstruction.Contains("="))
-                {
-                    data.Insert(0, trimmedInstruction.Split("=")[0]);
-                    data.Insert(1, trimmedInstruction.Split("=")[1]);
-                }
-                if(trimmedInstruction.Contains("|"))
-                {
-                    data.Insert(0, trimmedInstruction.Split("|")[0]); // to remove the |, not clean at all but works
-                    data.Insert(1, trimmedInstruction.Split("|")[1]);
-                }
-                else
-                {
-                    data.Insert(0, trimmedInstruction); // in case of a command, it fills up with 4 objects, ends up beeing a small clusterfuck
-                                                        // but it works
-                }
-                return data;
-            }
+            string[] data = trimmedInstruction.Split(";");
+            return data;
         }
 
         private void CmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -257,82 +216,95 @@ namespace Ait.Pe04.Octopus.server.wpf
             source.Items.Insert(0, message);
         }
 
-        private string ExecuteCommand(List<string> command)
+        private string ExecuteCommand(string[] command)
         {
 
             string message = $"{command[0]} - {command[1]}";
 
-            if (command[0] == "IDENTIFICATION")
+            foreach(var instruction in command)
             {
-                long currentId = id;
-                InsertMessage(lstOutResponse, $"ID: {currentId} - {command[1]}");
+                var commands = instruction.Split("=");
 
-                //Create newly connected plane on the server
-                string planeName = command[1];
+                if (commands[0] == "ID")
+                {
+                    //do nothing but also not break
+                    continue;
+                }
 
-                Plane newPlane = new Plane(id, planeName);
+                if (commands[0] == "IDENTIFICATION")
+                {
+                    long currentId = id;
+                    InsertMessage(lstOutResponse, $"ID: {currentId} - {commands[1]}");
 
-                var destination = GetRandomDestination();
-                newPlane.SetDestination(destination);
+                    //Create newly connected plane on the server
+                    string planeName = commands[1];
 
-                _planeService.AddPlane(newPlane);
+                    Plane newPlane = new Plane(id, planeName);
 
-                id++; //set id for next plane
-                return $"ID={currentId};DESTINATIONSET={destination}";
-            } //Add a passenger
-            // Again, we end up with 4 objects in data/command; it looks messy but it works
-            else if(command[2] == "ID" && command[1] == "ADDPASS") 
-            {
-                InsertMessage(lstOutResponse, message);
-                return message;
-            } // Substract a passenger 
-            else if (command[2] == "ID" && command[1] == "SUBSPASS")
-            {
-                InsertMessage(lstOutResponse, message);
-                return message;
-            } // Request a lane
-            else if (command[2] == "ID" && command[1] == "REQLANE")
-            {
-                InsertMessage(lstOutResponse, message);
-                return message;
-            } // Move to a lane
-            else if (command[2] == "ID" && command[1] == "GOTOLANE")
-            {
-                InsertMessage(lstOutResponse, message);
-                return message;
-            } // Request liftoff
-            else if (command[2] == "ID" && command[1] == "REQLIFT")
-            {
-                InsertMessage(lstOutResponse, message);
-                return message;
-            } // Request landing
-            else if (command[2] == "ID" && command[1] == "REQLAND")
-            {
-                InsertMessage(lstOutResponse, message);
-                return message;
-            } // Start plane engine
-            else if (command[2] == "ID" && command[1] == "STARTENG")
-            {
-                InsertMessage(lstOutResponse, message);
-                return message;
-            } // Stop plane engine
-            else if (command[2] == "ID" && command[1] == "STOPENG")
-            {
-                InsertMessage(lstOutResponse, message);
-                return message;
-            } // SOS button
-            else if (command[2] == "ID" && command[1] == "SOS")
-            {
-                lblSos.Visibility = Visibility.Visible;
-                lblSos.Text = message;
-                InsertMessage(lstOutResponse, message);
-                return message;
+                    var destination = GetRandomDestination();
+                    newPlane.SetDestination(destination);
+
+                    _planeService.AddPlane(newPlane);
+
+                    id++; //set id for next plane
+                    return $"ID={currentId};DESTINATIONSET={destination}";
+                } //Add a passenger
+                  // Again, we end up with 4 objects in data/command; it looks messy but it works
+                else if (commands[0] == "ADDPASS")
+                {
+                    InsertMessage(lstOutResponse, message);
+                    return message;
+                } // Substract a passenger 
+                else if (commands[0] == "SUBSPASS")
+                {
+                    InsertMessage(lstOutResponse, message);
+                    return message;
+                } // Request a lane
+                else if (commands[0] == "REQLANE")
+                {
+                    InsertMessage(lstOutResponse, message);
+                    return message;
+                } // Move to a lane
+                else if (commands[0] == "GOTOLANE")
+                {
+                    InsertMessage(lstOutResponse, message);
+                    return message;
+                } // Request liftoff
+                else if (commands[0] == "REQLIFT")
+                {
+                    InsertMessage(lstOutResponse, message);
+                    return message;
+                } // Request landing
+                else if (commands[0] == "REQLAND")
+                {
+                    InsertMessage(lstOutResponse, message);
+                    return message;
+                } // Start plane engine
+                else if (commands[0] == "STARTENG")
+                {
+                    InsertMessage(lstOutResponse, message);
+                    return message;
+                } // Stop plane engine
+                else if (commands[0] == "STOPENG")
+                {
+                    InsertMessage(lstOutResponse, message);
+                    return message;
+                } // SOS button
+                else if (commands[0] == "SOS")
+                {
+                    lblSos.Visibility = Visibility.Visible;
+                    lblSos.Text = message;
+                    InsertMessage(lstOutResponse, message);
+                    return message;
+                }
+                else
+                {
+                    InsertMessage(lstOutResponse, "UNKNOWN INSTRUCTION");
+                    return "UNKNOWN INSTRUCTION";
+                }
             }
-            else 
-            {
-                InsertMessage(lstOutResponse, "UNKNOWN INSTRUCTION");
-                return "UNKNOWN INSTRUCTION";
-            }
+            return "";
+            
             // To add as last command
             //else if
             //{
