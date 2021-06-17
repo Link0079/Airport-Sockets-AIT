@@ -266,8 +266,8 @@ namespace Ait.Pe04.octopus.client.wpf
             }
 
             //string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|ADDPASS##OVER";
-            string message = CreateMessage("|ADDPASS##OVER");          
-            SendMessageToServerDontWaitOnResponse(message);
+            string message = CreateMessage("|ADDPASS##OVER");
+            SendMessageToServerWaitOnResponse(message);
             
         }
 

@@ -167,19 +167,47 @@ namespace Ait.Pe04.Octopus.server.wpf
         private List<string> HandleInstruction(string instruction)
         {
             InsertMessage(lstInRequest,$"Request =\n{instruction}");
-            string trimmedInstruction = instruction.ToUpper().Replace("##OVER", "").Trim();
-            List<string> data = new List<string>();
-            if (trimmedInstruction.Contains("="))
+            string removeEmptySpaces = instruction.ToUpper().Replace(" ", "").Trim();
+            string trimmedInstruction = removeEmptySpaces.ToUpper().Replace("##OVER", "").Trim();
+            if (trimmedInstruction.Contains("IDENTIFICATION")) 
             {
-                data.Insert(0, trimmedInstruction.Split("=")[0]);
-                data.Insert(1, trimmedInstruction.Split("=")[1]);
-            }
-            else
-            {
-                data.Insert(0, trimmedInstruction);
-            }
+                List<string> data = new List<string>();
+                if (trimmedInstruction.Contains("="))
+                {
+                    data.Insert(0, trimmedInstruction.Split("=")[0]);
+                    data.Insert(1, trimmedInstruction.Split("=")[1]);
+                
+                
+                }
+                else
+                {
+                    data.Insert(0, trimmedInstruction);
+                }
             
-            return data;
+                return data;
+
+            }
+            else 
+            {
+                List<string> data = new List<string>();
+                if (trimmedInstruction.Contains("="))
+                {
+                    data.Insert(0, trimmedInstruction.Split("=")[0]);
+                    data.Insert(1, trimmedInstruction.Split("=")[1]);
+
+
+                }
+                if(trimmedInstruction.Contains("|"))
+                {
+                    data.Insert(0, trimmedInstruction.Split("|")[0]);
+                    data.Insert(1, trimmedInstruction.Split("|")[1]);
+                }
+                else
+                {
+                    data.Insert(0, trimmedInstruction);
+                }
+                return data;
+            }
         }
 
         private void CmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -222,11 +250,22 @@ namespace Ait.Pe04.Octopus.server.wpf
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "test";
             } 
-            else
+            else if(command[2] == "ID" && command[1] == "ADDPASS") 
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testADDPASS";
+            }
+            else 
             {
                 InsertMessage(lstOutResponse, "UNKNOWN INSTRUCTION");
                 return "UNKNOWN INSTRUCTION";
             }
+            // To add as last command
+            //else if
+            //{
+            //    InsertMessage(lstOutResponse, "UNKNOWN INSTRUCTION");
+            //    return "UNKNOWN INSTRUCTION";
+            //}
         }
     }
 }
