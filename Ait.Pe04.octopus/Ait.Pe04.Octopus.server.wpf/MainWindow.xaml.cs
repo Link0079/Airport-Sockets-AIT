@@ -291,6 +291,11 @@ namespace Ait.Pe04.Octopus.server.wpf
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "testSTOPENG";
+            } // SOS button
+            else if (command[2] == "ID" && command[1] == "SOS")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "test SOS";
             }
             else 
             {
