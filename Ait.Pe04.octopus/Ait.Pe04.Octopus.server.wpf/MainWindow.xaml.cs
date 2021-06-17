@@ -32,6 +32,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         Socket _socket;
         bool _serverOnline;
         int _maxConnections = 10;
+        long id = 0;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -166,7 +167,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         }
         private List<string> HandleInstruction(string instruction)
         {
-            InsertMessage(lstInRequest,$"Request =\n{instruction}");
+            InsertMessage(lstInRequest,$"Request = {instruction}");
             string removeEmptySpaces = instruction.ToUpper().Replace(" ", "").Trim(); // got an empty space by: "ID ", took to long to figure it out
             string trimmedInstruction = removeEmptySpaces.ToUpper().Replace("##OVER", "").Trim();
             if (trimmedInstruction.Contains("IDENTIFICATION")) // for initatin the connection;
@@ -176,16 +177,12 @@ namespace Ait.Pe04.Octopus.server.wpf
                 {
                     data.Insert(0, trimmedInstruction.Split("=")[0]);
                     data.Insert(1, trimmedInstruction.Split("=")[1]);
-                
-                
                 }
                 else
                 {
                     data.Insert(0, trimmedInstruction);
                 }
-            
                 return data;
-
             }
             else 
             {
@@ -194,8 +191,6 @@ namespace Ait.Pe04.Octopus.server.wpf
                 {
                     data.Insert(0, trimmedInstruction.Split("=")[0]);
                     data.Insert(1, trimmedInstruction.Split("=")[1]);
-
-
                 }
                 if(trimmedInstruction.Contains("|"))
                 {
@@ -241,60 +236,62 @@ namespace Ait.Pe04.Octopus.server.wpf
 
         private void InsertMessage(ListBox source, string message)
         {
-            source.Items.Insert(0, $"<=============>\n{message}\n<=============>");
+            source.Items.Insert(0, message);
         }
 
         private string ExecuteCommand(List<string> command)
         {
             if (command[0] == "IDENTIFICATION")
             {
-                InsertMessage(lstOutResponse, $"test {command[1]}");
-                return "test";
+                long currentId = id;
+                InsertMessage(lstOutResponse, $"ID: {currentId} - {command[1]}");
+                id++;
+                return $"{currentId}:{command[1]}";
             } //Add a passenger
             // Again, we end up with 4 objects in data/command; it looks messy but it works
             else if(command[2] == "ID" && command[1] == "ADDPASS") 
             {
-                InsertMessage(lstOutResponse, $"test {command[1]}");
+                InsertMessage(lstOutResponse, $"{command[1]}");
                 return "testADDPASS";
             } // Substract a passenger 
             else if (command[2] == "ID" && command[1] == "SUBSPASS")
             {
-                InsertMessage(lstOutResponse, $"test {command[1]}");
+                InsertMessage(lstOutResponse, $"{command[1]}");
                 return "testSUBSPASS";
             } // Request a lane
             else if (command[2] == "ID" && command[1] == "REQLANE")
             {
-                InsertMessage(lstOutResponse, $"test {command[1]}");
+                InsertMessage(lstOutResponse, $"{command[1]}");
                 return "testREQLANE";
             } // Move to a lane
             else if (command[2] == "ID" && command[1] == "GOTOLANE")
             {
-                InsertMessage(lstOutResponse, $"test {command[1]}");
+                InsertMessage(lstOutResponse, $"{command[1]}");
                 return "testGOTOLANE";
             } // Request liftoff
             else if (command[2] == "ID" && command[1] == "REQLIFT")
             {
-                InsertMessage(lstOutResponse, $"test {command[1]}");
+                InsertMessage(lstOutResponse, $"{command[1]}");
                 return "testREQLIFT";
             } // Request landing
             else if (command[2] == "ID" && command[1] == "REQLAND")
             {
-                InsertMessage(lstOutResponse, $"test {command[1]}");
+                InsertMessage(lstOutResponse, $"{command[1]}");
                 return "testREQLAND";
             } // Start plane engine
             else if (command[2] == "ID" && command[1] == "STARTENG")
             {
-                InsertMessage(lstOutResponse, $"test {command[1]}");
+                InsertMessage(lstOutResponse, $"{command[1]}");
                 return "testSTARTENG";
             } // Stop plane engine
             else if (command[2] == "ID" && command[1] == "STOPENG")
             {
-                InsertMessage(lstOutResponse, $"test {command[1]}");
+                InsertMessage(lstOutResponse, $"{command[1]}");
                 return "testSTOPENG";
             } // SOS button
             else if (command[2] == "ID" && command[1] == "SOS")
             {
-                InsertMessage(lstOutResponse, $"test {command[1]}");
+                InsertMessage(lstOutResponse, $"{command[1]}");
                 return "testSOS";
             }
             else 
