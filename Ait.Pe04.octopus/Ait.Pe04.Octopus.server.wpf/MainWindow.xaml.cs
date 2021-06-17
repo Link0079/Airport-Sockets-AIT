@@ -247,7 +247,7 @@ namespace Ait.Pe04.Octopus.server.wpf
                     _planeService.AddPlane(newPlane);
 
                     id++; //set id for next plane
-                    return $"ID={currentId};DESTINATIONSET={destination}";
+                    return $"IDNumber={currentId};DESTINATIONSET={destination}";
                 } //Add a passenger
                   // Again, we end up with 4 objects in data/command; it looks messy but it works
                 else if (commands[0] == "ADDPASS")
