@@ -266,8 +266,19 @@ namespace Ait.Pe04.Octopus.server.wpf
             {
                 long currentId = id;
                 InsertMessage(lstOutResponse, $"ID: {currentId} - {command[1]}");
-                id++;
-                return $"{currentId}";
+
+                //Create newly connected plane on the server
+                string planeName = command[1];
+
+                Plane newPlane = new Plane(id, planeName);
+
+                var destination = GetRandomDestination();
+                newPlane.SetDestination(destination);
+
+                _planeService.AddPlane(newPlane);
+
+                id++; //set id for next plane
+                return $"ID={currentId};DESTINATIONSET={destination}";
             } //Add a passenger
             // Again, we end up with 4 objects in data/command; it looks messy but it works
             else if(command[2] == "ID" && command[1] == "ADDPASS") 
