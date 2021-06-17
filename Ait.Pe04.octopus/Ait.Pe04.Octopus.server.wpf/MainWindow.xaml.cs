@@ -34,7 +34,6 @@ namespace Ait.Pe04.Octopus.server.wpf
         Socket _socket;
         bool _serverOnline;
         int _maxConnections = 10;
-<<<<<<< HEAD
         PlaneService _planeService = new PlaneService();
 
         List<string> _destinations = new List<string>()
@@ -50,10 +49,8 @@ namespace Ait.Pe04.Octopus.server.wpf
             "BRU", //Brussels Airport
             "GVA"  //Geneva Airport
         };
-=======
-        long id = 1;
->>>>>>> 4cb9ea2a4c6935a8cdeca234d0271fe942a6b890
 
+        long id = 1;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             StartUpConfig();
@@ -198,11 +195,6 @@ namespace Ait.Pe04.Octopus.server.wpf
                 {
                     data.Insert(0, trimmedInstruction.Split("=")[0]);
                     data.Insert(1, trimmedInstruction.Split("=")[1]);
-<<<<<<< HEAD
-                    
-                
-=======
->>>>>>> 4cb9ea2a4c6935a8cdeca234d0271fe942a6b890
                 }
                 else
                 {
@@ -272,19 +264,10 @@ namespace Ait.Pe04.Octopus.server.wpf
 
             if (command[0] == "IDENTIFICATION")
             {
-<<<<<<< HEAD
-                InsertMessage(lstOutResponse, $"test {command[1]}");
-                var destination = GetRandomDestination();
-                Plane plane = new Plane("test");
-                plane.SetDestination(destination);
-                _planeService.AddPlane(plane);
-                return destination;
-=======
                 long currentId = id;
                 InsertMessage(lstOutResponse, $"ID: {currentId} - {command[1]}");
                 id++;
                 return $"{currentId}";
->>>>>>> 4cb9ea2a4c6935a8cdeca234d0271fe942a6b890
             } //Add a passenger
             // Again, we end up with 4 objects in data/command; it looks messy but it works
             else if(command[2] == "ID" && command[1] == "ADDPASS") 
