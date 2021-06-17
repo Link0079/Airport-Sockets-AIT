@@ -160,7 +160,6 @@ namespace Ait.Pe04.octopus.client.wpf
                 lstInResponse.Items.Insert(0, response);
 
                 HandleServerResponse(response);
-
             }
             catch
             {
@@ -482,7 +481,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     txtDestination.Text = destination;
                 }
 
-                else if(command[0] == "ID")
+                else if(command[0] == "IDNUMBER")
                 {
                     lblMyID.Content = command[1];
                 }
