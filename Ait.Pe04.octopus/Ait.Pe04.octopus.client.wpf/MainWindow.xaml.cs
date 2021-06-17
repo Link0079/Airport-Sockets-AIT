@@ -443,7 +443,7 @@ namespace Ait.Pe04.octopus.client.wpf
                                " stopped its engine. \n" +
                                $" Welcome to {txtDestination.Text} ! ";
             string message = CreateMessage("|STOPENG##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
         }
 
