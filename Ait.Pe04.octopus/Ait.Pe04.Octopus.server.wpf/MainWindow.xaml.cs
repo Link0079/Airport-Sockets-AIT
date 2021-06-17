@@ -251,7 +251,7 @@ namespace Ait.Pe04.Octopus.server.wpf
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "test";
             } //Add a passenger
-            // Here begins the 
+            // Again, we end up with 4 objects in data/command; it looks messy but it works
             else if(command[2] == "ID" && command[1] == "ADDPASS") 
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
@@ -271,6 +271,11 @@ namespace Ait.Pe04.Octopus.server.wpf
             {
                 InsertMessage(lstOutResponse, $"test {command[1]}");
                 return "testGOTOLANE";
+            } // Request liftoff
+            else if (command[2] == "ID" && command[1] == "REQLIFT")
+            {
+                InsertMessage(lstOutResponse, $"test {command[1]}");
+                return "testREQLIFT";
             }
             else 
             {

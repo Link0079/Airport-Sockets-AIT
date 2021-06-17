@@ -395,7 +395,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} requested lift of. \n" +
                                "Clear skies ahead.";
             string message = CreateMessage("|REQLIFT##OVER");
-            SendMessageToServerDontWaitOnResponse(message);
+            SendMessageToServerWaitOnResponse(message);
             
 
         }
