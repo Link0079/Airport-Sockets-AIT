@@ -35,6 +35,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         bool _serverOnline;
         int _maxConnections = 10;
         PlaneService _planeService;
+        LaneService _laneService;
         Destinations _destinations;
 
         long id = 1;
@@ -87,6 +88,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         {
             _serverOnline = true;
             _planeService = new PlaneService();
+            _laneService = new LaneService();
             _destinations = new Destinations();
         }
 
@@ -94,6 +96,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         {
             _serverOnline = false;
             _planeService = null;
+            _laneService = null;
             _destinations = null;
             try
             {
@@ -155,32 +158,122 @@ namespace Ait.Pe04.Octopus.server.wpf
                     break;
             }
 
-            string[] serverResponseInText = HandleInstruction(instruction);
+            string serverResponseInText = HandleInstruction(instruction);
 
-            string result;
+            //string result;
 
             if (serverResponseInText.Length < 1)
             {
-                result = $"{serverResponseInText} is unkown";
+                serverResponseInText = $"{serverResponseInText} is unkown";
             }
-            else
-            {
-                result = $"{ExecuteCommand(serverResponseInText)}";
-            }
+            //else
+            //{
+            //    result = $"{ExecuteCommand(serverResponseInText)}";
+            //}
 
-            byte[] clientResponse = Encoding.ASCII.GetBytes(result);
+            byte[] clientResponse = Encoding.ASCII.GetBytes(serverResponseInText);
             clientCall.Send(clientResponse);
 
             clientCall.Shutdown(SocketShutdown.Both);
             clientCall.Close();
         }
-        private string[] HandleInstruction(string instruction)
+        private string HandleInstruction(string instruction)
         {
             InsertMessage(lstInRequest,instruction);
-            string removeEmptySpaces = instruction.ToUpper().Replace(" ", "").Trim(); // got an empty space by: "ID ", took to long to figure it out
-            string trimmedInstruction = removeEmptySpaces.ToUpper().Replace("##OVER", "").Trim();
+            string trimmedInstruction = instruction.Trim().Replace("##OVER", "");
             string[] data = trimmedInstruction.Split(";");
-            return data;
+            string clientResponse = "";
+            long existingPlaneId = GetIDFromCommand(data);
+
+            foreach(var command in data)
+            {
+                //split the command on '='
+                var commands = command.Split('=');
+                switch (commands[0])
+                {
+                    #region IDENTIFICATION
+                    case "IDENTIFICATION":
+                        long currentId = id;
+                        InsertMessage(lstOutResponse, $"ID: {currentId} - {commands[0]}");
+
+                        //Create newly connected plane on the server
+                        string planeName = commands[1];
+
+                        Plane newPlane = new Plane(id, planeName);
+
+                        var destination = GetRandomDestination();
+                        newPlane.SetDestination(destination);
+
+                        _planeService.AddPlane(newPlane);
+
+                        id++; //set id for next plane
+                        clientResponse = $"IDNUMBER={currentId};DESTINATIONSET={destination}";
+                        break;
+                    #endregion
+
+                    #region ADDPASS
+                    case "ADDPASS":
+                        clientResponse = _planeService.AddPassengerToPlane(existingPlaneId);
+                        break;
+                    #endregion
+                    
+                    #region SUBSPASS
+                    case "SUBSPASS":
+                        clientResponse = _planeService.SubstractPassengerOfPlane(existingPlaneId);
+                        break;
+                    #endregion
+
+                    #region REQLANE
+                    case "REQLANE":
+                        var requestingPlane = _planeService.FindPlane(existingPlaneId);
+                        clientResponse = _laneService.AddPlaneToLane(requestingPlane);
+                        break;
+                    #endregion
+
+                    #region GOTOLANE
+                    case "GOTOLANE":
+                        var planeToLane = _planeService.FindPlane(existingPlaneId);
+                        clientResponse = _laneService.GetRequestLaneFromPlane(planeToLane);
+                        break;
+                    #endregion
+
+                    #region REQLIFT
+                    case "REQLIFT":
+                        Plane planeToLift = _planeService.FindPlane(existingPlaneId);
+                        _laneService.MakeLaneAvailable(planeToLift);
+                        clientResponse = _planeService.PlaneWantsToLiftOff(existingPlaneId);
+                        break;
+                    #endregion
+
+                    #region REQLAND
+                    case "REQLAND":
+                        var landingPlane = _planeService.FindPlane(existingPlaneId);
+                        clientResponse = _laneService.AddPlaneToLane(landingPlane);
+                        break;
+                    #endregion
+
+                    #region STARTENG
+                    case "STARTENG":
+                        clientResponse = _planeService.StartPlaneEngine(existingPlaneId);
+                        break;
+                    #endregion
+
+                    #region
+                    case "STOPENG":
+                        clientResponse = _planeService.StopPlaneEngine(existingPlaneId);
+                        break;
+                    #endregion
+
+                    #region
+                    case "SOS":
+                        clientResponse = _planeService.SendSOS(existingPlaneId);
+                        break;
+                    #endregion
+                }
+                //return clientResponse;
+            }
+            InsertMessage(lstOutResponse, clientResponse);
+            return clientResponse;
         }
 
         private void CmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -218,7 +311,6 @@ namespace Ait.Pe04.Octopus.server.wpf
 
         private string ExecuteCommand(string[] command)
         {
-
             string message = $"{command[0]} - {command[1]}";
 
             foreach(var instruction in command)
@@ -227,7 +319,9 @@ namespace Ait.Pe04.Octopus.server.wpf
 
                 if (commands[0] == "ID")
                 {
-                    //do nothing but also not break
+                    //search plane in service
+                    long planeId = Int32.Parse(commands[1]);
+                    _planeService.FindPlane(planeId);
                     continue;
                 }
 
@@ -247,7 +341,7 @@ namespace Ait.Pe04.Octopus.server.wpf
                     _planeService.AddPlane(newPlane);
 
                     id++; //set id for next plane
-                    return $"IDNumber={currentId};DESTINATIONSET={destination}";
+                    return $"IDNUMBER={currentId};DESTINATIONSET={destination}";
                 } //Add a passenger
                   // Again, we end up with 4 objects in data/command; it looks messy but it works
                 else if (commands[0] == "ADDPASS")
@@ -318,6 +412,15 @@ namespace Ait.Pe04.Octopus.server.wpf
             Random rng = new Random();
             var index = rng.Next(0, 10);
             return _destinations.Airports.ElementAt(index).Key;
+        }
+
+        private long GetIDFromCommand(string[] data)
+        {
+            if (data[0].Contains("IDENTIFICATION")) return id;
+            //Command starts with ID=
+            string planeIdString = data[0].Replace("ID=", "");
+            long planeId = Int32.Parse(planeIdString);
+            return planeId;
         }
     }
 }
