@@ -107,7 +107,6 @@ namespace Ait.Pe04.octopus.client.wpf
             btnStartEngine.IsEnabled = false;
             btnStopEngine.IsEnabled = false; // will be enabled when btnStartEngine is clicked; then btnStartEngine.IsEnabled = false
             btnSOS.IsEnabled = false; // will be enabled when enabled when plane is in flight ?
-            tbkFeedback.IsEnabled = false; // Only to show feedback
 
             ContactServer();
         }
@@ -295,8 +294,6 @@ namespace Ait.Pe04.octopus.client.wpf
             {
                 btnSubtractPassengers.IsEnabled = false;
                 btnAddPassengers.IsEnabled = true;
-                tbkFeedback.Background = Brushes.Red;
-                tbkFeedback.Text = " The plane needs at least 1 passenger to for lift off."; 
                 passengers = actualPassengers - 1;
             }
             else 
@@ -304,8 +301,6 @@ namespace Ait.Pe04.octopus.client.wpf
                 btnAddPassengers.IsEnabled = true;
                 passengers = actualPassengers - 1;
                 lblPassengerCount.Content = passengers.ToString();
-                tbkFeedback.Background = Brushes.Green;
-                tbkFeedback.Text = " One passenger has been kicked out of the plane. ";
             }
 
             string message = CreateMessage("SUBSPASS##OVER");
@@ -321,8 +316,8 @@ namespace Ait.Pe04.octopus.client.wpf
 
             if (destination.Length <= 0)
             {
-                tbkFeedback.Background = Brushes.Red;
-                tbkFeedback.Text = "Please enter a destination.";
+                //tbkFeedback.Background = Brushes.Red;
+                //tbkFeedback.Text = "Please enter a destination.";
             }
             else 
             {
@@ -339,9 +334,9 @@ namespace Ait.Pe04.octopus.client.wpf
 
                 if(passengers < 1) 
                 {
-                    tbkFeedback.Background = Brushes.Red;
-                    tbkFeedback.Text = " The plane does not have enough passengers for lift off.\n " +
-                                       " At least one passenger has to be boarded in order to request a lane .";
+                    //tbkFeedback.Background = Brushes.Red;
+                    //tbkFeedback.Text = " The plane does not have enough passengers for lift off.\n " +
+                    //                   " At least one passenger has to be boarded in order to request a lane .";
                 }
                 else 
                 {
@@ -352,10 +347,6 @@ namespace Ait.Pe04.octopus.client.wpf
                     btnSubtractPassengers.IsEnabled = false;
                     btnAddPassengers.IsEnabled = false;
                     btnGoToLane.IsEnabled = true;
-                    tbkFeedback.Background = Brushes.Yellow;
-                    tbkFeedback.Text = 
-                        $" A lane for plane {txtActivePlane.Text} with {actualPassengers} passenger(s) and destination {destination} has been requested.";
-
                     string message = CreateMessage("REQLANE##OVER");
                     SendMessageToServerWaitOnResponse(message);
                 
@@ -377,11 +368,6 @@ namespace Ait.Pe04.octopus.client.wpf
             btnRequestLane.IsEnabled = false;
             btnRequestLiftOff.IsEnabled = true;
             btnStartEngine.IsEnabled = true;
-
-            tbkFeedback.Background = Brushes.Yellow;
-            tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} is moving to lane {lblOnLane.Content}. \n"+
-                               "Preparing for take off.";
-
             string message = CreateMessage("GOTOLANE##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -395,9 +381,6 @@ namespace Ait.Pe04.octopus.client.wpf
             btnRequestLiftOff.IsEnabled = false;
             btnRequestLanding.IsEnabled = true;
             btnSOS.IsEnabled = true;
-            tbkFeedback.Background = Brushes.LightBlue;
-            tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} requested lift of. \n" +
-                               "Clear skies ahead.";
             string message = CreateMessage("REQLIFT##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -410,10 +393,6 @@ namespace Ait.Pe04.octopus.client.wpf
 
             btnRequestLanding.IsEnabled = false;
             btnStopEngine.IsEnabled = true;
-            tbkFeedback.Background = Brushes.LightBlue;
-            tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} requested landing. \n" +
-                               "Preparing for descent.";
-
             string message = CreateMessage("REQLAND##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -424,12 +403,6 @@ namespace Ait.Pe04.octopus.client.wpf
             //method for plane to start the engine before takeoff
 
             btnStartEngine.IsEnabled = false;
-
-            tbkFeedback.Background = Brushes.Green ;
-            tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} \n" +
-                                $" on lane {lblOnLane.Content} started its engine. \n" +
-                               "Ready for lift off.";
-
             string message = CreateMessage("STARTENG##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -441,11 +414,6 @@ namespace Ait.Pe04.octopus.client.wpf
 
             btnStopEngine.IsEnabled = false;
             //btnStartEngine.IsEnabled = true;
-
-            tbkFeedback.Background = Brushes.Green;
-            tbkFeedback.Text = $" Plane {txtActivePlane.Text} with {lblPassengerCount.Content} passengers \n" +
-                               " stopped its engine. \n" +
-                               $" Welcome to {txtDestination.Text} ! ";
             string message = CreateMessage("STOPENG##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -454,9 +422,6 @@ namespace Ait.Pe04.octopus.client.wpf
         private void btnSOS_Click(object sender, RoutedEventArgs e)
         {
             //method for plane to request help in case of emergency
-
-            tbkFeedback.Background = Brushes.DarkRed;
-            tbkFeedback.Text = " Plane entered the Bermuda Triangle.";
             btnSOS.IsEnabled = false;
             btnRequestLanding.IsEnabled = false;
             btnStartEngine.IsEnabled = false;
@@ -496,22 +461,15 @@ namespace Ait.Pe04.octopus.client.wpf
                         actualPassengers = Convert.ToInt32(command.Last());
 
                         lblPassengerCount.Content = actualPassengers.ToString(); // update lblPassengerCount with the new number of passengers
-                        tbkFeedback.Background = Brushes.Green;
-                        tbkFeedback.Text = " A passenger has boarded the plane. ";
 
                         if (actualPassengers >= 1)
                         {
                             btnSubtractPassengers.IsEnabled = true;
-                            tbkFeedback.Background = Brushes.Green;
-                            tbkFeedback.Text = tbkFeedback.Text +
-                                " The plane has enough passengers for lift of.";
                         }
 
                         if (actualPassengers > 9)
                         {
                             btnAddPassengers.IsEnabled = false;
-                            tbkFeedback.Background = Brushes.Red;
-                            tbkFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
                         }
                     break;
                     #endregion

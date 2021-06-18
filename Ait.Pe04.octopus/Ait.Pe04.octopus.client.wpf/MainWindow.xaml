@@ -61,7 +61,6 @@
                 <GroupBox Grid.Column="2" Header="Incoming Responses" Margin="5,0,5,0" FontWeight="Bold">
                     <ListBox x:Name="lstInResponse" Background="{x:Null}" FontWeight="Normal"/>
                 </GroupBox>
-                <TextBlock x:Name="tbkFeedback" HorizontalAlignment="Center" Height="83" Margin="0,263,0,0" Text="Feedback" TextWrapping="Wrap" VerticalAlignment="Top" Width="246"/>
             </Grid>
         </GroupBox>
     </Grid>
