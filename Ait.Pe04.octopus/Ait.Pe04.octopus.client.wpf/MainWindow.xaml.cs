@@ -125,6 +125,9 @@ namespace Ait.Pe04.octopus.client.wpf
             cmbPorts.IsEnabled = true;
             txtActivePlane.IsEnabled = true;
             txtServerIP.IsEnabled = true;
+            lstOutRequest.Items.Clear();
+            lstInResponse.Items.Clear();
+
         }
         private void SendMessageToServerDontWaitOnResponse(string message)
         {
