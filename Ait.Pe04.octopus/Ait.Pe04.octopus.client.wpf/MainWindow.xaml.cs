@@ -99,7 +99,7 @@ namespace Ait.Pe04.octopus.client.wpf
             // .IsEnabled is used in place of .Visibility because I think that seeing the buttons will look better than seeing a white empty space
             // can't decide until the connection between client and server can be established though
             btnAddPassengers.IsEnabled = true;
-            btnSubtractPassengers.IsEnabled = true;
+            btnSubtractPassengers.IsEnabled = false;
             btnRequestLane.IsEnabled = true;
             btnGoToLane.IsEnabled = false; //will be enabled after RequestLane button is pressed; then RequestLane becomes disabled
             btnRequestLiftOff.IsEnabled = false; // will be enabled after the plane goes on a lane (using btnGoToLane)
@@ -311,47 +311,39 @@ namespace Ait.Pe04.octopus.client.wpf
         private void btnRequestLane_Click(object sender, RoutedEventArgs e)
         {
             //method to request lane for the plane
+            string message = CreateMessage("REQLANE##OVER");
+            SendMessageToServerWaitOnResponse(message);
 
-           var destination = Convert.ToString(txtDestination.Text);
+            #region Old Code
+            //try
+            //{
+            //    actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
+            //    passengers = actualPassengers;
 
-            if (destination.Length <= 0)
-            {
-                //tbkFeedback.Background = Brushes.Red;
-                //tbkFeedback.Text = "Please enter a destination.";
-            }
-            else 
-            {
-                try
-                {
-                    actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
-                    passengers = actualPassengers;
+            //}
+            //catch (Exception error)
+            //{
+            //    MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
 
-                }
-                catch (Exception error)
-                {
-                    MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+            //if(passengers < 1) 
+            //{
+            //    //tbkFeedback.Background = Brushes.Red;
+            //    //tbkFeedback.Text = " The plane does not have enough passengers for lift off.\n " +
+            //    //                   " At least one passenger has to be boarded in order to request a lane .";
+            //}
+            //else 
+            //{
+            //    // Getting an available Lane
+            //    // awaiting response from server with an available lane ?
+            //    // the available lane would need to be put in lblOnLane.Content
 
-                if(passengers < 1) 
-                {
-                    //tbkFeedback.Background = Brushes.Red;
-                    //tbkFeedback.Text = " The plane does not have enough passengers for lift off.\n " +
-                    //                   " At least one passenger has to be boarded in order to request a lane .";
-                }
-                else 
-                {
-                    // Getting an available Lane
-                    // awaiting response from server with an available lane ?
-                    // the available lane would need to be put in lblOnLane.Content
+            //    btnSubtractPassengers.IsEnabled = false;
+            //    btnAddPassengers.IsEnabled = false;
+            //    btnGoToLane.IsEnabled = true;
+            //}
+            #endregion
 
-                    btnSubtractPassengers.IsEnabled = false;
-                    btnAddPassengers.IsEnabled = false;
-                    btnGoToLane.IsEnabled = true;
-                    string message = CreateMessage("REQLANE##OVER");
-                    SendMessageToServerWaitOnResponse(message);
-                
-                }
-            }
         }
 
         private void btnGoToLane_Click(object sender, RoutedEventArgs e)
@@ -491,24 +483,42 @@ namespace Ait.Pe04.octopus.client.wpf
                     #endregion
 
                     #region REQLANE
+                    case "REQLANE":
+                        // REQLANE=$laneName OF REQLANE=NONEAVAILABLE
+                        btnSubtractPassengers.IsEnabled = false;
+                        btnAddPassengers.IsEnabled = false;
+                        btnGoToLane.IsEnabled = true;
+                        break;
                     #endregion
 
                     #region GOTOLANE
+                    case "GOTOLANE":
+                        break;
                     #endregion
 
                     #region REQLIFT
+                    case "REQLIFT":
+                        break;
                     #endregion
 
                     #region REQLAND
+                    case "REQLAND":
+                        break;
                     #endregion
 
                     #region STARTENG
+                    case "STARTENG":
+                        break;
                     #endregion
 
                     #region STOPENG
+                    case "STOPENG":
+                        break;
                     #endregion
 
                     #region SOS
+                    case "SOS":
+                        break;
                     #endregion
 
                     default:
