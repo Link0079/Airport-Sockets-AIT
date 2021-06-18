@@ -8,6 +8,8 @@ namespace Ait.Pe04.Octopus.Core.Entities
     {
         public string Name { get; private set; }
         public bool IsAvailable { get; private set; }
+        public Plane Plane { get; private set; }
+
         public Lane(string name)
         {
             Name = name;
@@ -19,10 +21,12 @@ namespace Ait.Pe04.Octopus.Core.Entities
         }
         public void LeaveLane()
         {
+            Plane = null;
             IsAvailable = true;
         }
-        public void OccupyLane()
+        public void OccupyLane(Plane plane)
         {
+            Plane = plane;
             IsAvailable = false;
         }
     }

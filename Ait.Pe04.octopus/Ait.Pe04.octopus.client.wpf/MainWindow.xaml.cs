@@ -1,5 +1,6 @@
 ﻿using Ait.Pe04.Octopus.Core.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -23,6 +24,7 @@ namespace Ait.Pe04.octopus.client.wpf
         int passengers;
         Socket _socket;
         IPEndPoint _serverEndPoint;
+        Destinations _destinations = new Destinations(); //get dict of airports
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -59,6 +61,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnConnectToServer.Visibility = Visibility.Visible;
             btnDisconnectFromServer.Visibility = Visibility.Hidden;
             grpActivePlane.Visibility = Visibility.Hidden;
+            txtDestination.IsEnabled = false;
         }
 
         private void ContactServer()
@@ -70,8 +73,8 @@ namespace Ait.Pe04.octopus.client.wpf
 
             _serverEndPoint = new IPEndPoint(serverIP, serverPort);
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            string message = "IDENTIFICATION=" + activePlane + "##OVER";
-            lblMyID.Content = SendMessageToServerWaitOnResponse(message);
+            string message = "IDENTIFICATION=" + activePlane + ";##OVER";
+            SendMessageToServerWaitOnResponse(message);
         }
 
         private void btnConnectToServer_Click(object sender, RoutedEventArgs e)
@@ -110,7 +113,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
         private void btnDisconnectFromServer_Click(object sender, RoutedEventArgs e)
         {
-            string message = "ID=" + lblMyID.Content + "|BYEBYE##OVER";
+            string message = "ID=" + lblMyID.Content + "BYEBYE##OVER";
             SendMessageToServerDontWaitOnResponse(message);
 
             btnConnectToServer.Visibility = Visibility.Visible;
@@ -141,7 +144,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 btnDisconnectFromServer_Click(null, null);
             }
         }
-        private string SendMessageToServerWaitOnResponse(string message)
+        private void SendMessageToServerWaitOnResponse(string message)
         {
             lstOutRequest.Items.Insert(0, message);
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -155,13 +158,13 @@ namespace Ait.Pe04.octopus.client.wpf
                 int responseLength = _socket.Receive(inMessage);
                 string response = Encoding.ASCII.GetString(inMessage, 0, responseLength).ToUpper().Trim();
                 lstInResponse.Items.Insert(0, response);
-                return response;
 
+                HandleServerResponse(response);
             }
             catch
             {
                 btnDisconnectFromServer_Click(null, null);
-                return "ERROR ENCOUNTERED! STANDBY##OVER";
+                //return "ERROR ENCOUNTERED! STANDBY##OVER";
             }
             finally
             {
@@ -183,7 +186,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
         private string CreateMessage(string overMessage) 
         {
-            return$"ID = {lblMyID.Content} {overMessage}";
+            return$"ID={lblMyID.Content};{overMessage}";
         }
 
         private static string GetLaneString(string stringSource, string stringStart, string StringEnd) 
@@ -242,31 +245,31 @@ namespace Ait.Pe04.octopus.client.wpf
             //    txtBlockFeedback.Text = " 10 passengers have boarded the planne ";
             //}
 
-            if (passengers> 9)  // check to see if plane there is more place on the plane
-            {
-                btnSubtractPassengers.IsEnabled = true;
-                btnAddPassengers.IsEnabled = false;
-                tbkFeedback.Background = Brushes.Red;
-                tbkFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
-            }
-            else 
-            {
-                btnSubtractPassengers.IsEnabled = true;
-                passengers = actualPassengers + 1;
-                lblPassengerCount.Content = passengers.ToString(); // update lblPassengerCount with the new number of passengers
-                tbkFeedback.Background = Brushes.Green;
-                tbkFeedback.Text = " A passenger has boarded the plane. ";
-            }
+            //if (passengers> 9)  // check to see if plane there is more place on the plane
+            //{
+            //    btnSubtractPassengers.IsEnabled = true;
+            //    btnAddPassengers.IsEnabled = false;
+            //    tbkFeedback.Background = Brushes.Red;
+            //    tbkFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
+            //}
+            //else 
+            //{
+            //    btnSubtractPassengers.IsEnabled = true;
+            //    passengers = actualPassengers + 1;
+            //    lblPassengerCount.Content = passengers.ToString(); // update lblPassengerCount with the new number of passengers
+            //    tbkFeedback.Background = Brushes.Green;
+            //    tbkFeedback.Text = " A passenger has boarded the plane. ";
+            //}
 
-            if(passengers >= 1) 
-            {
-                tbkFeedback.Background = Brushes.Green;
-                tbkFeedback.Text = tbkFeedback.Text + 
-                    " The plane has enough passengers for lift of.";
-            }
+            //if(passengers >= 1) 
+            //{
+            //    tbkFeedback.Background = Brushes.Green;
+            //    tbkFeedback.Text = tbkFeedback.Text + 
+            //        " The plane has enough passengers for lift of.";
+            //}
 
             //string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|ADDPASS##OVER";
-            string message = CreateMessage("|ADDPASS##OVER");
+            string message = CreateMessage("ADDPASS##OVER");
             SendMessageToServerWaitOnResponse(message);
             
         }
@@ -304,7 +307,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 tbkFeedback.Text = " One passenger has been kicked out of the plane. ";
             }
 
-            string message = CreateMessage("|SUBSPASS##OVER");
+            string message = CreateMessage("SUBSPASS##OVER");
             SendMessageToServerWaitOnResponse(message);
             
         }
@@ -352,7 +355,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     tbkFeedback.Text = 
                         $" A lane for plane {txtActivePlane.Text} with {actualPassengers} passenger(s) and destination {destination} has been requested.";
 
-                    string message = CreateMessage("|REQLANE##OVER");
+                    string message = CreateMessage("REQLANE##OVER");
                     SendMessageToServerWaitOnResponse(message);
                 
                 }
@@ -378,7 +381,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} is moving to lane {lblOnLane.Content}. \n"+
                                "Preparing for take off.";
 
-            string message = CreateMessage("|GOTOLANE##OVER");
+            string message = CreateMessage("GOTOLANE##OVER");
             SendMessageToServerWaitOnResponse(message);
             
 
@@ -394,7 +397,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Background = Brushes.LightBlue;
             tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} requested lift of. \n" +
                                "Clear skies ahead.";
-            string message = CreateMessage("|REQLIFT##OVER");
+            string message = CreateMessage("REQLIFT##OVER");
             SendMessageToServerWaitOnResponse(message);
             
 
@@ -410,7 +413,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Text = $" Plane {txtActivePlane.Text} with destination {txtDestination.Text} requested landing. \n" +
                                "Preparing for descent.";
 
-            string message = CreateMessage("|REQLAND##OVER");
+            string message = CreateMessage("REQLAND##OVER");
             SendMessageToServerWaitOnResponse(message);
             
         }
@@ -426,7 +429,7 @@ namespace Ait.Pe04.octopus.client.wpf
                                 $" on lane {lblOnLane.Content} started its engine. \n" +
                                "Ready for lift off.";
 
-            string message = CreateMessage("|STARTENG##OVER");
+            string message = CreateMessage("STARTENG##OVER");
             SendMessageToServerWaitOnResponse(message);
             
         }
@@ -442,7 +445,7 @@ namespace Ait.Pe04.octopus.client.wpf
             tbkFeedback.Text = $" Plane {txtActivePlane.Text} with {lblPassengerCount.Content} passengers \n" +
                                " stopped its engine. \n" +
                                $" Welcome to {txtDestination.Text} ! ";
-            string message = CreateMessage("|STOPENG##OVER");
+            string message = CreateMessage("STOPENG##OVER");
             SendMessageToServerWaitOnResponse(message);
             
         }
@@ -457,9 +460,57 @@ namespace Ait.Pe04.octopus.client.wpf
             btnRequestLanding.IsEnabled = false;
             btnStartEngine.IsEnabled = false;
             btnStopEngine.IsEnabled = false;
-            string message = CreateMessage("|SOS##OVER");
+            string message = CreateMessage("SOS##OVER");
             SendMessageToServerWaitOnResponse(message);
             
+        }
+
+        private void HandleServerResponse(string response)
+        {
+
+            var commandFromServer = response.Trim().Split(";");
+
+            foreach(var commandArray in commandFromServer)
+            {
+                var command = commandArray.Trim().Split("=");
+
+                if (command[0] == "DESTINATIONSET")
+                {
+                    var destinationShort = command[1];
+                    var destination = _destinations.Airports.GetValueOrDefault(destinationShort);
+                    txtDestination.Text = destination;
+                }
+
+                else if(command[0] == "IDNUMBER")
+                {
+                    lblMyID.Content = command[1];
+                }
+
+                else if(command[1].Contains("ADDPASS"))
+                { 
+                    actualPassengers = Convert.ToInt32(lblPassengerCount.Content);
+                    actualPassengers++;
+
+                    lblPassengerCount.Content = actualPassengers.ToString(); // update lblPassengerCount with the new number of passengers
+                    tbkFeedback.Background = Brushes.Green;
+                    tbkFeedback.Text = " A passenger has boarded the plane. ";
+
+                    if (actualPassengers >= 1)
+                    {
+                        btnSubtractPassengers.IsEnabled = true;
+                        tbkFeedback.Background = Brushes.Green;
+                        tbkFeedback.Text = tbkFeedback.Text +
+                            " The plane has enough passengers for lift of.";
+                    }
+
+                    if(actualPassengers > 9)
+                    {
+                        btnAddPassengers.IsEnabled = false;
+                        tbkFeedback.Background = Brushes.Red;
+                        tbkFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
+                    }
+                }
+            }
         }
     }
 }
