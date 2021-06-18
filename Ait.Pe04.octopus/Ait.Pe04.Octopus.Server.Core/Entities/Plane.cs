@@ -14,6 +14,7 @@ namespace Ait.Pe04.Octopus.Core.Entities
         public bool IsEngineActive { get; private set; }
         public bool InFlight { get; private set; }
         public bool IsOnLane { get; private set; }
+        public bool InEmergency { get; private set; }
         //I put a Plane property in Lane, so a Plane is assigned to the Lane
         public Plane(long id, string name)
         {
@@ -55,10 +56,10 @@ namespace Ait.Pe04.Octopus.Core.Entities
             IsEngineActive = isActive;
         }
 
-        //public void CallSOS()
-        //{
-        //    InEmergency = true;
-        //}
+        public void IsInEmergency()
+        {
+            InEmergency = true;
+        }
         //public void CallOfSOS()
         //{
         //    InEmergency = false;

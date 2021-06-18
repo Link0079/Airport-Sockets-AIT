@@ -223,10 +223,50 @@ namespace Ait.Pe04.Octopus.server.wpf
                         break;
                     #endregion
 
-                    #region
+                    #region REQLANE
                     case "REQLANE":
-                        var plane = _planeService.FindPlane(existingPlaneId);
-                        clientResponse = _laneService.AddPlaneToLane(plane);
+                        var requestingPlane = _planeService.FindPlane(existingPlaneId);
+                        clientResponse = _laneService.AddPlaneToLane(requestingPlane);
+                        break;
+                    #endregion
+
+                    #region GOTOLANE
+                    case "GOTOLANE":
+                        var planeToLane = _planeService.FindPlane(existingPlaneId);
+                        clientResponse = _laneService.GetRequestLaneFromPlane(planeToLane);
+                        break;
+                    #endregion
+
+                    #region REQLIFT
+                    case "REQLIFT":
+                        Plane planeToLift = _planeService.FindPlane(existingPlaneId);
+                        _laneService.MakeLaneAvailable(planeToLift);
+                        clientResponse = _planeService.PlaneWantsToLiftOff(existingPlaneId);
+                        break;
+                    #endregion
+
+                    #region REQLAND
+                    case "REQLAND":
+                        var landingPlane = _planeService.FindPlane(existingPlaneId);
+                        clientResponse = _laneService.AddPlaneToLane(landingPlane);
+                        break;
+                    #endregion
+
+                    #region STARTENG
+                    case "STARTENG":
+                        clientResponse = _planeService.StartPlaneEngine(existingPlaneId);
+                        break;
+                    #endregion
+
+                    #region
+                    case "STOPENG":
+                        clientResponse = _planeService.StopPlaneEngine(existingPlaneId);
+                        break;
+                    #endregion
+
+                    #region
+                    case "SOS":
+                        clientResponse = _planeService.SendSOS(existingPlaneId);
                         break;
                     #endregion
                 }
