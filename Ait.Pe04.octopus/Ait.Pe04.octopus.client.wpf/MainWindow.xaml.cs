@@ -428,6 +428,8 @@ namespace Ait.Pe04.octopus.client.wpf
                         // SUBSPASS=$aantal.passengers; EMPTY
                         actualPassengers = Convert.ToInt32(command.Last());
                         lblPassengerCount.Content = actualPassengers.ToString();
+                        if (actualPassengers < 10)
+                            btnAddPassengers.IsEnabled = true;
                         break;
                     #endregion
 
