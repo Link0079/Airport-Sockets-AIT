@@ -399,6 +399,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             btnStopEngine.IsEnabled = false;
             //btnStartEngine.IsEnabled = true;
+
             string message = CreateMessage("STOPENG##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -407,10 +408,6 @@ namespace Ait.Pe04.octopus.client.wpf
         private void btnSOS_Click(object sender, RoutedEventArgs e)
         {
             //method for plane to request help in case of emergency
-            btnSOS.IsEnabled = false;
-            btnRequestLanding.IsEnabled = false;
-            btnStartEngine.IsEnabled = false;
-            btnStopEngine.IsEnabled = false;
             string message = CreateMessage("SOS##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -483,7 +480,8 @@ namespace Ait.Pe04.octopus.client.wpf
                         btnGoToLane.IsEnabled = true;
                         break;
                     #endregion
-                    #region
+
+                    #region NONEAVAILABLE
                     case "NONEAVAILABLE":
                         btnGoToLane.IsEnabled = false;
                         break;
@@ -526,6 +524,10 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region SOS
                     case "SOS":
+                        btnSOS.IsEnabled = false;
+                        btnRequestLanding.IsEnabled = false;
+                        btnStartEngine.IsEnabled = false;
+                        btnStopEngine.IsEnabled = false;
                         break;
                     #endregion
 
