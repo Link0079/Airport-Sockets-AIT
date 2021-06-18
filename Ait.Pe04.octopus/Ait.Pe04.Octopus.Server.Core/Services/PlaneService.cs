@@ -41,14 +41,19 @@ namespace Ait.Pe04.Octopus.Core.Services
         {
             StringBuilder response = new StringBuilder();
             Plane plane = FindPlane(id);
-            response.Append($"ID={id};");
+            response.Append($"Plane {plane.Name};");
             plane.AddPassenger();
-            response.Append("ADDPASS;");
-            if(plane.TotalPassengers == plane.MaxPassengers)
+            response.Append($"ADDPASS={plane.TotalPassengers};");
+            if(plane.TotalPassengers == plane.MaxPassengers) //Plane {planeName};ADDPASS;STOPADDPASS
             {
-                response.Append("STOPADDPASS;");
+                response.Append("FULL;");
             }
             return response.ToString();
+        }
+
+        public object SubstractPassengerOfPlane(long existingPlaneId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
