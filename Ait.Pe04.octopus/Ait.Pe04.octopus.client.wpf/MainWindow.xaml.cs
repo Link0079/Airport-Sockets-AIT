@@ -1,6 +1,7 @@
 ﻿using Ait.Pe04.Octopus.Core.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -113,7 +114,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
         private void btnDisconnectFromServer_Click(object sender, RoutedEventArgs e)
         {
-            string message = "ID=" + lblMyID.Content + "BYEBYE##OVER";
+            string message = "ID=" + lblMyID.Content + ";BYEBYE;##OVER";
             SendMessageToServerDontWaitOnResponse(message);
 
             btnConnectToServer.Visibility = Visibility.Visible;
@@ -488,8 +489,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
                 else if(command[0] == "ADDPASS")
                 { 
-                    actualPassengers = Convert.ToInt32(lblPassengerCount.Content);
-                    actualPassengers++;
+                    actualPassengers = Convert.ToInt32(command.Last());
 
                     lblPassengerCount.Content = actualPassengers.ToString(); // update lblPassengerCount with the new number of passengers
                     tbkFeedback.Background = Brushes.Green;
