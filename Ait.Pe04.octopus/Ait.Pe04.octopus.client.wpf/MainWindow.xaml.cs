@@ -350,16 +350,6 @@ namespace Ait.Pe04.octopus.client.wpf
         {
             //method for the plane to taxi to lane or land on the lane
 
-            //lblOnLane.Content ="";
-            string source = lstInResponse.SelectedIndex.ToString();
-            // empty strings have to be replaced with the response strings
-            string lane = GetLaneString(source, "", "");
-            lblOnLane.Content = lane;
-
-            btnGoToLane.IsEnabled = false;
-            btnRequestLane.IsEnabled = false;
-            btnRequestLiftOff.IsEnabled = true;
-            btnStartEngine.IsEnabled = true;
             string message = CreateMessage("GOTOLANE##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -373,6 +363,7 @@ namespace Ait.Pe04.octopus.client.wpf
             btnRequestLiftOff.IsEnabled = false;
             btnRequestLanding.IsEnabled = true;
             btnSOS.IsEnabled = true;
+
             string message = CreateMessage("REQLIFT##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -385,6 +376,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
             btnRequestLanding.IsEnabled = false;
             btnStopEngine.IsEnabled = true;
+
             string message = CreateMessage("REQLAND##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -395,6 +387,7 @@ namespace Ait.Pe04.octopus.client.wpf
             //method for plane to start the engine before takeoff
 
             btnStartEngine.IsEnabled = false;
+
             string message = CreateMessage("STARTENG##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -490,9 +483,24 @@ namespace Ait.Pe04.octopus.client.wpf
                         btnGoToLane.IsEnabled = true;
                         break;
                     #endregion
+                    #region
+                    case "NONEAVAILABLE":
+                        btnGoToLane.IsEnabled = false;
+                        break;
+                    #endregion
 
                     #region GOTOLANE
                     case "GOTOLANE":
+                        // Response: Plane $planeName; GOTOLANE;
+                        string source = lstInResponse.SelectedIndex.ToString();
+                        // empty strings have to be replaced with the response strings
+                        string lane = GetLaneString(source, "", "");
+                        lblOnLane.Content = lane;
+
+                        btnGoToLane.IsEnabled = false;
+                        btnRequestLane.IsEnabled = false;
+                        btnRequestLiftOff.IsEnabled = true;
+                        btnStartEngine.IsEnabled = true;
                         break;
                     #endregion
 
