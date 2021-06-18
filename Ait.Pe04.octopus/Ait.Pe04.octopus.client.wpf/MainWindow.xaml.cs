@@ -365,18 +365,18 @@ namespace Ait.Pe04.octopus.client.wpf
         {
             return$"ID={lblMyID.Content};{overMessage}";
         }
-
-        private static string GetLaneString(string stringSource, string stringStart, string StringEnd) 
-        {
-            if(stringSource.Contains(stringStart) && stringSource.Contains(StringEnd))
-            {
-                int Start, End;
-                Start = stringSource.IndexOf(stringStart, 0) + stringStart.Length;
-                End = StringEnd.IndexOf(StringEnd, Start);
-                return stringSource.Substring(Start, End - Start);
-            }
-            return"";
-        }
+        
+        //private static string GetLaneString(string stringSource, string stringStart, string StringEnd) 
+        //{
+        //    if(stringSource.Contains(stringStart) && stringSource.Contains(StringEnd))
+        //    {
+        //        int Start, End;
+        //        Start = stringSource.IndexOf(stringStart, 0) + stringStart.Length;
+        //        End = StringEnd.IndexOf(StringEnd, Start);
+        //        return stringSource.Substring(Start, End - Start);
+        //    }
+        //    return"";
+        //}
 
         private void HandleServerResponse(string response)
         {
@@ -495,7 +495,8 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region STOPENG
                     case "STOPENG":
-                        // 
+                        // Response: Plane $planeName; STOPENG=ENGINESTOPPED
+                        lblOnLane.Content = command.Last();
                         btnStopEngine.IsEnabled = false;
                         break;
                     #endregion
