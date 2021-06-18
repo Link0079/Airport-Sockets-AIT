@@ -449,6 +449,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region NONEAVAILABLE
                     case "NONEAVAILABLE":
+                        lblOnLane.Content = command.Last();
                         btnGoToLane.IsEnabled = false;
                         break;
                     #endregion
@@ -468,6 +469,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     #region REQLIFT
                     case "REQLIFT":
                         // Response: Plane $planeName; REQLANE=FLYING
+                        lblOnLane.Content = command.Last();
                         btnRequestLiftOff.IsEnabled = false;
                         btnRequestLanding.IsEnabled = true;
                         btnSOS.IsEnabled = true;
@@ -476,7 +478,8 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region REQLAND
                     case "REQLAND":
-                        // Response: Plane $planeName; REQLAND=LANDING
+                        //Response: Plane $planeName; REQLANE =$laneNameISAVAILABLE; OF REQLANE = NONEAVAILBLE
+                        lblOnLane.Content = command.Last();
                         btnRequestLanding.IsEnabled = false;
                         btnStopEngine.IsEnabled = true;
                         break;
@@ -492,12 +495,14 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region STOPENG
                     case "STOPENG":
+                        // 
                         btnStopEngine.IsEnabled = false;
                         break;
                     #endregion
 
                     #region SOS
                     case "SOS":
+                        // 
                         btnSOS.IsEnabled = false;
                         btnRequestLanding.IsEnabled = false;
                         btnStartEngine.IsEnabled = false;
