@@ -475,40 +475,49 @@ namespace Ait.Pe04.octopus.client.wpf
             {
                 var command = commandArray.Trim().Split("=");
 
-                if (command[0] == "DESTINATIONSET")
+                switch (command[0])
                 {
-                    var destinationShort = command[1];
-                    var destination = _destinations.Airports.GetValueOrDefault(destinationShort);
-                    txtDestination.Text = destination;
-                }
+                    #region DestinationSET
+                    case "DESTINATIONSET":
+                        var destinationShort = command[1];
+                        var destination = _destinations.Airports.GetValueOrDefault(destinationShort);
+                        txtDestination.Text = destination;
+                        break;
+                    #endregion
 
-                else if(command[0] == "IDNUMBER")
-                {
-                    lblMyID.Content = command[1];
-                }
+                    #region IDNUMBER
+                    case "IDNUMBER":
+                        lblMyID.Content = command[1];
+                    break;
+                    #endregion
 
-                else if(command[0] == "ADDPASS")
-                { 
-                    actualPassengers = Convert.ToInt32(command.Last());
+                    #region ADDPASS
+                    case "ADDPASS":
+                        actualPassengers = Convert.ToInt32(command.Last());
 
-                    lblPassengerCount.Content = actualPassengers.ToString(); // update lblPassengerCount with the new number of passengers
-                    tbkFeedback.Background = Brushes.Green;
-                    tbkFeedback.Text = " A passenger has boarded the plane. ";
-
-                    if (actualPassengers >= 1)
-                    {
-                        btnSubtractPassengers.IsEnabled = true;
+                        lblPassengerCount.Content = actualPassengers.ToString(); // update lblPassengerCount with the new number of passengers
                         tbkFeedback.Background = Brushes.Green;
-                        tbkFeedback.Text = tbkFeedback.Text +
-                            " The plane has enough passengers for lift of.";
-                    }
+                        tbkFeedback.Text = " A passenger has boarded the plane. ";
 
-                    if(actualPassengers > 9)
-                    {
-                        btnAddPassengers.IsEnabled = false;
-                        tbkFeedback.Background = Brushes.Red;
-                        tbkFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
-                    }
+                        if (actualPassengers >= 1)
+                        {
+                            btnSubtractPassengers.IsEnabled = true;
+                            tbkFeedback.Background = Brushes.Green;
+                            tbkFeedback.Text = tbkFeedback.Text +
+                                " The plane has enough passengers for lift of.";
+                        }
+
+                        if (actualPassengers > 9)
+                        {
+                            btnAddPassengers.IsEnabled = false;
+                            tbkFeedback.Background = Brushes.Red;
+                            tbkFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
+                        }
+                    break;
+                    #endregion
+
+                    default:
+                        break;
                 }
             }
         }
