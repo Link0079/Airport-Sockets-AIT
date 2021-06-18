@@ -440,6 +440,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     #region REQLANE
                     case "REQLANE":
                         // Response: Plane $planeName; REQLANE=$laneNameISAVAILABLE OF REQLANE=NONEAVAILABLE
+                        lblOnLane.Content = command.Last().ToString();
                         btnSubtractPassengers.IsEnabled = false;
                         btnAddPassengers.IsEnabled = false;
                         btnGoToLane.IsEnabled = true;
@@ -455,10 +456,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     #region GOTOLANE
                     case "GOTOLANE":
                         // Response: Plane $planeName; GOTOLANE=$laneName;
-                        string source = lstInResponse.SelectedIndex.ToString();
-                        // empty strings have to be replaced with the response strings
-                        string lane = GetLaneString(source, "", "");
-                        lblOnLane.Content = lane;
+                        lblOnLane.Content = command.Last().ToString();
 
                         btnGoToLane.IsEnabled = false;
                         btnRequestLane.IsEnabled = false;
@@ -478,6 +476,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region REQLAND
                     case "REQLAND":
+                        // Response: Plane $planeName; REQLAND=LANDING
                         btnRequestLanding.IsEnabled = false;
                         btnStopEngine.IsEnabled = true;
                         break;
@@ -485,6 +484,8 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region STARTENG
                     case "STARTENG":
+                        // Response: Plane $planeName; STARTENG=ENGINESTARTED
+                        lblOnLane.Content = command.Last();
                         btnStartEngine.IsEnabled = false;
                         break;
                     #endregion
