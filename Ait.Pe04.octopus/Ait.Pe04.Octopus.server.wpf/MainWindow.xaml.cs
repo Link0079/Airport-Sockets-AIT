@@ -35,6 +35,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         bool _serverOnline;
         int _maxConnections = 10;
         PlaneService _planeService;
+        LaneService _laneService;
         Destinations _destinations;
 
         long id = 1;
@@ -87,6 +88,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         {
             _serverOnline = true;
             _planeService = new PlaneService();
+            _laneService = new LaneService();
             _destinations = new Destinations();
         }
 
@@ -94,6 +96,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         {
             _serverOnline = false;
             _planeService = null;
+            _laneService = null;
             _destinations = null;
             try
             {
@@ -217,6 +220,13 @@ namespace Ait.Pe04.Octopus.server.wpf
                     #region SUBSPASS
                     case "SUBSPASS":
                         clientResponse = _planeService.SubstractPassengerOfPlane(existingPlaneId);
+                        break;
+                    #endregion
+
+                    #region
+                    case "REQLANE":
+                        var plane = _planeService.FindPlane(existingPlaneId);
+                        clientResponse = _laneService.AddPlaneToLane(plane);
                         break;
                     #endregion
                 }

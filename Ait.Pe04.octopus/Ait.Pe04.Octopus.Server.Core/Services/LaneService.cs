@@ -24,11 +24,18 @@ namespace Ait.Pe04.Octopus.Core.Services
             return null;
         }
 
-        public Lane AddPlaneToLane(Plane plane)
+        public string AddPlaneToLane(Plane plane)
         {
+            StringBuilder response = new StringBuilder();
+            response.Append($"Plane {plane.Name};");
             var lane = FindAvailableLane();
-            lane.OccupyLane(plane);
-            return lane;
+            if (lane != null)
+            {
+                lane.OccupyLane(plane);
+                response.Append($"REQLANE={lane.Name.ToUpper()};"); //Plane {planeName};REQLANE={laneName};
+            }
+            else response.Append($"REQLANE=NONEAVAILABLE"); //Plane {planeName};REQLANE=NOLANEAVAILABLE
+            return response.ToString();
         }
     }
 }
