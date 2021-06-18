@@ -27,5 +27,28 @@ namespace Ait.Pe04.Octopus.Core.Services
                     return plane;
             return null;
         }
+
+        public Plane FindPlane(long id)
+        {
+            foreach (Plane plane in Planes)
+            {
+                if (plane.Id == id) return plane;
+            }
+            return null;
+        }
+
+        public string AddPassengerToPlane(long id)
+        {
+            StringBuilder response = new StringBuilder();
+            Plane plane = FindPlane(id);
+            response.Append($"ID={id};");
+            plane.AddPassenger();
+            response.Append("ADDPASS;");
+            if(plane.TotalPassengers == plane.MaxPassengers)
+            {
+                response.Append("STOPADDPASS;");
+            }
+            return response.ToString();
+        }
     }
 }
