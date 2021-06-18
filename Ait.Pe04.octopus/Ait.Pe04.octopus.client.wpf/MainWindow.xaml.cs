@@ -486,7 +486,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     lblMyID.Content = command[1];
                 }
 
-                else if(command[1].Contains("ADDPASS"))
+                else if(command[0] == "ADDPASS")
                 { 
                     actualPassengers = Convert.ToInt32(lblPassengerCount.Content);
                     actualPassengers++;
