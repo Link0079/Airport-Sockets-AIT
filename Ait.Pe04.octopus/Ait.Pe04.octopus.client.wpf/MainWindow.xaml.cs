@@ -201,23 +201,7 @@ namespace Ait.Pe04.octopus.client.wpf
             return"";
         }
 
-        private void cmbIPs_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //method when IP select is changed
-
-            // in btnConnectToServer_Click we have this line
-            //ClientConfig.WriteConfig(cmbIPs.SelectedItem.ToString(), txtServerIP.Text, int.Parse(cmbPorts.SelectedItem.ToString()), txtActivePlane.Text);
-            // it send whatever values we have there to the server
-            // this cmb does not need a method
-        }
-
-        private void cmbPorts_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //method when Port select is changed
-
-            // idem cmbIPs_SelectionChanged
-        }
-
+        #region Buttons_Click
         private void btnAddPassengers_Click(object sender, RoutedEventArgs e)
         {
             string message = CreateMessage("ADDPASS##OVER");
@@ -359,24 +343,13 @@ namespace Ait.Pe04.octopus.client.wpf
         private void btnRequestLiftOff_Click(object sender, RoutedEventArgs e)
         {
             //method for plane to request permission for takeoff
-
-            btnRequestLiftOff.IsEnabled = false;
-            btnRequestLanding.IsEnabled = true;
-            btnSOS.IsEnabled = true;
-
             string message = CreateMessage("REQLIFT##OVER");
             SendMessageToServerWaitOnResponse(message);
-            
-
         }
 
         private void btnRequestLanding_Click(object sender, RoutedEventArgs e)
         {
             //method for plane to put request for landing
-
-            btnRequestLanding.IsEnabled = false;
-            btnStopEngine.IsEnabled = true;
-
             string message = CreateMessage("REQLAND##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -385,9 +358,6 @@ namespace Ait.Pe04.octopus.client.wpf
         private void btnStartEngine_Click(object sender, RoutedEventArgs e)
         {
             //method for plane to start the engine before takeoff
-
-            btnStartEngine.IsEnabled = false;
-
             string message = CreateMessage("STARTENG##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -396,10 +366,6 @@ namespace Ait.Pe04.octopus.client.wpf
         private void btnStopEngine_Click(object sender, RoutedEventArgs e)
         {
             //method for plane to stop the engine after landing
-
-            btnStopEngine.IsEnabled = false;
-            //btnStartEngine.IsEnabled = true;
-
             string message = CreateMessage("STOPENG##OVER");
             SendMessageToServerWaitOnResponse(message);
             
@@ -412,6 +378,8 @@ namespace Ait.Pe04.octopus.client.wpf
             SendMessageToServerWaitOnResponse(message);
             
         }
+
+        #endregion
 
         private void HandleServerResponse(string response)
         {
@@ -504,21 +472,29 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region REQLIFT
                     case "REQLIFT":
+                        // Response: Plane $planeName; REQLANE=FLYING
+                        btnRequestLiftOff.IsEnabled = false;
+                        btnRequestLanding.IsEnabled = true;
+                        btnSOS.IsEnabled = true;
                         break;
                     #endregion
 
                     #region REQLAND
                     case "REQLAND":
+                        btnRequestLanding.IsEnabled = false;
+                        btnStopEngine.IsEnabled = true;
                         break;
                     #endregion
 
                     #region STARTENG
                     case "STARTENG":
+                        btnStartEngine.IsEnabled = false;
                         break;
                     #endregion
 
                     #region STOPENG
                     case "STOPENG":
+                        btnStopEngine.IsEnabled = false;
                         break;
                     #endregion
 
