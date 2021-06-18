@@ -516,6 +516,34 @@ namespace Ait.Pe04.octopus.client.wpf
                     break;
                     #endregion
 
+                    #region SUBSPASS
+                    case "SUBSPASS":
+                        actualPassengers = Convert.ToInt32(command.Last());
+                        lblPassengerCount.Content = actualPassengers.ToString();
+                        break;
+                    #endregion
+
+                    #region REQLANE
+                    #endregion
+
+                    #region GOTOLANE
+                    #endregion
+
+                    #region REQLIFT
+                    #endregion
+
+                    #region REQLAND
+                    #endregion
+
+                    #region STARTENG
+                    #endregion
+
+                    #region STOPENG
+                    #endregion
+
+                    #region SOS
+                    #endregion
+
                     default:
                         break;
                 }
