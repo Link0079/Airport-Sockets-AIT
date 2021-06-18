@@ -216,7 +216,7 @@ namespace Ait.Pe04.Octopus.server.wpf
                     
                     #region SUBSPASS
                     case "SUBSPASS":
-                        //clientReponse = _planeService.SubstractPassengerOfPlane(existingPlaneId);
+                        clientResponse = _planeService.SubstractPassengerOfPlane(existingPlaneId);
                         break;
                     #endregion
                 }

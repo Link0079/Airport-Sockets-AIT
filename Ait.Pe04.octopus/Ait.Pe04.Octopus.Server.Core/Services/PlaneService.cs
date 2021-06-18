@@ -44,16 +44,25 @@ namespace Ait.Pe04.Octopus.Core.Services
             response.Append($"Plane {plane.Name};");
             plane.AddPassenger();
             response.Append($"ADDPASS={plane.TotalPassengers};");
-            if(plane.TotalPassengers == plane.MaxPassengers) //Plane {planeName};ADDPASS;STOPADDPASS
+            if(plane.TotalPassengers == plane.MaxPassengers) 
             {
                 response.Append("FULL;");
             }
-            return response.ToString();
+            return response.ToString(); //Plane {planeName};ADDPASS={TotalPassengers};FULL;
         }
 
-        public object SubstractPassengerOfPlane(long existingPlaneId)
+        public string SubstractPassengerOfPlane(long id)
         {
-            throw new NotImplementedException();
+            StringBuilder response = new StringBuilder();
+            Plane plane = FindPlane(id);
+            response.Append($"Plane {plane.Name};");
+            plane.SubtractPassenger();
+            response.Append($"SUBSPASS={plane.TotalPassengers};");
+            if (plane.TotalPassengers == 0) //Plane {planeName};SUBSPASS={TotalPassengers};EMPTY
+            {
+                response.Append("EMPTY;");
+            }
+            return response.ToString();
         }
     }
 }
