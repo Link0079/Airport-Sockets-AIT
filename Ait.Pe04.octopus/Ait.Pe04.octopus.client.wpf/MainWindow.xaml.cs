@@ -220,16 +220,20 @@ namespace Ait.Pe04.octopus.client.wpf
 
         private void btnAddPassengers_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
-                passengers = actualPassengers;
+            string message = CreateMessage("ADDPASS##OVER");
+            SendMessageToServerWaitOnResponse(message);
 
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            #region Old code
+
+            //try
+            //{
+            //    actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
+            //    passengers = actualPassengers;
+            //}
+            //catch (Exception error)
+            //{
+            //    MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
 
             // Checking if lblPassengerCount.Content can be parsed, normally we do not need this because we add passangers with the buttons
             //if(!int.TryParse((string)lblPassengerCount.Content, out actualPassangers)) 
@@ -269,43 +273,39 @@ namespace Ait.Pe04.octopus.client.wpf
             //}
 
             //string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|ADDPASS##OVER";
-            string message = CreateMessage("ADDPASS##OVER");
-            SendMessageToServerWaitOnResponse(message);
-            
+            #endregion
         }
 
         private void btnSubtractPassengers_Click(object sender, RoutedEventArgs e)
         {
-            //method to substract passenger from active plane
+            #region Old Code
+            //try
+            //{
+            //    actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
+            //    passengers = actualPassengers;
 
+            //}
+            //catch (Exception error)
+            //{
+            //    MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
 
-            try
-            {
-                actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
-                passengers = actualPassengers;
-
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            if (passengers <= 0)
-            {
-                btnSubtractPassengers.IsEnabled = false;
-                btnAddPassengers.IsEnabled = true;
-                passengers = actualPassengers - 1;
-            }
-            else 
-            {
-                btnAddPassengers.IsEnabled = true;
-                passengers = actualPassengers - 1;
-                lblPassengerCount.Content = passengers.ToString();
-            }
+            //if (passengers <= 0)
+            //{
+            //    btnSubtractPassengers.IsEnabled = false;
+            //    btnAddPassengers.IsEnabled = true;
+            //    passengers = actualPassengers - 1;
+            //}
+            //else 
+            //{
+            //    btnAddPassengers.IsEnabled = true;
+            //    passengers = actualPassengers - 1;
+            //    lblPassengerCount.Content = passengers.ToString();
+            //}
+            #endregion
 
             string message = CreateMessage("SUBSPASS##OVER");
             SendMessageToServerWaitOnResponse(message);
-            
         }
 
         private void btnRequestLane_Click(object sender, RoutedEventArgs e)
@@ -458,6 +458,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region ADDPASS
                     case "ADDPASS":
+                        // ADDPASS=$aantal.passengers;FULL;
                         actualPassengers = Convert.ToInt32(command.Last());
 
                         lblPassengerCount.Content = actualPassengers.ToString(); // update lblPassengerCount with the new number of passengers
@@ -466,18 +467,26 @@ namespace Ait.Pe04.octopus.client.wpf
                         {
                             btnSubtractPassengers.IsEnabled = true;
                         }
-
-                        if (actualPassengers > 9)
-                        {
-                            btnAddPassengers.IsEnabled = false;
-                        }
                     break;
+                    #endregion
+
+                    #region FULL
+                    case "FULL":
+                        btnAddPassengers.IsEnabled = false;
+                        break;
                     #endregion
 
                     #region SUBSPASS
                     case "SUBSPASS":
+                        // SUBSPASS=$aantal.passengers; EMPTY
                         actualPassengers = Convert.ToInt32(command.Last());
                         lblPassengerCount.Content = actualPassengers.ToString();
+                        break;
+                    #endregion
+
+                    #region EMPTY
+                    case "EMPTY":
+                        btnSubtractPassengers.IsEnabled = false;
                         break;
                     #endregion
 
