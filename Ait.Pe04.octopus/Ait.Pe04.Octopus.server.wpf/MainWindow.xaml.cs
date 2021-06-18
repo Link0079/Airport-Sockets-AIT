@@ -180,6 +180,7 @@ namespace Ait.Pe04.Octopus.server.wpf
             string trimmedInstruction = instruction.Trim().Replace("##OVER", "");
             string[] data = trimmedInstruction.Split(";");
             string clientResponse = "";
+            long existingPlaneId = GetIDFromCommand(data);
 
             foreach(var command in data)
             {
@@ -190,7 +191,7 @@ namespace Ait.Pe04.Octopus.server.wpf
                     #region IDENTIFICATION
                     case "IDENTIFICATION":
                         long currentId = id;
-                        InsertMessage(lstOutResponse, $"ID: {currentId} - {commands[1]}");
+                        InsertMessage(lstOutResponse, $"ID: {currentId} - {commands[0]}");
 
                         //Create newly connected plane on the server
                         string planeName = commands[1];
@@ -209,9 +210,13 @@ namespace Ait.Pe04.Octopus.server.wpf
 
                     #region ADDPASS
                     case "ADDPASS":
-                        //Command from server starts with ID=
-                        long planeId = Int32.Parse(data[0].Replace("ID=", ""));
-                        clientResponse = _planeService.AddPassengerToPlane(planeId);
+                        clientResponse = _planeService.AddPassengerToPlane(existingPlaneId);
+                        break;
+                    #endregion
+                    
+                    #region SUBSPASS
+                    case "SUBSPASS":
+                        //clientReponse = _planeService.SubstractPassengerOfPlane(existingPlaneId);
                         break;
                     #endregion
                 }
@@ -357,6 +362,15 @@ namespace Ait.Pe04.Octopus.server.wpf
             Random rng = new Random();
             var index = rng.Next(0, 10);
             return _destinations.Airports.ElementAt(index).Key;
+        }
+
+        private long GetIDFromCommand(string[] data)
+        {
+            if (data[0].Contains("IDENTIFICATION")) return id;
+            //Command starts with ID=
+            string planeIdString = data[0].Replace("ID=", "");
+            long planeId = Int32.Parse(planeIdString);
+            return planeId;
         }
     }
 }
