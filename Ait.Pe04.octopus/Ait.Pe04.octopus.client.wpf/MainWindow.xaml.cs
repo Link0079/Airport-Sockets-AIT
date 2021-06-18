@@ -22,7 +22,6 @@ namespace Ait.Pe04.octopus.client.wpf
         }
         //string destination;
         int actualPassengers;
-        int passengers;
         Socket _socket;
         IPEndPoint _serverEndPoint;
         Destinations _destinations = new Destinations(); //get dict of airports
@@ -77,58 +76,6 @@ namespace Ait.Pe04.octopus.client.wpf
             string message = "IDENTIFICATION=" + activePlane + ";##OVER";
             SendMessageToServerWaitOnResponse(message);
         }
-
-        private void btnConnectToServer_Click(object sender, RoutedEventArgs e)
-        {
-            ClientConfig.WriteConfig(cmbIPs.SelectedItem.ToString(), txtServerIP.Text, int.Parse(cmbPorts.SelectedItem.ToString()), txtActivePlane.Text);
-            btnConnectToServer.Visibility = Visibility.Hidden;
-            btnDisconnectFromServer.Visibility = Visibility.Visible;
-            grpActivePlane.Visibility = Visibility.Visible;
-
-            cmbIPs.IsEnabled = false;
-            cmbPorts.IsEnabled = false;
-            txtActivePlane.IsEnabled = false;
-            txtServerIP.IsEnabled = false;
-
-            //destination = txtDestination.Text;
-            lblOnLane.Content = "0"; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
-            lblPassengerCount.Content = "0"; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
-            txtDestination.Text = ""; // adding .IsEnabled = false; to this TextBox when RequestLane is pressed ?
-            //destination = txtDestination.Text;
-
-            // .IsEnabled is used in place of .Visibility because I think that seeing the buttons will look better than seeing a white empty space
-            // can't decide until the connection between client and server can be established though
-            btnAddPassengers.IsEnabled = true;
-            btnSubtractPassengers.IsEnabled = false;
-            btnRequestLane.IsEnabled = true;
-            btnGoToLane.IsEnabled = false; //will be enabled after RequestLane button is pressed; then RequestLane becomes disabled
-            btnRequestLiftOff.IsEnabled = false; // will be enabled after the plane goes on a lane (using btnGoToLane)
-            btnRequestLanding.IsEnabled = false; // will be enabled when the plane is in flight ?
-            btnStartEngine.IsEnabled = false;
-            btnStopEngine.IsEnabled = false; // will be enabled when btnStartEngine is clicked; then btnStartEngine.IsEnabled = false
-            btnSOS.IsEnabled = false; // will be enabled when enabled when plane is in flight ?
-
-            ContactServer();
-        }
-
-        private void btnDisconnectFromServer_Click(object sender, RoutedEventArgs e)
-        {
-            string message = "ID=" + lblMyID.Content + ";BYEBYE;##OVER";
-            SendMessageToServerDontWaitOnResponse(message);
-
-            btnConnectToServer.Visibility = Visibility.Visible;
-            btnDisconnectFromServer.Visibility = Visibility.Hidden;
-            grpActivePlane.Visibility = Visibility.Hidden;
-            lblMyID.Content = "";
-
-            cmbIPs.IsEnabled = true;
-            cmbPorts.IsEnabled = true;
-            txtActivePlane.IsEnabled = true;
-            txtServerIP.IsEnabled = true;
-            lstOutRequest.Items.Clear();
-            lstInResponse.Items.Clear();
-
-        }
         private void SendMessageToServerDontWaitOnResponse(string message)
         {
             lstOutRequest.Items.Insert(0, message);
@@ -181,30 +128,60 @@ namespace Ait.Pe04.octopus.client.wpf
 
         }
 
-        //private void TrimMessageAndSendToList(string message) 
-        //{
-        //    lstOutRequest.Items.Insert(0, message);
-        //    message.Replace("##OVER", "").Trim();
-        //}
-
-        private string CreateMessage(string overMessage) 
-        {
-            return$"ID={lblMyID.Content};{overMessage}";
-        }
-
-        private static string GetLaneString(string stringSource, string stringStart, string StringEnd) 
-        {
-            if(stringSource.Contains(stringStart) && stringSource.Contains(StringEnd))
-            {
-                int Start, End;
-                Start = stringSource.IndexOf(stringStart, 0) + stringStart.Length;
-                End = StringEnd.IndexOf(StringEnd, Start);
-                return stringSource.Substring(Start, End - Start);
-            }
-            return"";
-        }
-
         #region Buttons_Click
+
+        private void btnConnectToServer_Click(object sender, RoutedEventArgs e)
+        {
+            ClientConfig.WriteConfig(cmbIPs.SelectedItem.ToString(), txtServerIP.Text, int.Parse(cmbPorts.SelectedItem.ToString()), txtActivePlane.Text);
+            btnConnectToServer.Visibility = Visibility.Hidden;
+            btnDisconnectFromServer.Visibility = Visibility.Visible;
+            grpActivePlane.Visibility = Visibility.Visible;
+
+            cmbIPs.IsEnabled = false;
+            cmbPorts.IsEnabled = false;
+            txtActivePlane.IsEnabled = false;
+            txtServerIP.IsEnabled = false;
+
+            //destination = txtDestination.Text;
+            lblOnLane.Content = "0"; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
+            lblPassengerCount.Content = "0"; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
+            txtDestination.Text = ""; // adding .IsEnabled = false; to this TextBox when RequestLane is pressed ?
+            //destination = txtDestination.Text;
+
+            // .IsEnabled is used in place of .Visibility because I think that seeing the buttons will look better than seeing a white empty space
+            // can't decide until the connection between client and server can be established though
+            btnAddPassengers.IsEnabled = true;
+            btnSubtractPassengers.IsEnabled = false;
+            btnRequestLane.IsEnabled = true;
+            btnGoToLane.IsEnabled = false; //will be enabled after RequestLane button is pressed; then RequestLane becomes disabled
+            btnRequestLiftOff.IsEnabled = false; // will be enabled after the plane goes on a lane (using btnGoToLane)
+            btnRequestLanding.IsEnabled = false; // will be enabled when the plane is in flight ?
+            btnStartEngine.IsEnabled = false;
+            btnStopEngine.IsEnabled = false; // will be enabled when btnStartEngine is clicked; then btnStartEngine.IsEnabled = false
+            btnSOS.IsEnabled = false; // will be enabled when enabled when plane is in flight ?
+
+            ContactServer();
+        }
+
+        private void btnDisconnectFromServer_Click(object sender, RoutedEventArgs e)
+        {
+            string message = "ID=" + lblMyID.Content + ";BYEBYE;##OVER";
+            SendMessageToServerDontWaitOnResponse(message);
+
+            btnConnectToServer.Visibility = Visibility.Visible;
+            btnDisconnectFromServer.Visibility = Visibility.Hidden;
+            grpActivePlane.Visibility = Visibility.Hidden;
+            lblMyID.Content = "";
+
+            cmbIPs.IsEnabled = true;
+            cmbPorts.IsEnabled = true;
+            txtActivePlane.IsEnabled = true;
+            txtServerIP.IsEnabled = true;
+            lstOutRequest.Items.Clear();
+            lstInResponse.Items.Clear();
+
+        }
+
         private void btnAddPassengers_Click(object sender, RoutedEventArgs e)
         {
             string message = CreateMessage("ADDPASS##OVER");
@@ -384,6 +361,23 @@ namespace Ait.Pe04.octopus.client.wpf
 
         #endregion
 
+        private string CreateMessage(string overMessage) 
+        {
+            return$"ID={lblMyID.Content};{overMessage}";
+        }
+
+        private static string GetLaneString(string stringSource, string stringStart, string StringEnd) 
+        {
+            if(stringSource.Contains(stringStart) && stringSource.Contains(StringEnd))
+            {
+                int Start, End;
+                Start = stringSource.IndexOf(stringStart, 0) + stringStart.Length;
+                End = StringEnd.IndexOf(StringEnd, Start);
+                return stringSource.Substring(Start, End - Start);
+            }
+            return"";
+        }
+
         private void HandleServerResponse(string response)
         {
 
@@ -445,7 +439,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region REQLANE
                     case "REQLANE":
-                        // REQLANE=$laneName OF REQLANE=NONEAVAILABLE
+                        // Response: Plane $planeName; REQLANE=$laneNameISAVAILABLE OF REQLANE=NONEAVAILABLE
                         btnSubtractPassengers.IsEnabled = false;
                         btnAddPassengers.IsEnabled = false;
                         btnGoToLane.IsEnabled = true;
@@ -460,7 +454,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region GOTOLANE
                     case "GOTOLANE":
-                        // Response: Plane $planeName; GOTOLANE;
+                        // Response: Plane $planeName; GOTOLANE=$laneName;
                         string source = lstInResponse.SelectedIndex.ToString();
                         // empty strings have to be replaced with the response strings
                         string lane = GetLaneString(source, "", "");
