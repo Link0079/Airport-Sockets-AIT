@@ -16,12 +16,19 @@ namespace Ait.Pe04.Octopus.Core.Services
             new Lane("Lane C")
             };
         }
-        public Lane FindPlane(string name)
+        public Lane FindAvailableLane()
         {
             foreach (Lane lane in Lanes)
-                if (lane.Name.ToUpper() == name.ToUpper())
+                if (lane.IsAvailable)
                     return lane;
             return null;
+        }
+
+        public Lane AddPlaneToLane(Plane plane)
+        {
+            var lane = FindAvailableLane();
+            lane.OccupyLane(plane);
+            return lane;
         }
     }
 }
