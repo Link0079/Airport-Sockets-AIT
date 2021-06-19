@@ -6,4 +6,16 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="AirplaneControleRoom.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ait.Pe04.Octopus.Server.Core\Ait.Pe04.Octopus.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="AirplaneControleRoom.jpg" />
+  </ItemGroup>
+
 </Project>

@@ -5,8 +5,59 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ait.Pe04.Octopus.server.wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Socket Airline Control Room" Height="712" Width="925" Loaded="Window_Loaded">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="30*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45*"/>
+            <RowDefinition Height="55*"/>
+        </Grid.RowDefinitions>
+        <Canvas x:Name="cnvRadioTowerImage" Margin="12,10,12,10" Grid.ColumnSpan="3">
+            <Canvas.Background>
+                <ImageBrush ImageSource="/AirplaneControleRoom.jpg" TileMode="None" Stretch="Fill"/>
+            </Canvas.Background>
+        </Canvas>
+        <GroupBox Header="Control Room configuration" HorizontalAlignment="Stretch" Margin="10,0,10,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Background="White">
+            <Grid>
+                <ComboBox x:Name="cmbIPs" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Margin="46,10,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="CmbIPs_SelectionChanged" />
+                <Label Content="IP : " FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Height="28" Margin="10,8,0,0" VerticalAlignment="Top" Width="31"/>
+                <Label Content="Port : " FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" Height="28" Margin="0,6,162,0" VerticalAlignment="Top" Width="57"/>
+                <ComboBox x:Name="cmbPorts" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,9,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="CmbPorts_SelectionChanged" />
+                <Button x:Name="btnStartServer" Content="START" Background="ForestGreen" Foreground="White" FontSize="14" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,7,100,0" Width="81" Height="28" VerticalAlignment="Top" Click="BtnStartServer_Click" />
+                <Button x:Name="btnStopServer" Content="STOP" Background="Tomato" Foreground="White" FontSize="14" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,7,10,0" VerticalAlignment="Top" Height="28" Width="81" Click="BtnStopServer_Click"  />
 
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="grpAirfield" Header="Airfield" Margin="10,10,10,10" Grid.ColumnSpan="3" Background="White" Grid.Row="1" Grid.RowSpan="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="15*"/>
+                    <RowDefinition Height="25*"/>
+                    <RowDefinition Height="25*"/>
+                    <RowDefinition Height="25*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="40*"/>
+                    <ColumnDefinition Width="30*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Available Lanes : " HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" FontWeight="Bold" FontSize="14"/>
+                <Label x:Name="lblAvailableLanes" Content="NUMBER" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14" Margin="114,0,0,0"/>
+                <GroupBox x:Name="grbLaneA" Grid.Column="1" Header="Lane A" Grid.Row="1" Margin="10,5,202,10" Background="LightSlateGray" FontWeight="Bold" BorderBrush="{x:Null}" Foreground="Black" Grid.RowSpan="3" Width="60"/>
+                <GroupBox x:Name="grbLaneB" Grid.Column="1" Header="Lane B" Grid.Row="1" Margin="75,5,137,10" Background="LightSlateGray" Width="60" Grid.RowSpan="3" FontWeight="Bold"/>
+                <GroupBox x:Name="grbLaneC" Grid.Column="1" Header="Lane C" Grid.Row="1" Margin="140,5,72,10" Background="LightSlateGray" Width="60" Grid.RowSpan="3" FontWeight="Bold"/>
+                <GroupBox x:Name="grbLaneD" Grid.Column="1" Header="Lane D" Grid.Row="1" Margin="205,5,7,10" Background="LightSlateGray" Width="60" Grid.RowSpan="3" FontWeight="Bold"/>
+                <GroupBox Header="Incomming Requests" Grid.RowSpan="4" FontWeight="Bold">
+                    <ListBox x:Name="lstInRequest" Background="{x:Null}" FontWeight="Normal"/>
+                </GroupBox>
+                <GroupBox Grid.Column="2" Header="Outgoing Responses" Grid.RowSpan="4" FontWeight="Bold">
+                    <ListBox x:Name="lstOutResponse" FontWeight="Normal" Background="{x:Null}"/>
+                </GroupBox>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>
