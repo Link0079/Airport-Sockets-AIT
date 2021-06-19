@@ -143,12 +143,6 @@ namespace Ait.Pe04.octopus.client.wpf
             txtActivePlane.IsEnabled = false;
             txtServerIP.IsEnabled = false;
 
-            //destination = txtDestination.Text;
-            lblOnLane.Content = "0"; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
-            lblPassengerCount.Content = "0"; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
-            txtDestination.Text = ""; // adding .IsEnabled = false; to this TextBox when RequestLane is pressed ?
-            //destination = txtDestination.Text;
-
             // .IsEnabled is used in place of .Visibility because I think that seeing the buttons will look better than seeing a white empty space
             // can't decide until the connection between client and server can be established though
             btnAddPassengers.IsEnabled = false;
@@ -363,7 +357,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     #region GOTOLANE
                     case "GOTOLANE":
                         // Response: Plane $planeName; GOTOLANE=$laneName;
-                        lblOnLane.Content = command.Last().ToString();
+                        lblOnLane.Content = $"ON {command.Last()}";
                         btnGoToLane.IsEnabled = false;
 
                         if (inFlight)
@@ -384,7 +378,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     #region REQLIFT
                     case "REQLIFT":
                         // Response: Plane $planeName; REQLANE=FLYING
-                        lblOnLane.Content = command.Last();
+                        lblOnLane.Content = $"IS {command.Last()}";
                         btnRequestLiftOff.IsEnabled = false;
                         btnRequestLanding.IsEnabled = true;
                         btnStopEngine.IsEnabled = false;
@@ -403,7 +397,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region STARTENG
                     case "STARTENG":
-                        lblOnLane.Content = command.Last();
+                        //lblOnLane.Content = command.Last();
                         btnStartEngine.IsEnabled = false;
                         btnStopEngine.IsEnabled = true;
                         btnRequestLiftOff.IsEnabled = true;
@@ -414,7 +408,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region STOPENG
                     case "STOPENG":
-                        lblOnLane.Content = command.Last();
+                        //lblOnLane.Content = command.Last();
                         if (inFlight)
                         {
                             btnSubtractPassengers.IsEnabled = true;

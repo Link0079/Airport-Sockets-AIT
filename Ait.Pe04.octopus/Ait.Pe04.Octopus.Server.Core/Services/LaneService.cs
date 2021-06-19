@@ -45,7 +45,7 @@ namespace Ait.Pe04.Octopus.Core.Services
             if (lane != null)
             {
                 lane.OccupyLane(plane);
-                response.Append($"REQLANE={lane.Name.ToUpper()}ISAVAILABLE;"); //Plane {planeName};REQLANE={laneName}ISAVAIlABLE;
+                response.Append($"REQLANE={lane.Name.ToUpper()} ISAVAILABLE;"); //Plane {planeName};REQLANE={laneName}ISAVAIlABLE;
             }
             else response.Append($"REQLANE=NONEAVAILABLE"); //Plane {planeName};REQLANE=NOLANEAVAILABLE
             return response.ToString();
