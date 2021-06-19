@@ -171,7 +171,7 @@ namespace Ait.Pe04.octopus.client.wpf
             cmbPorts.IsEnabled = true;
             txtActivePlane.IsEnabled = true;
             txtServerIP.IsEnabled = true;
-            lblOnLane.Content = "";
+            lblStatus.Content = "";
             lblPassengerCount.Content = "";
             lstOutRequest.Items.Clear();
             lstInResponse.Items.Clear();
@@ -348,7 +348,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region NONEAVAILABLE
                     case "NONEAVAILABLE":
-                        lblOnLane.Content = command.Last();
+                        lblStatus.Content = command.Last();
                         btnGoToLane.IsEnabled = false;
                         break;
                     #endregion
@@ -356,7 +356,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     #region GOTOLANE
                     case "GOTOLANE":
                         // Response: Plane $planeName; GOTOLANE=$laneName;
-                        lblOnLane.Content = $"ON {command.Last()}";
+                        lblStatus.Content = $"ON {command.Last()}";
                         btnGoToLane.IsEnabled = false;
 
                         if (inFlight)
@@ -377,7 +377,7 @@ namespace Ait.Pe04.octopus.client.wpf
                     #region REQLIFT
                     case "REQLIFT":
                         // Response: Plane $planeName; REQLANE=FLYING
-                        lblOnLane.Content = $"IS {command.Last()}";
+                        lblStatus.Content = $"IS {command.Last()}";
                         btnRequestLiftOff.IsEnabled = false;
                         btnRequestLanding.IsEnabled = true;
                         btnStopEngine.IsEnabled = false;
@@ -388,7 +388,7 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region REQLAND
                     case "REQLAND":
-                        lblOnLane.Content = command.Last();
+                        lblStatus.Content = command.Last();
                         btnRequestLanding.IsEnabled = false;
                         btnStopEngine.IsEnabled = true;
                         break;
