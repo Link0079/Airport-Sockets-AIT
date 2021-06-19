@@ -11,9 +11,10 @@ namespace Ait.Pe04.Octopus.Core.Services
         public LaneService()
         {
             Lanes = new List<Lane> {
-            new Lane("Lane A"),
-            new Lane("Lane B"),
-            new Lane("Lane C")
+            new Lane("LANE A"),
+            new Lane("LANE B"),
+            new Lane("LANE C"),
+            new Lane("LANE D")
             };
         }
         public Lane FindAvailableLane()
@@ -45,7 +46,7 @@ namespace Ait.Pe04.Octopus.Core.Services
             if (lane != null)
             {
                 lane.OccupyLane(plane);
-                response.Append($"REQLANE={lane.Name.ToUpper()}ISAVAILABLE;"); //Plane {planeName};REQLANE={laneName}ISAVAIlABLE;
+                response.Append($"REQLANE={lane.Name.ToUpper()} IS AVAILABLE;"); //Plane {planeName};REQLANE={laneName}ISAVAIlABLE;
             }
             else response.Append($"REQLANE=NONEAVAILABLE"); //Plane {planeName};REQLANE=NOLANEAVAILABLE
             return response.ToString();

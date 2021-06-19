@@ -42,10 +42,12 @@ namespace Ait.Pe04.Octopus.Core.Entities
         public void LiftOffPlane()
         {
             InFlight = true;
+            IsOnLane = false;
         }
         public void LandingPlane()
         {
             InFlight = false;
+            IsOnLane = true;
         }
         public void SetDestination(string destination)
         {
@@ -60,9 +62,5 @@ namespace Ait.Pe04.Octopus.Core.Entities
         {
             InEmergency = true;
         }
-        //public void CallOfSOS()
-        //{
-        //    InEmergency = false;
-        //}
     }
 }

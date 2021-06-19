@@ -20,8 +20,8 @@ namespace Ait.Pe04.octopus.client.wpf
         {
             InitializeComponent();
         }
-        //string destination;
         int actualPassengers;
+        bool inFlight;
         Socket _socket;
         IPEndPoint _serverEndPoint;
         Destinations _destinations = new Destinations(); //get dict of airports
@@ -67,7 +67,6 @@ namespace Ait.Pe04.octopus.client.wpf
         private void ContactServer()
         {
             IPAddress serverIP = IPAddress.Parse(txtServerIP.Text);
-            //string activeIP = cmbIPs.SelectedItem.ToString();
             int serverPort = int.Parse(cmbPorts.SelectedItem.ToString());
             string activePlane = txtActivePlane.Text;
 
@@ -76,6 +75,7 @@ namespace Ait.Pe04.octopus.client.wpf
             string message = "IDENTIFICATION=" + activePlane + ";##OVER";
             SendMessageToServerWaitOnResponse(message);
         }
+
         private void SendMessageToServerDontWaitOnResponse(string message)
         {
             lstOutRequest.Items.Insert(0, message);
@@ -94,6 +94,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 btnDisconnectFromServer_Click(null, null);
             }
         }
+
         private void SendMessageToServerWaitOnResponse(string message)
         {
             lstOutRequest.Items.Insert(0, message);
@@ -114,7 +115,6 @@ namespace Ait.Pe04.octopus.client.wpf
             catch
             {
                 btnDisconnectFromServer_Click(null, null);
-                //return "ERROR ENCOUNTERED! STANDBY##OVER";
             }
             finally
             {
@@ -142,15 +142,9 @@ namespace Ait.Pe04.octopus.client.wpf
             txtActivePlane.IsEnabled = false;
             txtServerIP.IsEnabled = false;
 
-            //destination = txtDestination.Text;
-            lblOnLane.Content = "0"; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
-            lblPassengerCount.Content = "0"; // adding .IsEnabled = false; to this Label when RequestLane is pressed ?
-            txtDestination.Text = ""; // adding .IsEnabled = false; to this TextBox when RequestLane is pressed ?
-            //destination = txtDestination.Text;
-
             // .IsEnabled is used in place of .Visibility because I think that seeing the buttons will look better than seeing a white empty space
             // can't decide until the connection between client and server can be established though
-            btnAddPassengers.IsEnabled = true;
+            btnAddPassengers.IsEnabled = false;
             btnSubtractPassengers.IsEnabled = false;
             btnRequestLane.IsEnabled = true;
             btnGoToLane.IsEnabled = false; //will be enabled after RequestLane button is pressed; then RequestLane becomes disabled
@@ -177,6 +171,8 @@ namespace Ait.Pe04.octopus.client.wpf
             cmbPorts.IsEnabled = true;
             txtActivePlane.IsEnabled = true;
             txtServerIP.IsEnabled = true;
+            lblStatus.Content = "";
+            lblPassengerCount.Content = "";
             lstOutRequest.Items.Clear();
             lstInResponse.Items.Clear();
 
@@ -186,88 +182,10 @@ namespace Ait.Pe04.octopus.client.wpf
         {
             string message = CreateMessage("ADDPASS##OVER");
             SendMessageToServerWaitOnResponse(message);
-
-            #region Old code
-
-            //try
-            //{
-            //    actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
-            //    passengers = actualPassengers;
-            //}
-            //catch (Exception error)
-            //{
-            //    MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-
-            // Checking if lblPassengerCount.Content can be parsed, normally we do not need this because we add passangers with the buttons
-            //if(!int.TryParse((string)lblPassengerCount.Content, out actualPassangers)) 
-            //{
-            //    txtBlockFeedback.Background = Brushes.Red;
-            //    txtBlockFeedback.Text = "You have to enter a number for the passengers.";
-            //}
-            //else 
-            //{
-            //    passengers = actualPassangers + 10;
-            //    lblPassengerCount.Content = passengers.ToString();
-            //    txtBlockFeedback.Background = Brushes.Green;
-            //    txtBlockFeedback.Text = " 10 passengers have boarded the planne ";
-            //}
-
-            //if (passengers> 9)  // check to see if plane there is more place on the plane
-            //{
-            //    btnSubtractPassengers.IsEnabled = true;
-            //    btnAddPassengers.IsEnabled = false;
-            //    tbkFeedback.Background = Brushes.Red;
-            //    tbkFeedback.Text = "The plane can only hold 10 passengers. We can not squeeze more in.";
-            //}
-            //else 
-            //{
-            //    btnSubtractPassengers.IsEnabled = true;
-            //    passengers = actualPassengers + 1;
-            //    lblPassengerCount.Content = passengers.ToString(); // update lblPassengerCount with the new number of passengers
-            //    tbkFeedback.Background = Brushes.Green;
-            //    tbkFeedback.Text = " A passenger has boarded the plane. ";
-            //}
-
-            //if(passengers >= 1) 
-            //{
-            //    tbkFeedback.Background = Brushes.Green;
-            //    tbkFeedback.Text = tbkFeedback.Text + 
-            //        " The plane has enough passengers for lift of.";
-            //}
-
-            //string message = "ID=" + lblMyID.Content + lblPassengerCount.Content + "|ADDPASS##OVER";
-            #endregion
         }
 
         private void btnSubtractPassengers_Click(object sender, RoutedEventArgs e)
         {
-            #region Old Code
-            //try
-            //{
-            //    actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
-            //    passengers = actualPassengers;
-
-            //}
-            //catch (Exception error)
-            //{
-            //    MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-
-            //if (passengers <= 0)
-            //{
-            //    btnSubtractPassengers.IsEnabled = false;
-            //    btnAddPassengers.IsEnabled = true;
-            //    passengers = actualPassengers - 1;
-            //}
-            //else 
-            //{
-            //    btnAddPassengers.IsEnabled = true;
-            //    passengers = actualPassengers - 1;
-            //    lblPassengerCount.Content = passengers.ToString();
-            //}
-            #endregion
-
             string message = CreateMessage("SUBSPASS##OVER");
             SendMessageToServerWaitOnResponse(message);
         }
@@ -277,37 +195,6 @@ namespace Ait.Pe04.octopus.client.wpf
             //method to request lane for the plane
             string message = CreateMessage("REQLANE##OVER");
             SendMessageToServerWaitOnResponse(message);
-
-            #region Old Code
-            //try
-            //{
-            //    actualPassengers = Convert.ToInt32(lblPassengerCount.Content); // converting label content to int
-            //    passengers = actualPassengers;
-
-            //}
-            //catch (Exception error)
-            //{
-            //    MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-
-            //if(passengers < 1) 
-            //{
-            //    //tbkFeedback.Background = Brushes.Red;
-            //    //tbkFeedback.Text = " The plane does not have enough passengers for lift off.\n " +
-            //    //                   " At least one passenger has to be boarded in order to request a lane .";
-            //}
-            //else 
-            //{
-            //    // Getting an available Lane
-            //    // awaiting response from server with an available lane ?
-            //    // the available lane would need to be put in lblOnLane.Content
-
-            //    btnSubtractPassengers.IsEnabled = false;
-            //    btnAddPassengers.IsEnabled = false;
-            //    btnGoToLane.IsEnabled = true;
-            //}
-            #endregion
-
         }
 
         private void btnGoToLane_Click(object sender, RoutedEventArgs e)
@@ -428,26 +315,40 @@ namespace Ait.Pe04.octopus.client.wpf
                         // SUBSPASS=$aantal.passengers; EMPTY
                         actualPassengers = Convert.ToInt32(command.Last());
                         lblPassengerCount.Content = actualPassengers.ToString();
+                        if (!inFlight)
+                            if (actualPassengers < 10)
+                                btnAddPassengers.IsEnabled = true;
                         break;
                     #endregion
 
                     #region EMPTY
                     case "EMPTY":
                         btnSubtractPassengers.IsEnabled = false;
+                        inFlight = false;
+                        btnAddPassengers.IsEnabled = true;
+                        btnStartEngine.IsEnabled = true;
                         break;
                     #endregion
 
                     #region REQLANE
                     case "REQLANE":
                         // Response: Plane $planeName; REQLANE=$laneNameISAVAILABLE OF REQLANE=NONEAVAILABLE
-                        btnSubtractPassengers.IsEnabled = false;
-                        btnAddPassengers.IsEnabled = false;
-                        btnGoToLane.IsEnabled = true;
+                        if (command.Last() == "NONEAVAILABLE")
+                            btnGoToLane.IsEnabled = false;
+                        else
+                        {
+                            btnGoToLane.IsEnabled = true;
+                            if (inFlight)
+                                btnRequestLanding.IsEnabled = false;
+                            else
+                                btnRequestLane.IsEnabled = false;
+                        }
                         break;
                     #endregion
 
                     #region NONEAVAILABLE
                     case "NONEAVAILABLE":
+                        lblStatus.Content = command.Last();
                         btnGoToLane.IsEnabled = false;
                         break;
                     #endregion
@@ -455,29 +356,39 @@ namespace Ait.Pe04.octopus.client.wpf
                     #region GOTOLANE
                     case "GOTOLANE":
                         // Response: Plane $planeName; GOTOLANE=$laneName;
-                        string source = lstInResponse.SelectedIndex.ToString();
-                        // empty strings have to be replaced with the response strings
-                        string lane = GetLaneString(source, "", "");
-                        lblOnLane.Content = lane;
-
+                        lblStatus.Content = $"ON {command.Last()}";
                         btnGoToLane.IsEnabled = false;
-                        btnRequestLane.IsEnabled = false;
-                        btnRequestLiftOff.IsEnabled = true;
-                        btnStartEngine.IsEnabled = true;
+
+                        if (inFlight)
+                        {
+                            btnSOS.IsEnabled = false;
+                            btnStopEngine.IsEnabled = true;
+                        }
+                        else
+                        {
+                            btnRequestLane.IsEnabled = false;
+                            btnAddPassengers.IsEnabled = true;
+                            btnRequestLiftOff.IsEnabled = false;
+                            btnStartEngine.IsEnabled = true;
+                        }
                         break;
                     #endregion
 
                     #region REQLIFT
                     case "REQLIFT":
                         // Response: Plane $planeName; REQLANE=FLYING
+                        lblStatus.Content = $"IS {command.Last()}";
                         btnRequestLiftOff.IsEnabled = false;
                         btnRequestLanding.IsEnabled = true;
+                        btnStopEngine.IsEnabled = false;
+                        inFlight = true;
                         btnSOS.IsEnabled = true;
                         break;
                     #endregion
 
                     #region REQLAND
                     case "REQLAND":
+                        lblStatus.Content = command.Last();
                         btnRequestLanding.IsEnabled = false;
                         btnStopEngine.IsEnabled = true;
                         break;
@@ -486,21 +397,42 @@ namespace Ait.Pe04.octopus.client.wpf
                     #region STARTENG
                     case "STARTENG":
                         btnStartEngine.IsEnabled = false;
+                        btnStopEngine.IsEnabled = true;
+                        btnRequestLiftOff.IsEnabled = true;
+                        btnAddPassengers.IsEnabled = false;
+                        btnSubtractPassengers.IsEnabled = false;
                         break;
                     #endregion
 
                     #region STOPENG
                     case "STOPENG":
-                        btnStopEngine.IsEnabled = false;
+                        if (inFlight)
+                        {
+                            btnSubtractPassengers.IsEnabled = true;
+                            btnStopEngine.IsEnabled = false;
+                        }
+                        else
+                        {
+                            btnStopEngine.IsEnabled = false;
+                            btnStartEngine.IsEnabled = true;
+                            btnRequestLiftOff.IsEnabled = false;
+                        }
                         break;
                     #endregion
 
                     #region SOS
                     case "SOS":
-                        btnSOS.IsEnabled = false;
-                        btnRequestLanding.IsEnabled = false;
-                        btnStartEngine.IsEnabled = false;
-                        btnStopEngine.IsEnabled = false;
+                        // 
+                        bool isLost = command.Last() == "PLANE IS LOST" ? true : false;
+                        if (isLost)
+                        {
+                            btnSOS.IsEnabled = false;
+                            btnRequestLanding.IsEnabled = false;
+                            btnStartEngine.IsEnabled = false;
+                            btnStopEngine.IsEnabled = false;
+                            btnDisconnectFromServer_Click(null, null);
+                            inFlight = false;
+                        }
                         break;
                     #endregion
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ait.Pe04.octopus.client.wpf"
         mc:Ignorable="d"
-        Title="Socket Airplane Cockpit" Height="508" Width="800" ResizeMode="NoResize" Loaded="Window_Loaded" >
+        Title="Socket Airplane Cockpit" Height="550" Width="800" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="22*"/>
@@ -43,9 +43,9 @@
                 <Label Content="Destination :" HorizontalAlignment="Left" Margin="5,6,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
                 <TextBox x:Name="txtDestination" HorizontalAlignment="Left" Margin="90,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Height="20"/>
                 <Label Content="Passenger Count :" HorizontalAlignment="Left" Margin="5,57,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
-                <Label x:Name="lblPassengerCount" Content="NUMBER" HorizontalAlignment="Left" Margin="128,57,0,0" VerticalAlignment="Top" FontWeight="Normal"/>
-                <Label Content="On Lane :" HorizontalAlignment="Left" Margin="5,32,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
-                <Label x:Name="lblOnLane" Content="NUMBER" HorizontalAlignment="Left" Margin="128,32,0,0" VerticalAlignment="Top" FontWeight="Normal"/>
+                <Label x:Name="lblPassengerCount" HorizontalAlignment="Left" Margin="128,57,0,0" VerticalAlignment="Top" FontWeight="Normal"/>
+                <Label Content="Status :" HorizontalAlignment="Left" Margin="5,32,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                <Label x:Name="lblStatus" HorizontalAlignment="Left" Margin="128,32,0,0" VerticalAlignment="Top" FontWeight="Normal"/>
                 <Button x:Name="btnAddPassengers" Content="Add Passenger" HorizontalAlignment="Left" Margin="5,88,0,0" VerticalAlignment="Top" Width="115" Height="28" Background="SteelBlue" Foreground="White" FontWeight="Bold" Click="btnAddPassengers_Click"/>
                 <Button x:Name="btnSubtractPassengers" Content="Subtract Passenger" HorizontalAlignment="Right" Margin="0,88,5,0" VerticalAlignment="Top" Width="115" Height="28" Background="SteelBlue" Foreground="White" FontWeight="Bold" Click="btnSubtractPassengers_Click"/>
                 <Button x:Name="btnRequestLane" Content="Request Lane" HorizontalAlignment="Left" Margin="5,121,0,0" VerticalAlignment="Top" Height="28" Width="115" Background="SteelBlue" Foreground="White" FontWeight="Bold" Click="btnRequestLane_Click"/>

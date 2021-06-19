@@ -91,7 +91,7 @@ namespace Ait.Pe04.Octopus.Core.Services
             Plane plane = FindPlane(id);
             response.Append($"Plane {plane.Name};");
             plane.StartEngine(true);
-            response.Append($"STARTENG=ENGINESTARTED");
+            response.Append($"STARTENG=ENGINE STARTED");
             return response.ToString();
         }
 
@@ -101,7 +101,7 @@ namespace Ait.Pe04.Octopus.Core.Services
             Plane plane = FindPlane(id);
             response.Append($"Plane {plane.Name};");
             plane.StartEngine(false);
-            response.Append($"STOPENG=ENGINESTOPPED");
+            response.Append($"STOPENG=ENGINE STOPPED");
             return response.ToString();
         }
 
@@ -113,11 +113,12 @@ namespace Ait.Pe04.Octopus.Core.Services
 
             Random rng = new Random();
             if (rng.Next(0, 100) > 33)
-                response.Append($"SOS=PLANEISSAFE;");
+                response.Append($"SOS=PLANE IS SAFE;");
             else
             {
-                response.Append($"SOS=PLANEISLOST");
-                plane.IsInEmergency();
+                response.Append($"SOS=PLANE IS LOST");
+                Planes.Remove(plane);
+                //plane.IsInEmergency();
             } 
                 
             return response.ToString();

@@ -71,7 +71,6 @@ namespace Ait.Pe04.Octopus.server.wpf
             }
             btnStartServer.Visibility = Visibility.Visible;
             btnStopServer.Visibility = Visibility.Hidden;
-            lblSos.Visibility = Visibility.Hidden;
         }
 
         private void SaveConfig()
@@ -112,6 +111,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         {
             System.Windows.Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
         }
+
         private void StartListening()
         {
             IPAddress ip = IPAddress.Parse(cmbIPs.SelectedItem.ToString()); // Get ip in combobox
@@ -160,16 +160,10 @@ namespace Ait.Pe04.Octopus.server.wpf
 
             string serverResponseInText = HandleInstruction(instruction);
 
-            //string result;
-
             if (serverResponseInText.Length < 1)
             {
                 serverResponseInText = $"{serverResponseInText} is unkown";
             }
-            //else
-            //{
-            //    result = $"{ExecuteCommand(serverResponseInText)}";
-            //}
 
             byte[] clientResponse = Encoding.ASCII.GetBytes(serverResponseInText);
             clientCall.Send(clientResponse);
@@ -177,6 +171,7 @@ namespace Ait.Pe04.Octopus.server.wpf
             clientCall.Shutdown(SocketShutdown.Both);
             clientCall.Close();
         }
+
         private string HandleInstruction(string instruction)
         {
             InsertMessage(lstInRequest,instruction);
@@ -233,6 +228,7 @@ namespace Ait.Pe04.Octopus.server.wpf
                     #region GOTOLANE
                     case "GOTOLANE":
                         var planeToLane = _planeService.FindPlane(existingPlaneId);
+                        ManageLaneColor(_laneService.FindLaneByPlane(planeToLane));
                         clientResponse = _laneService.GetRequestLaneFromPlane(planeToLane);
                         break;
                     #endregion
@@ -240,7 +236,9 @@ namespace Ait.Pe04.Octopus.server.wpf
                     #region REQLIFT
                     case "REQLIFT":
                         Plane planeToLift = _planeService.FindPlane(existingPlaneId);
+                        Lane lane = _laneService.FindLaneByPlane(planeToLift);
                         _laneService.MakeLaneAvailable(planeToLift);
+                        ManageLaneColor(lane);
                         clientResponse = _planeService.PlaneWantsToLiftOff(existingPlaneId);
                         break;
                     #endregion
@@ -258,19 +256,28 @@ namespace Ait.Pe04.Octopus.server.wpf
                         break;
                     #endregion
 
-                    #region
+                    #region STOPENG
                     case "STOPENG":
                         clientResponse = _planeService.StopPlaneEngine(existingPlaneId);
                         break;
                     #endregion
 
-                    #region
+                    #region SOS
                     case "SOS":
                         clientResponse = _planeService.SendSOS(existingPlaneId);
                         break;
                     #endregion
+
+                    #region BYEBYE
+                    case "BYEBYE":
+                        Plane planeToDisconnect = _planeService.FindPlane(existingPlaneId);
+                        Lane laneToManage = _laneService.FindLaneByPlane(planeToDisconnect);
+                        _laneService.MakeLaneAvailable(planeToDisconnect);
+                        ManageLaneColor(laneToManage);
+                        clientResponse = $"Lost Connection to a plane";
+                        break;
+                     #endregion
                 }
-                //return clientResponse;
             }
             InsertMessage(lstOutResponse, clientResponse);
             return clientResponse;
@@ -297,7 +304,6 @@ namespace Ait.Pe04.Octopus.server.wpf
 
         private void BtnStopServer_Click(object sender, RoutedEventArgs e)
         {
-
             InsertMessage( lstInRequest,"Airspace closing");
             btnStopServer.Visibility = Visibility.Hidden;
             btnStartServer.Visibility = Visibility.Visible;
@@ -307,104 +313,6 @@ namespace Ait.Pe04.Octopus.server.wpf
         private void InsertMessage(ListBox source, string message)
         {
             source.Items.Insert(0, message);
-        }
-
-        private string ExecuteCommand(string[] command)
-        {
-            string message = $"{command[0]} - {command[1]}";
-
-            foreach(var instruction in command)
-            {
-                var commands = instruction.Split("=");
-
-                if (commands[0] == "ID")
-                {
-                    //search plane in service
-                    long planeId = Int32.Parse(commands[1]);
-                    _planeService.FindPlane(planeId);
-                    continue;
-                }
-
-                if (commands[0] == "IDENTIFICATION")
-                {
-                    long currentId = id;
-                    InsertMessage(lstOutResponse, $"ID: {currentId} - {commands[1]}");
-
-                    //Create newly connected plane on the server
-                    string planeName = commands[1];
-
-                    Plane newPlane = new Plane(id, planeName);
-
-                    var destination = GetRandomDestination();
-                    newPlane.SetDestination(destination);
-
-                    _planeService.AddPlane(newPlane);
-
-                    id++; //set id for next plane
-                    return $"IDNUMBER={currentId};DESTINATIONSET={destination}";
-                } //Add a passenger
-                  // Again, we end up with 4 objects in data/command; it looks messy but it works
-                else if (commands[0] == "ADDPASS")
-                {
-                    InsertMessage(lstOutResponse, message);
-                    return message;
-                } // Substract a passenger 
-                else if (commands[0] == "SUBSPASS")
-                {
-                    InsertMessage(lstOutResponse, message);
-                    return message;
-                } // Request a lane
-                else if (commands[0] == "REQLANE")
-                {
-                    InsertMessage(lstOutResponse, message);
-                    return message;
-                } // Move to a lane
-                else if (commands[0] == "GOTOLANE")
-                {
-                    InsertMessage(lstOutResponse, message);
-                    return message;
-                } // Request liftoff
-                else if (commands[0] == "REQLIFT")
-                {
-                    InsertMessage(lstOutResponse, message);
-                    return message;
-                } // Request landing
-                else if (commands[0] == "REQLAND")
-                {
-                    InsertMessage(lstOutResponse, message);
-                    return message;
-                } // Start plane engine
-                else if (commands[0] == "STARTENG")
-                {
-                    InsertMessage(lstOutResponse, message);
-                    return message;
-                } // Stop plane engine
-                else if (commands[0] == "STOPENG")
-                {
-                    InsertMessage(lstOutResponse, message);
-                    return message;
-                } // SOS button
-                else if (commands[0] == "SOS")
-                {
-                    lblSos.Visibility = Visibility.Visible;
-                    lblSos.Text = message;
-                    InsertMessage(lstOutResponse, message);
-                    return message;
-                }
-                else
-                {
-                    InsertMessage(lstOutResponse, "UNKNOWN INSTRUCTION");
-                    return "UNKNOWN INSTRUCTION";
-                }
-            }
-            return "";
-            
-            // To add as last command
-            //else if
-            //{
-            //    InsertMessage(lstOutResponse, "UNKNOWN INSTRUCTION");
-            //    return "UNKNOWN INSTRUCTION";
-            //}
         }
 
         private string GetRandomDestination()
@@ -422,5 +330,28 @@ namespace Ait.Pe04.Octopus.server.wpf
             long planeId = Int32.Parse(planeIdString);
             return planeId;
         }
+
+        private void ManageLaneColor(Lane lane)
+        {
+            switch (lane.Name)
+            {
+                case "LANE A":
+                    grbLaneA.Background = lane.IsAvailable ? Brushes.LightSlateGray : Brushes.IndianRed;
+                    break;
+                case "LANE B":
+                    grbLaneB.Background = lane.IsAvailable ? Brushes.LightSlateGray : Brushes.IndianRed;
+                    break;
+                case "LANE C":
+                    grbLaneC.Background = lane.IsAvailable ? Brushes.LightSlateGray : Brushes.IndianRed;
+                    break;
+                case "LANE D":
+                    grbLaneD.Background = lane.IsAvailable ? Brushes.LightSlateGray : Brushes.IndianRed;
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
     }
 }
