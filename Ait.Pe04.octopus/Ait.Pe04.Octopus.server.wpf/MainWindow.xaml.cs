@@ -88,6 +88,7 @@ namespace Ait.Pe04.Octopus.server.wpf
             _serverOnline = true;
             _planeService = new PlaneService();
             _laneService = new LaneService();
+            lblAvailableLanes.Content = _laneService.GetNumberOfAvailableLanes();
             _destinations = new Destinations();
         }
 
