@@ -269,6 +269,9 @@ namespace Ait.Pe04.Octopus.server.wpf
                         clientResponse = _planeService.SendSOS(existingPlaneId);
                         break;
                     #endregion
+                    case "BYEBYE":
+                        clientResponse = $"Lost Connection to a plane";
+                        break;
                 }
                 //return clientResponse;
             }

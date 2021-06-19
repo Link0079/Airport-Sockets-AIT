@@ -426,10 +426,15 @@ namespace Ait.Pe04.octopus.client.wpf
                     #region SOS
                     case "SOS":
                         // 
-                        btnSOS.IsEnabled = false;
-                        btnRequestLanding.IsEnabled = false;
-                        btnStartEngine.IsEnabled = false;
-                        btnStopEngine.IsEnabled = false;
+                        bool isLost = command.Last() == "PLANE IS LOST" ? true : false;
+                        if (isLost)
+                        {
+                            btnSOS.IsEnabled = false;
+                            btnRequestLanding.IsEnabled = false;
+                            btnStartEngine.IsEnabled = false;
+                            btnStopEngine.IsEnabled = false;
+                            btnDisconnectFromServer_Click(null, null);
+                        }
                         break;
                     #endregion
 

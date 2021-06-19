@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ait.Pe04.octopus.client.wpf"
         mc:Ignorable="d"
-        Title="Socket Airplane Cockpit" Height="508" Width="800" ResizeMode="NoResize" Loaded="Window_Loaded" >
+        Title="Socket Airplane Cockpit" Height="550" Width="800" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="22*"/>

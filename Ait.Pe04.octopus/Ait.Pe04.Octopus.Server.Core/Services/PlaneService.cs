@@ -117,7 +117,8 @@ namespace Ait.Pe04.Octopus.Core.Services
             else
             {
                 response.Append($"SOS=PLANE IS LOST");
-                plane.IsInEmergency();
+                Planes.Remove(plane);
+                //plane.IsInEmergency();
             } 
                 
             return response.ToString();
