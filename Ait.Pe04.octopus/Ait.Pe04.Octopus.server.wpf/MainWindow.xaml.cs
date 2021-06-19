@@ -111,6 +111,7 @@ namespace Ait.Pe04.Octopus.server.wpf
         {
             System.Windows.Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
         }
+
         private void StartListening()
         {
             IPAddress ip = IPAddress.Parse(cmbIPs.SelectedItem.ToString()); // Get ip in combobox
@@ -170,6 +171,7 @@ namespace Ait.Pe04.Octopus.server.wpf
             clientCall.Shutdown(SocketShutdown.Both);
             clientCall.Close();
         }
+
         private string HandleInstruction(string instruction)
         {
             InsertMessage(lstInRequest,instruction);
@@ -254,21 +256,27 @@ namespace Ait.Pe04.Octopus.server.wpf
                         break;
                     #endregion
 
-                    #region
+                    #region STOPENG
                     case "STOPENG":
                         clientResponse = _planeService.StopPlaneEngine(existingPlaneId);
                         break;
                     #endregion
 
-                    #region
+                    #region SOS
                     case "SOS":
                         clientResponse = _planeService.SendSOS(existingPlaneId);
                         break;
                     #endregion
-                    case "BYEBYE":
 
+                    #region BYEBYE
+                    case "BYEBYE":
+                        Plane planeToDisconnect = _planeService.FindPlane(existingPlaneId);
+                        Lane laneToManage = _laneService.FindLaneByPlane(planeToDisconnect);
+                        _laneService.MakeLaneAvailable(planeToDisconnect);
+                        ManageLaneColor(laneToManage);
                         clientResponse = $"Lost Connection to a plane";
                         break;
+                     #endregion
                 }
             }
             InsertMessage(lstOutResponse, clientResponse);
@@ -296,7 +304,6 @@ namespace Ait.Pe04.Octopus.server.wpf
 
         private void BtnStopServer_Click(object sender, RoutedEventArgs e)
         {
-
             InsertMessage( lstInRequest,"Airspace closing");
             btnStopServer.Visibility = Visibility.Hidden;
             btnStartServer.Visibility = Visibility.Visible;
@@ -323,33 +330,22 @@ namespace Ait.Pe04.Octopus.server.wpf
             long planeId = Int32.Parse(planeIdString);
             return planeId;
         }
+
         private void ManageLaneColor(Lane lane)
         {
-            switch (lane.Name.ToUpper())
+            switch (lane.Name)
             {
                 case "LANE A":
-                    if (lane.IsAvailable)
-                        grbLaneA.Background = Brushes.LightSlateGray;
-                    else
-                        grbLaneA.Background = Brushes.IndianRed;
+                    grbLaneA.Background = lane.IsAvailable ? Brushes.LightSlateGray : Brushes.IndianRed;
                     break;
                 case "LANE B":
-                    if (lane.IsAvailable)
-                        grbLaneB.Background = Brushes.LightSlateGray;
-                    else
-                        grbLaneB.Background = Brushes.IndianRed;
+                    grbLaneB.Background = lane.IsAvailable ? Brushes.LightSlateGray : Brushes.IndianRed;
                     break;
                 case "LANE C":
-                    if (lane.IsAvailable)
-                        grbLaneC.Background = Brushes.LightSlateGray;
-                    else
-                        grbLaneC.Background = Brushes.IndianRed;
+                    grbLaneC.Background = lane.IsAvailable ? Brushes.LightSlateGray : Brushes.IndianRed;
                     break;
                 case "LANE D":
-                    if (lane.IsAvailable)
-                        grbLaneD.Background = Brushes.LightSlateGray;
-                    else
-                        grbLaneD.Background = Brushes.IndianRed;
+                    grbLaneD.Background = lane.IsAvailable ? Brushes.LightSlateGray : Brushes.IndianRed;
                     break;
                 default:
                     break;

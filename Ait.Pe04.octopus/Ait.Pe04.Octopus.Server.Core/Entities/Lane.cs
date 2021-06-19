@@ -27,6 +27,7 @@ namespace Ait.Pe04.Octopus.Core.Entities
         public void OccupyLane(Plane plane)
         {
             Plane = plane;
+            plane.LandingPlane();
             IsAvailable = false;
         }
     }

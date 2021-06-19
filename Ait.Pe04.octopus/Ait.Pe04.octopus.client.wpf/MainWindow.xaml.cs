@@ -20,7 +20,6 @@ namespace Ait.Pe04.octopus.client.wpf
         {
             InitializeComponent();
         }
-        //string destination;
         int actualPassengers;
         bool inFlight;
         Socket _socket;
@@ -68,7 +67,6 @@ namespace Ait.Pe04.octopus.client.wpf
         private void ContactServer()
         {
             IPAddress serverIP = IPAddress.Parse(txtServerIP.Text);
-            //string activeIP = cmbIPs.SelectedItem.ToString();
             int serverPort = int.Parse(cmbPorts.SelectedItem.ToString());
             string activePlane = txtActivePlane.Text;
 
@@ -77,6 +75,7 @@ namespace Ait.Pe04.octopus.client.wpf
             string message = "IDENTIFICATION=" + activePlane + ";##OVER";
             SendMessageToServerWaitOnResponse(message);
         }
+
         private void SendMessageToServerDontWaitOnResponse(string message)
         {
             lstOutRequest.Items.Insert(0, message);
@@ -95,6 +94,7 @@ namespace Ait.Pe04.octopus.client.wpf
                 btnDisconnectFromServer_Click(null, null);
             }
         }
+
         private void SendMessageToServerWaitOnResponse(string message)
         {
             lstOutRequest.Items.Insert(0, message);
@@ -115,7 +115,6 @@ namespace Ait.Pe04.octopus.client.wpf
             catch
             {
                 btnDisconnectFromServer_Click(null, null);
-                //return "ERROR ENCOUNTERED! STANDBY##OVER";
             }
             finally
             {
@@ -172,6 +171,8 @@ namespace Ait.Pe04.octopus.client.wpf
             cmbPorts.IsEnabled = true;
             txtActivePlane.IsEnabled = true;
             txtServerIP.IsEnabled = true;
+            lblOnLane.Content = "";
+            lblPassengerCount.Content = "";
             lstOutRequest.Items.Clear();
             lstInResponse.Items.Clear();
 
@@ -332,8 +333,6 @@ namespace Ait.Pe04.octopus.client.wpf
                     #region REQLANE
                     case "REQLANE":
                         // Response: Plane $planeName; REQLANE=$laneNameISAVAILABLE OF REQLANE=NONEAVAILABLE
-                        //btnSubtractPassengers.IsEnabled = false;
-                        //btnAddPassengers.IsEnabled = false;
                         if (command.Last() == "NONEAVAILABLE")
                             btnGoToLane.IsEnabled = false;
                         else
@@ -397,7 +396,6 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region STARTENG
                     case "STARTENG":
-                        //lblOnLane.Content = command.Last();
                         btnStartEngine.IsEnabled = false;
                         btnStopEngine.IsEnabled = true;
                         btnRequestLiftOff.IsEnabled = true;
@@ -408,7 +406,6 @@ namespace Ait.Pe04.octopus.client.wpf
 
                     #region STOPENG
                     case "STOPENG":
-                        //lblOnLane.Content = command.Last();
                         if (inFlight)
                         {
                             btnSubtractPassengers.IsEnabled = true;
