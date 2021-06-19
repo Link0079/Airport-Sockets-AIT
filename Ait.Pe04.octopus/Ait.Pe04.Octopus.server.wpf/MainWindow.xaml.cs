@@ -230,6 +230,7 @@ namespace Ait.Pe04.Octopus.server.wpf
                         var planeToLane = _planeService.FindPlane(existingPlaneId);
                         ManageLaneColor(_laneService.FindLaneByPlane(planeToLane));
                         clientResponse = _laneService.GetRequestLaneFromPlane(planeToLane);
+                        lblAvailableLanes.Content = _laneService.GetNumberOfAvailableLanes();
                         break;
                     #endregion
 
@@ -238,6 +239,7 @@ namespace Ait.Pe04.Octopus.server.wpf
                         Plane planeToLift = _planeService.FindPlane(existingPlaneId);
                         Lane lane = _laneService.FindLaneByPlane(planeToLift);
                         _laneService.MakeLaneAvailable(planeToLift);
+                        lblAvailableLanes.Content = _laneService.GetNumberOfAvailableLanes();
                         ManageLaneColor(lane);
                         clientResponse = _planeService.PlaneWantsToLiftOff(existingPlaneId);
                         break;

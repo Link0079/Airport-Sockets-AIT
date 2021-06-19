@@ -7,6 +7,7 @@ namespace Ait.Pe04.Octopus.Core.Services
 {
     public class LaneService
     {
+        private int counter;
         public List<Lane> Lanes { get; private set; }
         public LaneService()
         {
@@ -23,6 +24,14 @@ namespace Ait.Pe04.Octopus.Core.Services
                 if (lane.IsAvailable)
                     return lane;
             return null;
+        }
+
+        public string GetNumberOfAvailableLanes()
+        {
+            foreach (Lane lane in Lanes)
+                if (lane.IsAvailable)
+                    counter++;
+            return $"{counter}";
         }
 
         public Lane FindLaneByPlane(Plane plane)
