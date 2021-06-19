@@ -28,6 +28,7 @@ namespace Ait.Pe04.Octopus.Core.Services
 
         public string GetNumberOfAvailableLanes()
         {
+            counter = 0;
             foreach (Lane lane in Lanes)
                 if (lane.IsAvailable)
                     counter++;
