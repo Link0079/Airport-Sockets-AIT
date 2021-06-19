@@ -434,6 +434,7 @@ namespace Ait.Pe04.octopus.client.wpf
                             btnStartEngine.IsEnabled = false;
                             btnStopEngine.IsEnabled = false;
                             btnDisconnectFromServer_Click(null, null);
+                            inFlight = false;
                         }
                         break;
                     #endregion

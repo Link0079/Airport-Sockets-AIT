@@ -11,9 +11,10 @@ namespace Ait.Pe04.Octopus.Core.Services
         public LaneService()
         {
             Lanes = new List<Lane> {
-            new Lane("Lane A"),
-            new Lane("Lane B"),
-            new Lane("Lane C")
+            new Lane("LANE A"),
+            new Lane("LANE B"),
+            new Lane("LANE C"),
+            new Lane("LANE D")
             };
         }
         public Lane FindAvailableLane()
